@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="calendarmodel" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="calendar-controller" target="1.5" />
+      <module name="calendar-core" target="1.5" />
+      <module name="calendar-main" target="1.5" />
+      <module name="calendar-model" target="1.5" />
+      <module name="calendar-service" target="1.5" />
+      <module name="calendar-view" target="1.5" />
+      <module name="CalendarApp" target="1.8" />
+      <module name="calendarmain" target="1.5" />
+      <module name="calendarmodel" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

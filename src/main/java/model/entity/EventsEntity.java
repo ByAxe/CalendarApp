@@ -1,0 +1,105 @@
+package model.entity;
+
+import core.enums.Frequency;
+import core.enums.NoticePeriod;
+import core.enums.Priority;
+import model.api.APersistentEntity;
+
+import javax.persistence.*;
+import java.util.Date;
+
+import static core.api.IEssence.ID_COLUMN_NAME;
+import static core.api.IEssence.UUID_COLUMN_NAME;
+
+/**
+ * Created by byaxe on 26.11.16.
+ */
+@Entity
+@Table(name = "events", uniqueConstraints = {
+        @UniqueConstraint(columnNames = ID_COLUMN_NAME),
+        @UniqueConstraint(columnNames = UUID_COLUMN_NAME)
+}, indexes = {
+        @Index(name = "events_id_idx", unique = true, columnList = ID_COLUMN_NAME),
+        @Index(name = "events_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME)
+})
+@SequenceGenerator(name = "events_id_seq", sequenceName = "events_id_seq", allocationSize = 1)
+public class EventsEntity extends APersistentEntity {
+
+    private Long id;
+    private Date starts;
+    private Date ends;
+    private String title;
+    private NoticePeriod noticePeriod;
+    private Priority priority;
+    private Frequency frequency;
+
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "events_id_seq")
+    @Column(name = ID_COLUMN_NAME, unique = true, nullable = false)
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Column(name = "starts", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    public Date getStarts() {
+        return starts;
+    }
+
+    public void setStarts(Date starts) {
+        this.starts = starts;
+    }
+
+    @Column(name = "ends", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    public Date getEnds() {
+        return ends;
+    }
+
+    public void setEnds(Date ends) {
+        this.ends = ends;
+    }
+
+    @Column(name = "title", nullable = false, length = 150)
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Column(name = "notice_period", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public NoticePeriod getNoticePeriod() {
+        return noticePeriod;
+    }
+
+    public void setNoticePeriod(NoticePeriod noticePeriod) {
+        this.noticePeriod = noticePeriod;
+    }
+
+    @Column(name = "priority", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    @Column(name = "frequency", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public Frequency getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
+    }
+}
