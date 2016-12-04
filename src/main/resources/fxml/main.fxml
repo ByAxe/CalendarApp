@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+			minWidth="-Infinity"
+			prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65"
+			fx:controller="controller.Controller">
+	<children>
+		<MenuBar prefHeight="29.0" prefWidth="800.0" fx:id="menuBar">
+			<menus>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Close"/>
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Edit">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Delete"/>
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem mnemonicParsing="false" text="About"/>
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+		<JFXTabPane fx:id="tabPane" layoutX="170.0" layoutY="28.0" prefHeight="472.0" prefWidth="600.0"
+					AnchorPane.bottomAnchor="0.0"
+					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+			<tabs>
+				<Tab fx:id="calendarTab" text="Calendar">
+					<content>
+						<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+					</content>
+				</Tab>
+				<Tab fx:id="groupsTab" text="Groups">
+					<content>
+						<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+					</content>
+				</Tab>
+			</tabs>
+		</JFXTabPane>
+	</children>
+</AnchorPane>

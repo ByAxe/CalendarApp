@@ -49,11 +49,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.beust:jcommander:1.48" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-test:5.0.0.M3" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
-    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.0.BETA-5" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:20.0" level="project" />
-    <orderEntry type="library" name="Maven: com.mchange:c3p0:0.9.5.2" level="project" />
-    <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.11" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-c3p0:5.2.5.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.2.5.Final" level="project" />
@@ -73,5 +68,11 @@
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Draft-16" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1212.jre7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.0.BETA-5" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:20.0" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:c3p0:0.9.5.2" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.11" level="project" />
+    <orderEntry type="library" name="Maven: com.jfoenix:jfoenix:1.0.0" level="project" />
   </component>
 </module>

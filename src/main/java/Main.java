@@ -1,8 +1,10 @@
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import service.api.IEventsService;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -11,16 +13,26 @@ public class Main extends Application {
 
     private AbstractApplicationContext applicationContext;
 
-    private IEventsService eventsService;
+    private Parent rootNode;
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public void start(Stage primaryStage) throws Exception {
+    @Override
+    public void init() throws Exception {
         applicationContext = new GenericXmlApplicationContext("application-context.xml");
 
-        eventsService = (IEventsService) applicationContext.getBean("eventsServiceImpl");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
+
+        fxmlLoader.setControllerFactory(applicationContext::getBean);
+
+        rootNode = fxmlLoader.load();
+    }
+
+    public void start(Stage stage) throws Exception {
+        stage.setScene(new Scene(rootNode));
+        stage.show();
     }
 
     @Override
