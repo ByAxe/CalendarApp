@@ -20,7 +20,7 @@ import java.util.List;
  * <p>
  * Бизнес-логика событий
  */
-@Service
+@Service("eventsService")
 public class EventsServiceImpl implements IEventsService {
 
     private final EventsRepository eventsRepository;

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calendar-app</groupId>
 	<artifactId>calendar-root</artifactId>
-	<version>0.1.2</version>
+	<version>0.1.3</version>
 
 	<name>calendar-root</name>
 	<url>http://maven.apache.org</url>
@@ -26,7 +26,8 @@
 		<guava-version>RELEASE</guava-version>
 		<sprin-data-commons-version>RELEASE</sprin-data-commons-version>
 		<c3p0-version>RELEASE</c3p0-version>
-		<jfoenix-version>1.0.0</jfoenix-version>
+		<jfoenix-version>RELEASE</jfoenix-version>
+		<testfx-version>RELEASE</testfx-version>
 
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 		<maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
@@ -41,6 +42,13 @@
 		<repository>
 			<id>spring-milestones</id>
 			<url>http://repo.spring.io/libs-milestone/</url>
+		</repository>
+		<repository>
+			<id>maven-central-repo</id>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -195,6 +203,19 @@
 			<version>${spring-version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.testfx</groupId>
+			<artifactId>testfx-core</artifactId>
+			<version>${testfx-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testfx</groupId>
+			<artifactId>testfx-junit</artifactId>
+			<version>${testfx-version}</version>
+			<scope>test</scope>
+		</dependency>
+
 		<!--********************************************************************-->
 		<!--end::TESTS DEPENDENCIES-->
 		<!--********************************************************************-->
@@ -292,6 +313,18 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+					<suiteXmlFiles>
+						<suiteXmlFile>../src/test/resources/testing.xml</suiteXmlFile>
+					</suiteXmlFiles>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -10,7 +10,7 @@ import service.api.IGroupsService;
 /**
  * Created by byaxe on 26.11.16.
  */
-@Service
+@Service("groupsService")
 public class GroupsServiceImpl implements IGroupsService {
 
     @Override
