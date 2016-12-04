@@ -21,15 +21,15 @@ public interface IEssenceService<T, UUID extends Serializable> {
 
     Iterable<T> findAll();
 
-    Iterable<T> findAll(Iterable<UUID> uuids);
+    Iterable<T> findAll(Iterable<UUID> idList);
 
-    T findOne(UUID uuid);
+    T findOne(UUID id);
 
     long count();
 
-    boolean exists(UUID uuid);
+    boolean exists(UUID id);
 
-    void delete(UUID uuid);
+    void delete(UUID id);
 
     void delete(T entity);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import com.jfoenix.controls.JFXMasonryPane?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -8,41 +8,53 @@
 			minWidth="-Infinity"
 			prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65"
 			fx:controller="controller.Controller">
-	<children>
-		<MenuBar prefHeight="29.0" prefWidth="800.0" fx:id="menuBar">
-			<menus>
-				<Menu mnemonicParsing="false" text="File">
-					<items>
-						<MenuItem mnemonicParsing="false" text="Close"/>
-					</items>
-				</Menu>
-				<Menu mnemonicParsing="false" text="Edit">
-					<items>
-						<MenuItem mnemonicParsing="false" text="Delete"/>
-					</items>
-				</Menu>
-				<Menu mnemonicParsing="false" text="Help">
-					<items>
-						<MenuItem mnemonicParsing="false" text="About"/>
-					</items>
-				</Menu>
-			</menus>
-		</MenuBar>
-		<JFXTabPane fx:id="tabPane" layoutX="170.0" layoutY="28.0" prefHeight="472.0" prefWidth="600.0"
-					AnchorPane.bottomAnchor="0.0"
-					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
-			<tabs>
-				<Tab fx:id="calendarTab" text="Calendar">
-					<content>
-						<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
-					</content>
-				</Tab>
-				<Tab fx:id="groupsTab" text="Groups">
-					<content>
-						<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
-					</content>
-				</Tab>
-			</tabs>
-		</JFXTabPane>
-	</children>
+	<MenuBar fx:id="menuBar" prefHeight="29.0" prefWidth="800.0">
+		<Menu mnemonicParsing="false" text="Файл">
+			<MenuItem mnemonicParsing="false" text="Close"/>
+		</Menu>
+		<Menu mnemonicParsing="false" text="Редактировать">
+			<MenuItem mnemonicParsing="false" text="Delete"/>
+		</Menu>
+		<Menu mnemonicParsing="false" text="Помощь">
+			<MenuItem mnemonicParsing="false" text="About"/>
+		</Menu>
+	</MenuBar>
+	<JFXTabPane fx:id="tabPane" layoutX="170.0" layoutY="28.0" prefHeight="472.0" prefWidth="600.0"
+				AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+				AnchorPane.topAnchor="28.0">
+		<Tab fx:id="calendarTab" text="Календарь">
+			<AnchorPane prefHeight="200.0" prefWidth="200.0">
+				<SplitPane fx:id="calendarRootSplitPane" disable="true" dividerPositions="0.3"
+						   layoutX="103.0" layoutY="38.0" prefHeight="442.0" prefWidth="800.0"
+						   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+						   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<AnchorPane fx:id="calendarLeftPane" minHeight="0.0" minWidth="0.0"
+								prefHeight="440.0" prefWidth="246.0">
+						<SplitPane disable="true" dividerPositions="0.4" layoutX="38.0"
+								   layoutY="56.0" orientation="VERTICAL" prefHeight="440.0"
+								   prefWidth="235.0" AnchorPane.bottomAnchor="0.0"
+								   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+								   AnchorPane.topAnchor="0.0">
+							<AnchorPane fx:id="calendarDatePickerPane" minHeight="0.0"
+										minWidth="0.0" prefHeight="100.0"
+										prefWidth="160.0"/>
+							<AnchorPane fx:id="calendarSchedulePane" minHeight="0.0"
+										minWidth="0.0" prefHeight="100.0"
+										prefWidth="160.0"/>
+						</SplitPane>
+					</AnchorPane>
+					<AnchorPane fx:id="calendarRightPane" minHeight="0.0" minWidth="0.0"
+								prefHeight="160.0" prefWidth="100.0">
+						<JFXMasonryPane layoutX="46.0" layoutY="100.0" prefHeight="440.0"
+										prefWidth="555.0" AnchorPane.bottomAnchor="0.0"
+										AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+										AnchorPane.topAnchor="0.0"/>
+					</AnchorPane>
+				</SplitPane>
+			</AnchorPane>
+		</Tab>
+		<Tab fx:id="groupsTab" text="Практика">
+			<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+		</Tab>
+	</JFXTabPane>
 </AnchorPane>

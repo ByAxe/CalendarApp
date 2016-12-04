@@ -4,7 +4,9 @@ import com.jfoenix.controls.JFXTabPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.api.IEventsService;
@@ -20,16 +22,31 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
-    public MenuBar menuBar;
+    private AnchorPane calendarDatePickerPane;
 
     @FXML
-    public JFXTabPane tabPane;
+    private AnchorPane calendarSchedulePane;
 
     @FXML
-    public Tab calendarTab;
+    private AnchorPane calendarRightPane;
 
     @FXML
-    public Tab groupsTab;
+    private MenuBar menuBar;
+
+    @FXML
+    private JFXTabPane tabPane;
+
+    @FXML
+    private Tab calendarTab;
+
+    @FXML
+    private Tab groupsTab;
+
+    @FXML
+    private SplitPane calendarRootSplitPane;
+
+    @FXML
+    private AnchorPane calendarLeftPane;
 
     private IEventsService eventsService;
 
@@ -52,7 +69,6 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
         this.location = location;
-
     }
 
 }

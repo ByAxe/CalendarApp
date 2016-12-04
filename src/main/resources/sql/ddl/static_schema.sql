@@ -25,7 +25,7 @@ CREATE TABLE cld.events (
   title         VARCHAR(150)   NOT NULL,
   notice_period VARCHAR        NOT NULL DEFAULT 'NONE',
   priority      VARCHAR        NOT NULL DEFAULT 'BASIC',
-  frequency     VARCHAR        NOT NULL DEFAULT 'ANNUALLY'
+  frequency     VARCHAR        NOT NULL DEFAULT 'ONCE'
 );
 
 CREATE UNIQUE INDEX events_id_idx

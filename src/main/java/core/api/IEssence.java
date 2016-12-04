@@ -1,6 +1,7 @@
 package core.api;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -10,9 +11,9 @@ public interface IEssence {
     String UUID_COLUMN_NAME = "uuid";
     String DATE_UPDATE_COLUMN_NAME = "dt_update";
 
-    String getUuid();
+    UUID getUuid();
 
-    void setUuid(String uuid);
+    void setUuid(UUID uuid);
 
     Date getDtUpdate();
 

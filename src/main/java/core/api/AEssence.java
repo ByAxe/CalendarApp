@@ -2,12 +2,13 @@ package core.api;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by byaxe on 26.11.16.
  */
 public abstract class AEssence implements Serializable, IEssence {
-    protected String uuid;
+    protected UUID uuid;
     protected Date dtUpdate;
 
     public AEssence() {
@@ -20,11 +21,11 @@ public abstract class AEssence implements Serializable, IEssence {
         }
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

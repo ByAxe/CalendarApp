@@ -1,19 +1,21 @@
 package model.api;
 
 import core.api.IEssence;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by byaxe on 26.11.16.
  */
 @MappedSuperclass
 public abstract class APersistentEntity extends APersistent implements IEssence {
-    protected String uuid;
+    protected UUID uuid;
     protected Date dtUpdate;
 
     public APersistentEntity() {
@@ -25,13 +27,14 @@ public abstract class APersistentEntity extends APersistent implements IEssence 
     }
 
     @Override
-    @Column(name = UUID_COLUMN_NAME, length = 128, nullable = false)
-    public String getUuid() {
+    @Column(name = UUID_COLUMN_NAME, nullable = false)
+    @Type(type = "pg-uuid")
+    public UUID getUuid() {
         return uuid;
     }
 
     @Override
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

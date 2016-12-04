@@ -39,12 +39,12 @@ public class GroupsServiceImpl implements IGroupsService {
     }
 
     @Override
-    public Iterable<IGroupsDTO> findAll(Iterable<String> ids) {
+    public Iterable<IGroupsDTO> findAll(Iterable<Long> ids) {
         return null;
     }
 
     @Override
-    public IGroupsDTO findOne(String uuid) {
+    public IGroupsDTO findOne(Long id) {
         return null;
     }
 
@@ -54,12 +54,12 @@ public class GroupsServiceImpl implements IGroupsService {
     }
 
     @Override
-    public boolean exists(String s) {
+    public boolean exists(Long s) {
         return false;
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
 
     }
 
