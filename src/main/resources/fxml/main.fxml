@@ -7,7 +7,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 			minWidth="-Infinity"
 			prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65"
-			fx:controller="controller.Controller">
+			fx:controller="controller.MainController">
 	<MenuBar fx:id="menuBar" prefHeight="29.0" prefWidth="800.0">
 		<Menu mnemonicParsing="false" text="Файл">
 			<MenuItem mnemonicParsing="false" text="Close"/>
