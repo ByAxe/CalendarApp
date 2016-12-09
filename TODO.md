@@ -1,7 +1,12 @@
 ####Close plans:
-- Add JFXDatePicker and other fields for left-top part of calendar
+- Get and validate all parameters from create-event form (left-top part of calendar)
+- 24/7 format for DateTime picker
+- Fulfil left-bottom part of calendar with closest events list
 - Understand trigger-on-action creation system (onClick() and so forth)
-- Add tiles with dates for right side
-- Fulfil left-bottom part of calendar with closest events
+- Replace classic menu with Material one (video)
+- Add menu items and help
 - Solve problem with TestNG
+- Add tiles with dates for right side
+- Internationalization!
+- Write a few tests for main logic
 ___

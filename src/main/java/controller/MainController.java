@@ -1,13 +1,13 @@
 package controller;
 
-import com.jfoenix.controls.JFXTabPane;
-import com.jfoenix.skins.JFXDatePickerSkin;
-import javafx.fxml.FXML;
+import com.jfoenix.controls.*;
+import com.jfoenix.effects.JFXDepthManager;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import jfxtras.scene.control.LocalDateTimeTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.ApplicationServiceImpl;
@@ -24,45 +24,37 @@ import java.util.ResourceBundle;
 @Component
 public class MainController implements Initializable {
 
-    @FXML
-    private AnchorPane calendarDatePickerPane;
-
-    @FXML
-    private AnchorPane calendarSchedulePane;
-
-    @FXML
-    private AnchorPane calendarRightPane;
-
-    @FXML
-    private MenuBar menuBar;
-
-    @FXML
-    private JFXTabPane tabPane;
-
-    @FXML
-    private Tab calendarTab;
-
-    @FXML
-    private Tab groupsTab;
-
-    @FXML
-    private SplitPane calendarRootSplitPane;
-
-    @FXML
-    private AnchorPane calendarLeftPane;
-
-    @FXML
-    private JFXDatePickerSkin datePickerSkin;
-
+    private IApplicationService applicationService;
     private IEventsService eventsService;
-
     private IGroupsService groupsService;
 
     private ResourceBundle resourceBundle;
-
     private URL location;
 
-    private IApplicationService applicationService;
+    public Label calendarStartDateLabel;
+    public JFXTextField calendarEventTitlePicker;
+    public JFXComboBox calendarNoticePeriodPicker;
+    public Label calendarNoticePeriodLabel;
+    public JFXComboBox calendarPriorityPicker;
+    public Label calendarPriorityLabel;
+    public JFXComboBox calendarFrequencyPicker;
+    public Label calendarFrequencyLabel;
+    public LocalDateTimeTextField calendarStartDatePicker;
+    public Label calendarEndDateLabel;
+    public LocalDateTimeTextField calendarEndDatePicker;
+    public JFXButton calendarCreateEventButton;
+    public JFXButton calendarClearEventButton;
+    public JFXListView calendarUpcomingEventsListView;
+    public Label calendarUpcomingEventsLabel;
+    public SplitPane calendarLeftSplitPane;
+    public AnchorPane calendarDatePickerPane;
+    public AnchorPane calendarSchedulePane;
+    public AnchorPane calendarRightPane;
+    public JFXTabPane tabPane;
+    public Tab calendarTab;
+    public Tab groupsTab;
+    public SplitPane calendarRootSplitPane;
+    public AnchorPane calendarLeftPane;
 
     public MainController() {
     }
@@ -79,6 +71,136 @@ public class MainController implements Initializable {
         this.location = location;
 
         applicationService = new ApplicationServiceImpl(this, eventsService, groupsService);
+
+        JFXDepthManager.setDepth(calendarLeftSplitPane, 3);
+    }
+
+    public Label getCalendarStartDateLabel() {
+        return calendarStartDateLabel;
+    }
+
+    public void setCalendarStartDateLabel(Label calendarStartDateLabel) {
+        this.calendarStartDateLabel = calendarStartDateLabel;
+    }
+
+    public JFXTextField getCalendarEventTitlePicker() {
+        return calendarEventTitlePicker;
+    }
+
+    public void setCalendarEventTitlePicker(JFXTextField calendarEventTitlePicker) {
+        this.calendarEventTitlePicker = calendarEventTitlePicker;
+    }
+
+    public JFXComboBox getCalendarNoticePeriodPicker() {
+        return calendarNoticePeriodPicker;
+    }
+
+    public void setCalendarNoticePeriodPicker(JFXComboBox calendarNoticePeriodPicker) {
+        this.calendarNoticePeriodPicker = calendarNoticePeriodPicker;
+    }
+
+    public Label getCalendarNoticePeriodLabel() {
+        return calendarNoticePeriodLabel;
+    }
+
+    public void setCalendarNoticePeriodLabel(Label calendarNoticePeriodLabel) {
+        this.calendarNoticePeriodLabel = calendarNoticePeriodLabel;
+    }
+
+    public JFXComboBox getCalendarPriorityPicker() {
+        return calendarPriorityPicker;
+    }
+
+    public void setCalendarPriorityPicker(JFXComboBox calendarPriorityPicker) {
+        this.calendarPriorityPicker = calendarPriorityPicker;
+    }
+
+    public Label getCalendarPriorityLabel() {
+        return calendarPriorityLabel;
+    }
+
+    public void setCalendarPriorityLabel(Label calendarPriorityLabel) {
+        this.calendarPriorityLabel = calendarPriorityLabel;
+    }
+
+    public JFXComboBox getCalendarFrequencyPicker() {
+        return calendarFrequencyPicker;
+    }
+
+    public void setCalendarFrequencyPicker(JFXComboBox calendarFrequencyPicker) {
+        this.calendarFrequencyPicker = calendarFrequencyPicker;
+    }
+
+    public Label getCalendarFrequencyLabel() {
+        return calendarFrequencyLabel;
+    }
+
+    public void setCalendarFrequencyLabel(Label calendarFrequencyLabel) {
+        this.calendarFrequencyLabel = calendarFrequencyLabel;
+    }
+
+    public LocalDateTimeTextField getCalendarStartDatePicker() {
+        return calendarStartDatePicker;
+    }
+
+    public void setCalendarStartDatePicker(LocalDateTimeTextField calendarStartDatePicker) {
+        this.calendarStartDatePicker = calendarStartDatePicker;
+    }
+
+    public Label getCalendarEndDateLabel() {
+        return calendarEndDateLabel;
+    }
+
+    public void setCalendarEndDateLabel(Label calendarEndDateLabel) {
+        this.calendarEndDateLabel = calendarEndDateLabel;
+    }
+
+    public LocalDateTimeTextField getCalendarEndDatePicker() {
+        return calendarEndDatePicker;
+    }
+
+    public void setCalendarEndDatePicker(LocalDateTimeTextField calendarEndDatePicker) {
+        this.calendarEndDatePicker = calendarEndDatePicker;
+    }
+
+    public JFXButton getCalendarCreateEventButton() {
+        return calendarCreateEventButton;
+    }
+
+    public void setCalendarCreateEventButton(JFXButton calendarCreateEventButton) {
+        this.calendarCreateEventButton = calendarCreateEventButton;
+    }
+
+    public JFXButton getCalendarClearEventButton() {
+        return calendarClearEventButton;
+    }
+
+    public void setCalendarClearEventButton(JFXButton calendarClearEventButton) {
+        this.calendarClearEventButton = calendarClearEventButton;
+    }
+
+    public JFXListView getCalendarUpcomingEventsListView() {
+        return calendarUpcomingEventsListView;
+    }
+
+    public void setCalendarUpcomingEventsListView(JFXListView calendarUpcomingEventsListView) {
+        this.calendarUpcomingEventsListView = calendarUpcomingEventsListView;
+    }
+
+    public Label getCalendarUpcomingEventsLabel() {
+        return calendarUpcomingEventsLabel;
+    }
+
+    public void setCalendarUpcomingEventsLabel(Label calendarUpcomingEventsLabel) {
+        this.calendarUpcomingEventsLabel = calendarUpcomingEventsLabel;
+    }
+
+    public SplitPane getCalendarLeftSplitPane() {
+        return calendarLeftSplitPane;
+    }
+
+    public void setCalendarLeftSplitPane(SplitPane calendarLeftSplitPane) {
+        this.calendarLeftSplitPane = calendarLeftSplitPane;
     }
 
     public AnchorPane getCalendarDatePickerPane() {
@@ -103,14 +225,6 @@ public class MainController implements Initializable {
 
     public void setCalendarRightPane(AnchorPane calendarRightPane) {
         this.calendarRightPane = calendarRightPane;
-    }
-
-    public MenuBar getMenuBar() {
-        return menuBar;
-    }
-
-    public void setMenuBar(MenuBar menuBar) {
-        this.menuBar = menuBar;
     }
 
     public JFXTabPane getTabPane() {
@@ -151,13 +265,5 @@ public class MainController implements Initializable {
 
     public void setCalendarLeftPane(AnchorPane calendarLeftPane) {
         this.calendarLeftPane = calendarLeftPane;
-    }
-
-    public JFXDatePickerSkin getDatePickerSkin() {
-        return datePickerSkin;
-    }
-
-    public void setDatePickerSkin(JFXDatePickerSkin datePickerSkin) {
-        this.datePickerSkin = datePickerSkin;
     }
 }
