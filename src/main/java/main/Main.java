@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
@@ -27,7 +25,7 @@ public class Main extends Application {
     public void init() throws Exception {
         applicationContext = new GenericXmlApplicationContext("application-context.xml");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/main.fxml"));
 
         fxmlLoader.setControllerFactory(applicationContext::getBean);
 
@@ -37,9 +35,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(rootNode));
 
-        stage.setFullScreen(true);
-        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        stage.initStyle(StageStyle.UTILITY);
+        stage.setResizable(false);
 
         stage.show();
     }

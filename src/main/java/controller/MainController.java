@@ -10,10 +10,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import service.ApplicationServiceImpl;
 import service.api.IApplicationService;
 import service.api.IEventsService;
 import service.api.IGroupsService;
-import service.impl.ApplicationServiceImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;

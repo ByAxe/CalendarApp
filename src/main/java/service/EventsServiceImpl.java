@@ -1,4 +1,4 @@
-package service.impl;
+package service;
 
 import core.dto.api.IEventsDTO;
 import model.entity.EventsEntity;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import repository.EventsRepository;
 import service.api.IEventsService;
 
@@ -21,6 +22,7 @@ import java.util.List;
  * Бизнес-логика событий
  */
 @Service("eventsService")
+@Transactional(readOnly = true, rollbackFor = {Exception.class})
 public class EventsServiceImpl implements IEventsService {
 
     private final EventsRepository eventsRepository;
@@ -40,6 +42,7 @@ public class EventsServiceImpl implements IEventsService {
      * @return сохраненная сущность в виде DTO
      */
     @Override
+    @Transactional
     public IEventsDTO save(IEventsDTO sourceDto) {
         EventsEntity sourceEntity = convertDtoToEntity(sourceDto);
 
@@ -57,6 +60,7 @@ public class EventsServiceImpl implements IEventsService {
      * @return сохраненный список сущностей в виде DTO
      */
     @Override
+    @Transactional
     public Iterable<IEventsDTO> save(Iterable<IEventsDTO> sourceDtoList) {
         List<EventsEntity> sourceEntities = convertListDtoToEntity(sourceDtoList);
 
@@ -168,6 +172,7 @@ public class EventsServiceImpl implements IEventsService {
      * @param id Идентификатор
      */
     @Override
+    @Transactional
     public void delete(Long id) {
         eventsRepository.delete(id);
     }
@@ -178,6 +183,7 @@ public class EventsServiceImpl implements IEventsService {
      * @param dto Сущность
      */
     @Override
+    @Transactional
     public void delete(IEventsDTO dto) {
         EventsEntity entity = convertDtoToEntity(dto);
 
@@ -190,6 +196,7 @@ public class EventsServiceImpl implements IEventsService {
      * @param dtoList список сущностей
      */
     @Override
+    @Transactional
     public void delete(Iterable<? extends IEventsDTO> dtoList) {
         List<EventsEntity> entities = convertListDtoToEntity((Iterable<IEventsDTO>) dtoList);
 
@@ -201,9 +208,22 @@ public class EventsServiceImpl implements IEventsService {
      */
     @Override
     public void deleteAll() {
-        eventsRepository.deleteAll();
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     * Найти все предстоящие события
+     *
+     * @return список предстоящих событий
+     */
+    @Override
+    public List<IEventsDTO> findUpcomingEvents() {
+        List<EventsEntity> entities = eventsRepository.findUpcomingEvents();
+
+        List<IEventsDTO> dtoList = convertListEntityToDto(entities);
+
+        return dtoList;
+    }
 
     /**
      * Конвертируем DTO в Сущность
@@ -234,7 +254,7 @@ public class EventsServiceImpl implements IEventsService {
     private List<EventsEntity> convertListDtoToEntity(Iterable<IEventsDTO> sourceDtoList) {
         final List<EventsEntity> sourceEntities = new ArrayList<>();
 
-        sourceDtoList.forEach(dto -> sourceEntities.add(conversionService.convert(dto, EventsEntity.class)));
+        sourceDtoList.forEach(d -> sourceEntities.add(convertDtoToEntity(d)));
 
         return sourceEntities;
     }
@@ -246,10 +266,9 @@ public class EventsServiceImpl implements IEventsService {
      * @return Список DTO
      */
     private List<IEventsDTO> convertListEntityToDto(Iterable<EventsEntity> sourceEntities) {
-
         final List<IEventsDTO> savedDtoList = new ArrayList<>();
 
-        sourceEntities.forEach(entity -> savedDtoList.add(conversionService.convert(entity, IEventsDTO.class)));
+        sourceEntities.forEach(e -> savedDtoList.add(convertEntityToDto(e)));
 
         return savedDtoList;
     }

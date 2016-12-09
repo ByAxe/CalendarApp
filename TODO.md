@@ -1,5 +1,4 @@
 ####Close plans:
-- Fix application startup problems (**it does not see the fxml file**)
 - Add JFXDatePicker and other fields for left-top part of calendar
 - Understand trigger-on-action creation system (onClick() and so forth)
 - Add tiles with dates for right side
