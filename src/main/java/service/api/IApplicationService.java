@@ -1,18 +1,27 @@
 package service.api;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
-
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.scene.control.Label;
+import jfxtras.scene.control.LocalDateTimeTextField;
 
 /**
  * Created by byaxe on 08.12.16.
  */
 public interface IApplicationService {
 
-    void calendarCreateNewEvent(ActionEvent actionEvent);
+    void calendarCreateNewEvent(JFXTextField title, LocalDateTimeTextField starts, LocalDateTimeTextField ends,
+                                JFXComboBox noticePeriod, JFXComboBox frequency, JFXComboBox priority,
+                                ActionEvent actionEvent);
 
-    void calendarCleanEventForm(ActionEvent actionEvent);
+    void calendarCleanEventForm(JFXTextField title, LocalDateTimeTextField starts, LocalDateTimeTextField ends,
+                                JFXComboBox noticePeriod, JFXComboBox frequency, JFXComboBox priority,
+                                ActionEvent actionEvent);
 
-    void initialize(URL location, ResourceBundle resources);
+    void calendarFillComboBoxes(JFXComboBox noticePeriodPicker, JFXComboBox frequencyPicker,
+                                JFXComboBox priorityPicker);
+
+    void calendarFillUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView);
 }

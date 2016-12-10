@@ -36,4 +36,5 @@ public interface IEventsDTO extends IEssence {
 
     void setFrequency(Frequency frequency);
 
+    String toPrettyString();
 }

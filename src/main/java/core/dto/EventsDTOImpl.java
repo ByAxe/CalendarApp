@@ -8,6 +8,12 @@ import core.enums.NoticePeriod;
 import core.enums.Priority;
 
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
+import static core.commons.Utils.*;
+import static java.time.LocalDateTime.now;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -47,6 +53,21 @@ public class EventsDTOImpl extends AEssence implements IEventsDTO {
         this.noticePeriod = noticePeriod;
         this.priority = priority;
         this.frequency = frequency;
+    }
+
+    @Override
+    public String toPrettyString() {
+        final long daysBetween = now().until(starts, DAYS);
+
+        String today = now().getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("ru")).toUpperCase();
+        String dayOfWeek = starts.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("ru")).toUpperCase();
+
+        if (dayOfWeek.equals(today)) dayOfWeek = TODAY;
+        else if (daysBetween == 1) dayOfWeek = TOMORROW;
+
+        return title + ", " + dayOfWeek
+                + ((!dayOfWeek.equals(TODAY) && !dayOfWeek.equals(TOMORROW)) ? ", через " + daysBetween + "д." : "")
+                + "\n" + starts.format(PRETTY_TIME_FORMATTER) + " - " + ends.format(PRETTY_TIME_FORMATTER);
     }
 
     public LocalDateTime getStarts() {

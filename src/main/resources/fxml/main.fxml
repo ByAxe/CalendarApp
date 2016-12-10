@@ -5,13 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import jfxtras.scene.control.LocalDateTimeTextField?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
-			prefWidth="1100.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.60"
-			xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+			minWidth="-Infinity"
+			prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
+			xmlns="http://javafx.com/javafx/8.0.60" fx:controller="controller.MainController">
 	<JFXTabPane fx:id="tabPane" layoutX="170.0" layoutY="28.0" prefHeight="700.0" prefWidth="1100.0"
 				style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
 				AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-		<Tab fx:id="calendarTab" text="Календарь">
+		<Tab fx:id="calendarTab" text="Eжедневник">
 			<AnchorPane prefHeight="200.0" prefWidth="200.0">
 				<SplitPane fx:id="calendarRootSplitPane" dividerPositions="0.33" layoutX="103.0" layoutY="38.0"
 						   prefHeight="442.0" prefWidth="800.0" style="-fx-background-color: #fff;"
@@ -96,7 +97,10 @@
 				</SplitPane>
 			</AnchorPane>
 		</Tab>
-		<Tab fx:id="groupsTab" text="Практика">
+		<Tab fx:id="scheduleTab" text="Расписание">
+			<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+		</Tab>
+		<Tab fx:id="allocationTab" text="Распределение">
 			<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
 		</Tab>
 	</JFXTabPane>

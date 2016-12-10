@@ -27,7 +27,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.jfxtras:jfxtras-fxml:8.0-r6-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:5.0.0.M3" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.0.0.M3" level="project" />

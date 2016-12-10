@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import service.ApplicationServiceImpl;
 import service.api.IApplicationService;
 import service.api.IEventsService;
 import service.api.IGroupsService;
@@ -24,13 +23,6 @@ import java.util.ResourceBundle;
  */
 @Component
 public class MainController implements Initializable {
-
-    private IApplicationService applicationService;
-    private IEventsService eventsService;
-    private IGroupsService groupsService;
-
-    private ResourceBundle resourceBundle;
-    private URL location;
 
     public Label calendarStartDateLabel;
     public JFXTextField calendarEventTitlePicker;
@@ -45,7 +37,7 @@ public class MainController implements Initializable {
     public LocalDateTimeTextField calendarEndDatePicker;
     public JFXButton calendarCreateEventButton;
     public JFXButton calendarClearEventButton;
-    public JFXListView calendarUpcomingEventsListView;
+    public JFXListView<Label> calendarUpcomingEventsListView;
     public Label calendarUpcomingEventsLabel;
     public SplitPane calendarLeftSplitPane;
     public AnchorPane calendarDatePickerPane;
@@ -53,17 +45,24 @@ public class MainController implements Initializable {
     public AnchorPane calendarRightPane;
     public JFXTabPane tabPane;
     public Tab calendarTab;
-    public Tab groupsTab;
+    public Tab scheduleTab;
     public SplitPane calendarRootSplitPane;
     public AnchorPane calendarLeftPane;
+    public Tab allocationTab;
+    private IApplicationService applicationService;
+    private IEventsService eventsService;
+    private IGroupsService groupsService;
+    private ResourceBundle resourceBundle;
+    private URL location;
 
     public MainController() {
     }
 
     @Autowired
-    public MainController(IEventsService eventsService, IGroupsService groupsService) {
+    public MainController(IEventsService eventsService, IGroupsService groupsService, IApplicationService applicationService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
+        this.applicationService = applicationService;
     }
 //    ------------------------------------------------------------------------------------------------------------------
 
@@ -72,20 +71,67 @@ public class MainController implements Initializable {
         this.resourceBundle = resources;
         this.location = location;
 
-        applicationService = new ApplicationServiceImpl(this, eventsService, groupsService);
-
-        applicationService.initialize(location, resources);
+        calendarFillComboBoxes();
+        calendarCleanEventForm(null);
     }
 //    ------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Обработка нажатия кнопки нового события, на вкладке Календарь
+     *
+     * @param actionEvent
+     */
     @FXML
     private void calendarCreateNewEvent(ActionEvent actionEvent) {
-        applicationService.calendarCreateNewEvent(actionEvent);
+        applicationService.calendarCreateNewEvent(
+                getCalendarEventTitlePicker(),
+                getCalendarStartDatePicker(),
+                getCalendarEndDatePicker(),
+                getCalendarNoticePeriodPicker(),
+                getCalendarFrequencyPicker(),
+                getCalendarPriorityPicker(),
+                actionEvent
+        );
+
+        calendarFillUpcomingEventsList();
     }
 
+    /**
+     * Обработка нажатия кнопки очистки формы для создания нового события, на вкладке Календарь
+     *
+     * @param actionEvent
+     */
     @FXML
     private void calendarCleanEventForm(ActionEvent actionEvent) {
-        applicationService.calendarCleanEventForm(actionEvent);
+        applicationService.calendarCleanEventForm(
+                getCalendarEventTitlePicker(),
+                getCalendarStartDatePicker(),
+                getCalendarEndDatePicker(),
+                getCalendarNoticePeriodPicker(),
+                getCalendarFrequencyPicker(),
+                getCalendarPriorityPicker(),
+                actionEvent);
+
+        calendarFillUpcomingEventsList();
+    }
+
+    /**
+     * Заполняет комбобоксы календаря перечислениями
+     */
+    private void calendarFillComboBoxes() {
+        applicationService.calendarFillComboBoxes(
+                getCalendarNoticePeriodPicker(),
+                getCalendarFrequencyPicker(),
+                getCalendarPriorityPicker()
+        );
+    }
+
+    /**
+     * Заполнения списка предстоящих событий в календаре
+     * Отсортирован по началу события (ASC) (сверху - ближайшие)
+     */
+    private void calendarFillUpcomingEventsList() {
+        applicationService.calendarFillUpcomingEventsList(getCalendarUpcomingEventsListView());
     }
 
 
@@ -195,11 +241,11 @@ public class MainController implements Initializable {
         this.calendarClearEventButton = calendarClearEventButton;
     }
 
-    public JFXListView getCalendarUpcomingEventsListView() {
+    public JFXListView<Label> getCalendarUpcomingEventsListView() {
         return calendarUpcomingEventsListView;
     }
 
-    public void setCalendarUpcomingEventsListView(JFXListView calendarUpcomingEventsListView) {
+    public void setCalendarUpcomingEventsListView(JFXListView<Label> calendarUpcomingEventsListView) {
         this.calendarUpcomingEventsListView = calendarUpcomingEventsListView;
     }
 
@@ -259,12 +305,12 @@ public class MainController implements Initializable {
         this.calendarTab = calendarTab;
     }
 
-    public Tab getGroupsTab() {
-        return groupsTab;
+    public Tab getScheduleTab() {
+        return scheduleTab;
     }
 
-    public void setGroupsTab(Tab groupsTab) {
-        this.groupsTab = groupsTab;
+    public void setScheduleTab(Tab scheduleTab) {
+        this.scheduleTab = scheduleTab;
     }
 
     public SplitPane getCalendarRootSplitPane() {
@@ -281,5 +327,13 @@ public class MainController implements Initializable {
 
     public void setCalendarLeftPane(AnchorPane calendarLeftPane) {
         this.calendarLeftPane = calendarLeftPane;
+    }
+
+    public Tab getAllocationTab() {
+        return allocationTab;
+    }
+
+    public void setAllocationTab(Tab allocationTab) {
+        this.allocationTab = allocationTab;
     }
 }
