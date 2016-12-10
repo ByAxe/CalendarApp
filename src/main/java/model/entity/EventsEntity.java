@@ -19,7 +19,7 @@ import static core.api.IEssence.UUID_COLUMN_NAME;
         @UniqueConstraint(columnNames = ID_COLUMN_NAME),
         @UniqueConstraint(columnNames = UUID_COLUMN_NAME)
 }, indexes = {
-        @Index(name = "events_id_idx", unique = true, columnList = ID_COLUMN_NAME),
+        @Index(name = "events_pkey", unique = true, columnList = ID_COLUMN_NAME),
         @Index(name = "events_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME)
 })
 @SequenceGenerator(name = "events_id_seq", sequenceName = "events_id_seq", allocationSize = 1)
@@ -33,15 +33,14 @@ public class EventsEntity extends APersistentEntity {
     private Priority priority;
     private Frequency frequency;
 
-    @Override
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "events_id_seq")
+    @Basic(optional = false)
     @Column(name = ID_COLUMN_NAME, unique = true, nullable = false)
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }

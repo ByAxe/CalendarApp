@@ -1,7 +1,5 @@
 package model.api;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
@@ -11,9 +9,9 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class APersistent implements Serializable {
 
-    @Id
-    @Column(insertable = false, updatable = false)
-    public abstract Long getId();
-
-    public abstract void setId(Long id);
+//    @Id
+//    @Column(insertable = false, updatable = false)
+//    public abstract Long getId();
+//
+//    public abstract void setId(Long id);
 }

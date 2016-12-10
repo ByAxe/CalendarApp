@@ -94,6 +94,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         final StringBuilder alertBody = new StringBuilder();
 
         final Result result = new CalendarValidator().validateNewEvent(event);
+
         if (Objects.equals(result.getResult(), SUCCESS)) {
             eventsService.save(event);
 
@@ -101,6 +102,8 @@ public class ApplicationServiceImpl implements IApplicationService {
             alertTitle = "Информация";
             alertHeader = "Создано событие";
             alertBody.append("Было создано новое событие");
+
+            calendarCleanEventForm(null);
         } else {
             alertType = Alert.AlertType.ERROR;
 

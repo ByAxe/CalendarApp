@@ -28,7 +28,6 @@ public class GroupsEntity extends APersistentEntity {
     private String number;
     private Integer hours;
 
-    @Override
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groups_id_seq")
     @Column(name = ID_COLUMN_NAME, unique = true, nullable = false)
@@ -36,7 +35,6 @@ public class GroupsEntity extends APersistentEntity {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }

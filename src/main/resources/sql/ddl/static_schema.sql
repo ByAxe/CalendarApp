@@ -17,7 +17,7 @@ SET SEARCH_PATH TO cld, public;
 -- ----------------------------
 DROP TABLE IF EXISTS cld.events;
 CREATE TABLE cld.events (
-  id            BIGSERIAL,
+  id            BIGSERIAL PRIMARY KEY,
   uuid          UUID           NOT NULL,
   dt_update     TIMESTAMPTZ(6) NOT NULL,
   starts        TIMESTAMPTZ(6) NOT NULL,
@@ -28,8 +28,6 @@ CREATE TABLE cld.events (
   frequency     VARCHAR        NOT NULL DEFAULT 'ONCE'
 );
 
-CREATE UNIQUE INDEX events_id_idx
-  ON cld.events USING BTREE (id);
 CREATE UNIQUE INDEX events_uuid_idx
   ON cld.events USING BTREE (uuid);
 
@@ -38,7 +36,7 @@ CREATE UNIQUE INDEX events_uuid_idx
 -- ----------------------------
 DROP TABLE IF EXISTS cld.groups;
 CREATE TABLE cld.groups (
-  id             BIGSERIAL,
+  id             BIGSERIAL PRIMARY KEY,
   uuid           UUID           NOT NULL,
   dt_update      TIMESTAMPTZ(6) NOT NULL,
   title          VARCHAR(100)   NOT NULL,
@@ -48,7 +46,5 @@ CREATE TABLE cld.groups (
   hours          INTEGER        NOT NULL
 );
 
-CREATE UNIQUE INDEX groups_id_idx
-  ON cld.groups USING BTREE (id);
 CREATE UNIQUE INDEX groups_uuid_idx
   ON cld.groups USING BTREE (uuid);
