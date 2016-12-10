@@ -4,11 +4,11 @@ package core.enums;
  * Created by byaxe on 26.11.16.
  */
 public enum Frequency {
+    ONCE("Не повторяется"),
     DAILY("Ежедневно"),
     WEEKLY("Еженедельно"),
     MONTHLY("Ежемесячно"),
-    ANNUALLY("Ежегодно"),
-    ONCE("Единожды");
+    ANNUALLY("Ежегодно");
 
     private String name;
 
@@ -18,6 +18,10 @@ public enum Frequency {
 
     public String getName() {
         return name;
+    }
+
+    public static Frequency getDefault(){
+        return ONCE;
     }
 
 }

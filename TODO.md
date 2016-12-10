@@ -1,5 +1,4 @@
 ####Close plans:
-- Get and validate all parameters from create-event form (left-top part of calendar)
 - 24/7 format for DateTime picker
 - Fulfil left-bottom part of calendar with closest events list
 - Understand trigger-on-action creation system (onClick() and so forth)

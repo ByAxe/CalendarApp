@@ -39,7 +39,7 @@
 								<JFXComboBox fx:id="calendarPriorityPicker" layoutX="205.0" layoutY="177.0"
 											 prefHeight="25.0" prefWidth="130.0"/>
 								<Label fx:id="calendarPriorityLabel" layoutX="13.0" layoutY="175.0" prefHeight="31.0"
-									   prefWidth="180.0" text="Укажите важность события:" textFill="#868686"/>
+									   prefWidth="180.0" text="Приоритет события:" textFill="#868686"/>
 								<JFXComboBox fx:id="calendarFrequencyPicker" layoutX="205.0" layoutY="213.0"
 											 prefHeight="25.0" prefWidth="130.0"/>
 								<Label fx:id="calendarFrequencyLabel" layoutX="13.0" layoutY="211.0" prefHeight="31.0"

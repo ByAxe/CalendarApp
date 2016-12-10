@@ -19,4 +19,8 @@ public enum Priority {
     public String getName() {
         return name;
     }
+
+    public static Priority getDefault(){
+        return NORMAL;
+    }
 }

@@ -30,4 +30,8 @@ public enum NoticePeriod {
     public String getName() {
         return name;
     }
+
+    public static NoticePeriod getDefault(){
+        return FIFTEEN_MINUTES;
+    }
 }

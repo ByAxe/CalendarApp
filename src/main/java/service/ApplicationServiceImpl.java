@@ -1,19 +1,28 @@
 package service;
 
 import controller.MainController;
+import core.commons.Result;
+import core.dto.EventsDTOImpl;
+import core.dto.api.IEventsDTO;
 import core.enums.Frequency;
 import core.enums.NoticePeriod;
 import core.enums.Priority;
+import core.validators.CalendarValidator;
 import javafx.event.ActionEvent;
-import jfxtras.scene.control.LocalDateTimeTextField;
+import javafx.scene.control.Alert;
 import service.api.IApplicationService;
 import service.api.IEventsService;
 import service.api.IGroupsService;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.stream.Stream;
 
+import static core.enums.ResultEnum.SUCCESS;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -45,7 +54,7 @@ public class ApplicationServiceImpl implements IApplicationService {
     public void initialize(URL location, ResourceBundle resources) {
 
         calendarFillComboBoxes();
-        calendarAddListenersToNewEventFields();
+        calendarCleanEventForm(null);
     }
 
     /**
@@ -55,7 +64,52 @@ public class ApplicationServiceImpl implements IApplicationService {
      */
     @Override
     public void calendarCreateNewEvent(ActionEvent actionEvent) {
+        final IEventsDTO event = new EventsDTOImpl();
 
+        event.setUuid(UUID.randomUUID());
+        event.setDtUpdate(new Date());
+
+        event.setTitle(controller.getCalendarEventTitlePicker().getText());
+        event.setStarts(controller.getCalendarStartDatePicker().getLocalDateTime());
+        event.setEnds(controller.getCalendarEndDatePicker().getLocalDateTime());
+
+        final String noticePeriodName = String.valueOf(controller.getCalendarNoticePeriodPicker().getValue());
+        Stream.of(NoticePeriod.values()).forEach(np -> {
+            if (np.getName().equals(noticePeriodName)) event.setNoticePeriod(np);
+        });
+
+        final String frequencyName = String.valueOf(controller.getCalendarFrequencyPicker().getValue());
+        Stream.of(Frequency.values()).forEach(f -> {
+            if (f.getName().equals(frequencyName)) event.setFrequency(f);
+        });
+
+        final String priorityName = String.valueOf(controller.getCalendarPriorityPicker().getValue());
+        Stream.of(Priority.values()).forEach(p -> {
+            if (p.getName().equals(priorityName)) event.setPriority(p);
+        });
+
+        final Alert.AlertType alertType;
+        final String alertTitle;
+        final String alertHeader;
+        final StringBuilder alertBody = new StringBuilder();
+
+        final Result result = new CalendarValidator().validateNewEvent(event);
+        if (Objects.equals(result.getResult(), SUCCESS)) {
+            eventsService.save(event);
+
+            alertType = Alert.AlertType.INFORMATION;
+            alertTitle = "Информация";
+            alertHeader = "Создано событие";
+            alertBody.append("Было создано новое событие");
+        } else {
+            alertType = Alert.AlertType.ERROR;
+
+            alertTitle = "Ошибка";
+            alertHeader = "При заполнении данных вы допустили следущие ошибки";
+            result.getPayload().forEach(alertBody::append);
+        }
+
+        raiseMessageBox(alertType, alertTitle, alertHeader, alertBody.toString());
     }
 
     /**
@@ -65,12 +119,12 @@ public class ApplicationServiceImpl implements IApplicationService {
      */
     @Override
     public void calendarCleanEventForm(ActionEvent actionEvent) {
-        controller.getCalendarStartDatePicker().setLocalDateTime(null);
-        controller.getCalendarEndDatePicker().setLocalDateTime(null);
+        controller.getCalendarStartDatePicker().setLocalDateTime(LocalDateTime.now());
+        controller.getCalendarEndDatePicker().setLocalDateTime(LocalDateTime.now());
         controller.getCalendarEventTitlePicker().setText("");
-        controller.getCalendarNoticePeriodPicker().setValue(null);
-        controller.getCalendarFrequencyPicker().setValue(null);
-        controller.getCalendarPriorityPicker().setValue(null);
+        controller.getCalendarNoticePeriodPicker().setValue(NoticePeriod.getDefault().getName());
+        controller.getCalendarFrequencyPicker().setValue(Frequency.getDefault().getName());
+        controller.getCalendarPriorityPicker().setValue(Priority.getDefault().getName());
     }
 
 
@@ -91,17 +145,21 @@ public class ApplicationServiceImpl implements IApplicationService {
                 .addAll(Stream.of(Priority.values()).map(Priority::getName).collect(toList()));
     }
 
-    private void calendarAddListenersToNewEventFields() {
+    /**
+     * Создает сообщение
+     *
+     * @param type   Тип сообщения
+     * @param title  Надпись сверху
+     * @param header Заголовок
+     * @param body   Основной текст сообщения
+     */
+    private void raiseMessageBox(Alert.AlertType type, String title, String header, String body) {
+        Alert alert = new Alert(type);
 
-        final LocalDateTimeTextField calendarStartDatePicker = controller.getCalendarStartDatePicker();
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(body);
 
-        calendarStartDatePicker.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue && calendarStartDatePicker.getLocalDateTime() != null) {
-                System.out.println("Hello!");
-            }
-        });
-
-
+        alert.showAndWait();
     }
-
 }

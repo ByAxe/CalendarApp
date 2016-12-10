@@ -5,6 +5,4 @@ package core.commons;
  */
 public interface Utils {
 
-    String CALENDAR_NEW_EVENT_TITLE_PATTERN = "";
-
 }
