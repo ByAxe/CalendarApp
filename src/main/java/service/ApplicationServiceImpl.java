@@ -1,6 +1,7 @@
 package service;
 
-import controller.MainController;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import core.commons.Result;
 import core.dto.EventsDTOImpl;
 import core.dto.api.IEventsDTO;
@@ -10,15 +11,16 @@ import core.enums.Priority;
 import core.validators.CalendarValidator;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import jfxtras.scene.control.LocalDateTimeTextField;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import service.api.IApplicationService;
 import service.api.IEventsService;
 import service.api.IGroupsService;
 
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
-import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -30,62 +32,53 @@ import static java.util.stream.Collectors.toList;
  * <p>
  * Created by byaxe on 08.12.16.
  */
+@Service("applicationService")
 public class ApplicationServiceImpl implements IApplicationService {
-
-    private final MainController controller;
 
     private final IEventsService eventsService;
 
     private final IGroupsService groupsService;
 
-    public ApplicationServiceImpl(MainController controller, IEventsService eventsService, IGroupsService groupsService) {
-        this.controller = controller;
+    @Autowired
+    public ApplicationServiceImpl(IEventsService eventsService, IGroupsService groupsService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
     }
 
     /**
-     * Метод вызывающийся при старте приложения, в одноименном методе Контроллера
-     *
-     * @param location
-     * @param resources
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        calendarFillComboBoxes();
-        calendarCleanEventForm(null);
-    }
-
-    /**
      * Обработка нажатия кнопки нового события, на вкладке Календарь
      *
-     * @param actionEvent
+     * @param title        Суть события
+     * @param starts       Дата начала события
+     * @param ends         Дата окончания события
+     * @param noticePeriod Период напоминания о событии
+     * @param frequency    Частота происхождения события
+     * @param priority     Приорит события
+     * @param actionEvent  Тип события (JavaFx событие)
      */
     @Override
-    public void calendarCreateNewEvent(ActionEvent actionEvent) {
+    public void calendarCreateNewEvent(JFXTextField title, LocalDateTimeTextField starts, LocalDateTimeTextField ends,
+                                       JFXComboBox noticePeriod, JFXComboBox frequency, JFXComboBox priority,
+                                       ActionEvent actionEvent) {
         final IEventsDTO event = new EventsDTOImpl();
 
         event.setUuid(UUID.randomUUID());
         event.setDtUpdate(new Date());
 
-        event.setTitle(controller.getCalendarEventTitlePicker().getText());
-        event.setStarts(controller.getCalendarStartDatePicker().getLocalDateTime());
-        event.setEnds(controller.getCalendarEndDatePicker().getLocalDateTime());
+        event.setTitle(title.getText());
+        event.setStarts(starts.getLocalDateTime());
+        event.setEnds(ends.getLocalDateTime());
 
-        final String noticePeriodName = String.valueOf(controller.getCalendarNoticePeriodPicker().getValue());
         Stream.of(NoticePeriod.values()).forEach(np -> {
-            if (np.getName().equals(noticePeriodName)) event.setNoticePeriod(np);
+            if (np.getName().equals(String.valueOf(noticePeriod.getValue()))) event.setNoticePeriod(np);
         });
 
-        final String frequencyName = String.valueOf(controller.getCalendarFrequencyPicker().getValue());
         Stream.of(Frequency.values()).forEach(f -> {
-            if (f.getName().equals(frequencyName)) event.setFrequency(f);
+            if (f.getName().equals(String.valueOf(frequency.getValue()))) event.setFrequency(f);
         });
 
-        final String priorityName = String.valueOf(controller.getCalendarPriorityPicker().getValue());
         Stream.of(Priority.values()).forEach(p -> {
-            if (p.getName().equals(priorityName)) event.setPriority(p);
+            if (p.getName().equals(String.valueOf(priority.getValue()))) event.setPriority(p);
         });
 
         final Alert.AlertType alertType;
@@ -103,7 +96,7 @@ public class ApplicationServiceImpl implements IApplicationService {
             alertHeader = "Создано событие";
             alertBody.append("Было создано новое событие");
 
-            calendarCleanEventForm(null);
+            calendarCleanEventForm(title, starts, ends, noticePeriod, frequency, priority, null);
         } else {
             alertType = Alert.AlertType.ERROR;
 
@@ -118,33 +111,44 @@ public class ApplicationServiceImpl implements IApplicationService {
     /**
      * Обработка нажатия кнопки очистки формы для создания нового события, на вкладке Календарь
      *
-     * @param actionEvent
+     * @param title        Суть события
+     * @param starts       Дата начала события
+     * @param ends         Дата окончания события
+     * @param noticePeriod Период напоминания о событии
+     * @param frequency    Частота происхождения события
+     * @param priority     Приорит события
+     * @param actionEvent  Тип события (JavaFx событие)
      */
     @Override
-    public void calendarCleanEventForm(ActionEvent actionEvent) {
-        controller.getCalendarStartDatePicker().setLocalDateTime(LocalDateTime.now());
-        controller.getCalendarEndDatePicker().setLocalDateTime(LocalDateTime.now());
-        controller.getCalendarEventTitlePicker().setText("");
-        controller.getCalendarNoticePeriodPicker().setValue(NoticePeriod.getDefault().getName());
-        controller.getCalendarFrequencyPicker().setValue(Frequency.getDefault().getName());
-        controller.getCalendarPriorityPicker().setValue(Priority.getDefault().getName());
+    public void calendarCleanEventForm(JFXTextField title, LocalDateTimeTextField starts, LocalDateTimeTextField ends,
+                                       JFXComboBox noticePeriod, JFXComboBox frequency, JFXComboBox priority,
+                                       ActionEvent actionEvent) {
+        starts.setLocalDateTime(LocalDateTime.now());
+        ends.setLocalDateTime(LocalDateTime.now());
+        title.setText("");
+        noticePeriod.setValue(NoticePeriod.getDefault().getName());
+        frequency.setValue(Frequency.getDefault().getName());
+        priority.setValue(Priority.getDefault().getName());
     }
 
 
     /**
-     * Заполняет комбобоксы календаря перечислениями
+     * Заполняет комбобоксы перечислениями
+     *
+     * @param noticePeriodPicker Комбобокс выбора периода напоминания
+     * @param frequencyPicker    Комбобокс выбора частотности
+     * @param priorityPicker     Комбобокс выбора приоритета
      */
-    private void calendarFillComboBoxes() {
-        controller.getCalendarNoticePeriodPicker()
-                .getItems()
+    @Override
+    public void calendarFillComboBoxes(JFXComboBox noticePeriodPicker, JFXComboBox frequencyPicker,
+                                       JFXComboBox priorityPicker) {
+        noticePeriodPicker.getItems()
                 .addAll(Stream.of(NoticePeriod.values()).map(NoticePeriod::getName).collect(toList()));
 
-        controller.getCalendarFrequencyPicker()
-                .getItems()
+        frequencyPicker.getItems()
                 .addAll(Stream.of(Frequency.values()).map(Frequency::getName).collect(toList()));
 
-        controller.getCalendarPriorityPicker()
-                .getItems()
+        priorityPicker.getItems()
                 .addAll(Stream.of(Priority.values()).map(Priority::getName).collect(toList()));
     }
 

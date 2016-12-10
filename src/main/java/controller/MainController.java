@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import service.ApplicationServiceImpl;
 import service.api.IApplicationService;
 import service.api.IEventsService;
 import service.api.IGroupsService;
@@ -24,13 +23,6 @@ import java.util.ResourceBundle;
  */
 @Component
 public class MainController implements Initializable {
-
-    private IApplicationService applicationService;
-    private IEventsService eventsService;
-    private IGroupsService groupsService;
-
-    private ResourceBundle resourceBundle;
-    private URL location;
 
     public Label calendarStartDateLabel;
     public JFXTextField calendarEventTitlePicker;
@@ -56,14 +48,20 @@ public class MainController implements Initializable {
     public Tab groupsTab;
     public SplitPane calendarRootSplitPane;
     public AnchorPane calendarLeftPane;
+    private IApplicationService applicationService;
+    private IEventsService eventsService;
+    private IGroupsService groupsService;
+    private ResourceBundle resourceBundle;
+    private URL location;
 
     public MainController() {
     }
 
     @Autowired
-    public MainController(IEventsService eventsService, IGroupsService groupsService) {
+    public MainController(IEventsService eventsService, IGroupsService groupsService, IApplicationService applicationService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
+        this.applicationService = applicationService;
     }
 //    ------------------------------------------------------------------------------------------------------------------
 
@@ -72,20 +70,42 @@ public class MainController implements Initializable {
         this.resourceBundle = resources;
         this.location = location;
 
-        applicationService = new ApplicationServiceImpl(this, eventsService, groupsService);
-
-        applicationService.initialize(location, resources);
+        calendarFillComboBoxes();
+        calendarCleanEventForm(null);
     }
 //    ------------------------------------------------------------------------------------------------------------------
 
     @FXML
     private void calendarCreateNewEvent(ActionEvent actionEvent) {
-        applicationService.calendarCreateNewEvent(actionEvent);
+        applicationService.calendarCreateNewEvent(
+                getCalendarEventTitlePicker(),
+                getCalendarStartDatePicker(),
+                getCalendarEndDatePicker(),
+                getCalendarNoticePeriodPicker(),
+                getCalendarFrequencyPicker(),
+                getCalendarPriorityPicker(),
+                actionEvent
+        );
     }
 
     @FXML
     private void calendarCleanEventForm(ActionEvent actionEvent) {
-        applicationService.calendarCleanEventForm(actionEvent);
+        applicationService.calendarCleanEventForm(
+                getCalendarEventTitlePicker(),
+                getCalendarStartDatePicker(),
+                getCalendarEndDatePicker(),
+                getCalendarNoticePeriodPicker(),
+                getCalendarFrequencyPicker(),
+                getCalendarPriorityPicker(),
+                actionEvent);
+    }
+
+    private void calendarFillComboBoxes() {
+        applicationService.calendarFillComboBoxes(
+                getCalendarNoticePeriodPicker(),
+                getCalendarFrequencyPicker(),
+                getCalendarPriorityPicker()
+        );
     }
 
 
