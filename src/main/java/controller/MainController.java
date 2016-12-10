@@ -1,7 +1,8 @@
 package controller;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.effects.JFXDepthManager;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
@@ -64,6 +65,7 @@ public class MainController implements Initializable {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
     }
+//    ------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,8 +74,22 @@ public class MainController implements Initializable {
 
         applicationService = new ApplicationServiceImpl(this, eventsService, groupsService);
 
-        JFXDepthManager.setDepth(calendarLeftSplitPane, 3);
+        applicationService.initialize(location, resources);
     }
+//    ------------------------------------------------------------------------------------------------------------------
+
+    @FXML
+    private void calendarCreateNewEvent(ActionEvent actionEvent) {
+        applicationService.calendarCreateNewEvent(actionEvent);
+    }
+
+    @FXML
+    private void calendarCleanEventForm(ActionEvent actionEvent) {
+        applicationService.calendarCleanEventForm(actionEvent);
+    }
+
+
+//    ------------------------------------------------------------------------------------------------------------------
 
     public Label getCalendarStartDateLabel() {
         return calendarStartDateLabel;

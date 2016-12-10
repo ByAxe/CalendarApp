@@ -5,20 +5,20 @@ import core.enums.Frequency;
 import core.enums.NoticePeriod;
 import core.enums.Priority;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by byaxe on 26.11.16.
  */
 public interface IEventsDTO extends IEssence {
 
-    Date getStarts();
+    LocalDateTime getStarts();
 
-    void setStarts(Date starts);
+    void setStarts(LocalDateTime starts);
 
-    Date getEnds();
+    LocalDateTime getEnds();
 
-    void setEnds(Date ends);
+    void setEnds(LocalDateTime ends);
 
     String getTitle();
 

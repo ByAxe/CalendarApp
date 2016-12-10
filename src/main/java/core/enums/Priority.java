@@ -4,9 +4,19 @@ package core.enums;
  * Created by byaxe on 26.11.16.
  */
 public enum Priority {
-    BASIC,
-    LOW,
-    NORMAL,
-    HIGH,
-    TOP
+    BASIC("Минимальный"),
+    LOW("Низкий"),
+    NORMAL("Обычный"),
+    HIGH("Высокий"),
+    TOP("Максимальный");
+
+    private String name;
+
+    Priority(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

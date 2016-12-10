@@ -3,5 +3,8 @@ package core.commons;
 /**
  * Created by byaxe on 26.11.16.
  */
-public class Utils {
+public interface Utils {
+
+    String CALENDAR_NEW_EVENT_TITLE_PATTERN = "";
+
 }
