@@ -33,9 +33,13 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(rootNode));
+        Scene scene = new Scene(rootNode);
+        scene.getStylesheets().add("css/style.css");
+
+        stage.setScene(scene);
 
         stage.setResizable(false);
+        stage.hide();
 
         stage.show();
     }

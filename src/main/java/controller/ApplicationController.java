@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * Created by byaxe on 03.12.16.
  */
 @Component
-public class MainController implements Initializable {
+public class ApplicationController implements Initializable {
 
     public Label calendarStartDateLabel;
     public JFXTextField calendarEventTitlePicker;
@@ -56,11 +56,11 @@ public class MainController implements Initializable {
     private ResourceBundle resourceBundle;
     private URL location;
 
-    public MainController() {
+    public ApplicationController() {
     }
 
     @Autowired
-    public MainController(IEventsService eventsService, IGroupsService groupsService, IApplicationService applicationService) {
+    public ApplicationController(IEventsService eventsService, IGroupsService groupsService, IApplicationService applicationService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
         this.applicationService = applicationService;
@@ -74,6 +74,8 @@ public class MainController implements Initializable {
 
         calendarFillComboBoxes();
         calendarCleanEventForm(null);
+
+        calendarFillUpcomingEventsList();
     }
 //    ------------------------------------------------------------------------------------------------------------------
 
@@ -94,7 +96,7 @@ public class MainController implements Initializable {
                 actionEvent
         );
 
-        calendarFillUpcomingEventsList();
+        calendarHandleUpdateUpcomingEventsList(null);
     }
 
     /**
@@ -113,7 +115,7 @@ public class MainController implements Initializable {
                 calendarPriorityPicker,
                 actionEvent);
 
-        calendarFillUpcomingEventsList();
+        calendarHandleUpdateUpcomingEventsList(null);
     }
 
     /**
