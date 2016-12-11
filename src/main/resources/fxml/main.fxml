@@ -1,107 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXMasonryPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import jfxtras.scene.control.LocalDateTimeTextField?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-			minWidth="-Infinity"
-			prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
-			xmlns="http://javafx.com/javafx/8.0.60" fx:controller="controller.MainController">
-	<JFXTabPane fx:id="tabPane" layoutX="170.0" layoutY="28.0" prefHeight="700.0" prefWidth="1100.0"
-				style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-				AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+	<JFXTabPane fx:id="tabPane" layoutX="170.0" layoutY="28.0" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 		<Tab fx:id="calendarTab" text="Eжедневник">
 			<AnchorPane prefHeight="200.0" prefWidth="200.0">
-				<SplitPane fx:id="calendarRootSplitPane" dividerPositions="0.33" layoutX="103.0" layoutY="38.0"
-						   prefHeight="442.0" prefWidth="800.0" style="-fx-background-color: #fff;"
-						   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-						   AnchorPane.topAnchor="0.0">
-					<AnchorPane fx:id="calendarLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="440.0"
-								prefWidth="246.0">
-						<SplitPane fx:id="calendarLeftSplitPane" dividerPositions="0.4928909952606635" layoutX="38.0"
-								   layoutY="56.0" orientation="VERTICAL" prefHeight="440.0" prefWidth="235.0"
-								   style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0"
-								   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-							<AnchorPane fx:id="calendarDatePickerPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0"
-										prefWidth="357.0">
-								<Label fx:id="calendarStartDateLabel" layoutX="14.0" layoutY="14.0" prefHeight="31.0"
-									   prefWidth="135.0" text="Начало события:" textFill="#868686">
+				<SplitPane fx:id="calendarRootSplitPane" dividerPositions="0.33" layoutX="103.0" layoutY="38.0" prefHeight="442.0" prefWidth="800.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<AnchorPane fx:id="calendarLeftPane" minHeight="0.0" minWidth="0.0" prefHeight="440.0" prefWidth="246.0">
+						<SplitPane fx:id="calendarLeftSplitPane" dividerPositions="0.4928909952606635" layoutX="38.0" layoutY="56.0" orientation="VERTICAL" prefHeight="440.0" prefWidth="235.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<AnchorPane fx:id="calendarDatePickerPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="357.0">
+								<Label fx:id="calendarStartDateLabel" layoutX="14.0" layoutY="14.0" prefHeight="31.0" prefWidth="135.0" text="Начало события:" textFill="#868686">
 									<font>
-										<Font name="System Bold" size="14.0"/>
+										<Font name="System Bold" size="14.0" />
 									</font>
 								</Label>
-								<JFXComboBox fx:id="calendarNoticePeriodPicker" layoutX="206.0" layoutY="139.0"
-											 prefHeight="25.0" prefWidth="130.0"/>
-								<Label fx:id="calendarNoticePeriodLabel" layoutX="14.0" layoutY="137.0"
-									   prefHeight="31.0" prefWidth="180.0" text="Напомнить о событии?"
-									   textFill="#868686"/>
-								<JFXComboBox fx:id="calendarPriorityPicker" layoutX="205.0" layoutY="177.0"
-											 prefHeight="25.0" prefWidth="130.0"/>
-								<Label fx:id="calendarPriorityLabel" layoutX="13.0" layoutY="175.0" prefHeight="31.0"
-									   prefWidth="180.0" text="Приоритет события:" textFill="#868686"/>
-								<JFXComboBox fx:id="calendarFrequencyPicker" layoutX="205.0" layoutY="213.0"
-											 prefHeight="25.0" prefWidth="130.0"/>
-								<Label fx:id="calendarFrequencyLabel" layoutX="13.0" layoutY="211.0" prefHeight="31.0"
-									   prefWidth="180.0" text="Будет ли событие повторятся?" textFill="#868686"/>
-								<LocalDateTimeTextField fx:id="calendarStartDatePicker" layoutX="141.0" layoutY="17.0"
-														prefHeight="25.0" prefWidth="198.0"/>
-								<Label fx:id="calendarEndDateLabel" layoutX="14.0" layoutY="57.0" prefHeight="31.0"
-									   prefWidth="135.0" text="Конец события:" textFill="#868686">
+								<JFXComboBox fx:id="calendarNoticePeriodPicker" layoutX="206.0" layoutY="139.0" prefHeight="25.0" prefWidth="130.0" />
+								<Label fx:id="calendarNoticePeriodLabel" layoutX="14.0" layoutY="137.0" prefHeight="31.0" prefWidth="180.0" text="Напомнить о событии?" textFill="#868686" />
+								<JFXComboBox fx:id="calendarPriorityPicker" layoutX="205.0" layoutY="177.0" prefHeight="25.0" prefWidth="130.0" />
+								<Label fx:id="calendarPriorityLabel" layoutX="13.0" layoutY="175.0" prefHeight="31.0" prefWidth="180.0" text="Приоритет события:" textFill="#868686" />
+								<JFXComboBox fx:id="calendarFrequencyPicker" layoutX="205.0" layoutY="213.0" prefHeight="25.0" prefWidth="130.0" />
+								<Label fx:id="calendarFrequencyLabel" layoutX="13.0" layoutY="211.0" prefHeight="31.0" prefWidth="180.0" text="Будет ли событие повторятся?" textFill="#868686" />
+								<LocalDateTimeTextField fx:id="calendarStartDatePicker" layoutX="141.0" layoutY="17.0" prefHeight="25.0" prefWidth="198.0" />
+								<Label fx:id="calendarEndDateLabel" layoutX="14.0" layoutY="57.0" prefHeight="31.0" prefWidth="135.0" text="Конец события:" textFill="#868686">
 									<font>
-										<Font name="System Bold" size="14.0"/>
+										<Font name="System Bold" size="14.0" />
 									</font>
 								</Label>
-								<LocalDateTimeTextField fx:id="calendarEndDatePicker" layoutX="141.0" layoutY="60.0"
-														prefHeight="25.0" prefWidth="198.0"/>
+								<LocalDateTimeTextField fx:id="calendarEndDatePicker" layoutX="141.0" layoutY="60.0" prefHeight="25.0" prefWidth="198.0" />
 
-								<JFXButton fx:id="calendarClearEventButton" buttonType="RAISED" cancelButton="true"
-										   layoutX="223.0" layoutY="260.0" onAction="#calendarCleanEventForm"
-										   prefHeight="35.0" prefWidth="120.0" ripplerFill="#82c9e1"
-										   style="-fx-background-color: #47a4c5;" text="Очистить" textFill="WHITE">
+								<JFXButton fx:id="calendarClearEventButton" buttonType="RAISED" cancelButton="true" layoutX="223.0" layoutY="260.0" onAction="#calendarCleanEventForm" prefHeight="35.0" prefWidth="120.0" ripplerFill="#82c9e1" style="-fx-background-color: #47a4c5;" text="Очистить" textFill="WHITE">
 									<font>
-										<Font size="14.0"/>
+										<Font size="14.0" />
 									</font>
 								</JFXButton>
-								<JFXButton fx:id="calendarCreateEventButton" buttonType="RAISED" layoutX="13.0"
-										   layoutY="260.0" onAction="#calendarCreateNewEvent" prefHeight="35.0"
-										   prefWidth="120.0" ripplerFill="#82c9e1"
-										   style="-fx-background-color: #47a4c5;" text="Создать" textFill="WHITE">
+								<JFXButton fx:id="calendarCreateEventButton" buttonType="RAISED" layoutX="13.0" layoutY="260.0" onAction="#calendarCreateNewEvent" prefHeight="35.0" prefWidth="120.0" ripplerFill="#82c9e1" style="-fx-background-color: #47a4c5;" text="Создать" textFill="WHITE">
 									<font>
-										<Font size="14.0"/>
+										<Font size="14.0" />
 									</font>
 								</JFXButton>
-								<JFXTextField fx:id="calendarEventTitlePicker" focusColor="#03a9f4" layoutX="8.0"
-											  layoutY="96.0" maxWidth="336.0" minWidth="330.0" prefHeight="31.0"
-											  prefWidth="332.0" promptText="Суть события" unFocusColor="#6f6f6f"/>
+								<JFXTextField fx:id="calendarEventTitlePicker" focusColor="#03a9f4" layoutX="8.0" layoutY="96.0" maxWidth="336.0" minWidth="330.0" prefHeight="31.0" prefWidth="332.0" promptText="Суть события" unFocusColor="#6f6f6f" />
 							</AnchorPane>
-							<AnchorPane fx:id="calendarSchedulePane" minHeight="0.0" minWidth="0.0" prefHeight="100.0"
-										prefWidth="357.0">
-								<JFXListView fx:id="calendarUpcomingEventsListView" layoutX="-3.0" layoutY="32.0"
-											 prefHeight="300.0" prefWidth="362.0" AnchorPane.bottomAnchor="0.0"
-											 AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0"
-											 AnchorPane.topAnchor="32.0"/>
-								<Label fx:id="calendarUpcomingEventsLabel" layoutX="10.0" layoutY="3.0"
-									   prefHeight="27.0" prefWidth="337.0" text="Список предстоящих событий"
-									   textAlignment="CENTER"/>
+							<AnchorPane fx:id="calendarSchedulePane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="357.0">
+								<JFXListView fx:id="calendarUpcomingEventsListView" layoutX="-3.0" layoutY="32.0" prefHeight="300.0" prefWidth="362.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="32.0" />
+								<Label fx:id="calendarUpcomingEventsLabel" layoutX="10.0" layoutY="3.0" prefHeight="27.0" prefWidth="274.0" text="Список предстоящих событий" textAlignment="CENTER" />
+                        <JFXButton fx:id="calendarUpdateUpcomingEventsListButton" layoutX="288.0" layoutY="4.0" onAction="#calendarHandleUpdateUpcomingEventsList" prefHeight="23.0" prefWidth="65.0" ripplerFill="#6bd1d6" style="-fx-background-color: #67a4c5;" text="Обновить.." textFill="WHITE">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXButton>
 							</AnchorPane>
 						</SplitPane>
 					</AnchorPane>
-					<AnchorPane fx:id="calendarRightPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-								prefWidth="100.0">
-						<JFXMasonryPane layoutX="46.0" layoutY="100.0" prefHeight="440.0" prefWidth="555.0"
-										AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-										AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+					<AnchorPane fx:id="calendarRightPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+						<JFXMasonryPane layoutX="46.0" layoutY="100.0" prefHeight="440.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 					</AnchorPane>
 				</SplitPane>
 			</AnchorPane>
 		</Tab>
 		<Tab fx:id="scheduleTab" text="Расписание">
-			<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+			<AnchorPane prefHeight="200.0" prefWidth="200.0" />
 		</Tab>
 		<Tab fx:id="allocationTab" text="Распределение">
-			<AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+			<AnchorPane prefHeight="200.0" prefWidth="200.0" />
 		</Tab>
 	</JFXTabPane>
 </AnchorPane>
