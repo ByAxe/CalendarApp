@@ -41,10 +41,14 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     private final IGroupsService groupsService;
 
+    private final CalendarValidator calendarValidator;
+
     @Autowired
-    public ApplicationServiceImpl(IEventsService eventsService, IGroupsService groupsService) {
+    public ApplicationServiceImpl(IEventsService eventsService, IGroupsService groupsService,
+                                  CalendarValidator calendarValidator) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
+        this.calendarValidator = calendarValidator;
     }
 
     /**
@@ -88,7 +92,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         final String alertHeader;
         final StringBuilder alertBody = new StringBuilder();
 
-        final Result result = new CalendarValidator().validateNewEvent(event);
+        final Result result = calendarValidator.validateNewEvent(event);
 
         if (Objects.equals(result.getResult(), SUCCESS)) {
             eventsService.save(event);

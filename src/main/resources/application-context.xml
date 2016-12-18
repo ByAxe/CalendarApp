@@ -10,7 +10,7 @@
 	<!--<import resource="quartz-context.xml"/>-->
 
 	<!--Сканируем содержимое указанных пакетов на бины-->
-	<context:component-scan base-package="repository, service, controller, core.converters"/>
+	<context:component-scan base-package="repository, service, controller, core.converters, core.validators"/>
 
 	<!--Указываем расположение properties файла-->
 	<context:property-placeholder location="properties/application.properties"/>

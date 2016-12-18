@@ -1,5 +1,5 @@
 ####Close plans:
-- Create model for the third tab (allocation)
+- Implement model for the third tab (allocation)
 - Create Scheduler for Notifications (allocation-finish(!) and events)
 - Add material menu
 - Add menu items and help
