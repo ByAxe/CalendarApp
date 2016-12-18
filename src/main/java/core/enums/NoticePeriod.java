@@ -26,12 +26,11 @@ public enum NoticePeriod {
         this.name = name;
     }
 
+    public static NoticePeriod getDefault() {
+        return FIFTEEN_MINUTES;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public static NoticePeriod getDefault(){
-        return FIFTEEN_MINUTES;
     }
 }

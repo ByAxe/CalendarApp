@@ -4,6 +4,8 @@ import config.BasicDBTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import service.api.IEventsService;
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -29,5 +31,21 @@ public class EventsTest extends BasicDBTest {
         this.eventsService = eventsService;
     }
 
+    /**
+     * {Токен Роли, Роль, Тип Справочник}
+     *
+     * @return
+     */
+    @DataProvider
+    public Object[][] someDataProvider() {
+        return new Object[][]{
+                {"Message"}
+        };
+    }
 
+
+    @Test(dataProvider = "someDataProvider")
+    public void test(String message) throws Exception {
+        System.out.println(message);
+    }
 }

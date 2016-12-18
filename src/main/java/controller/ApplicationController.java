@@ -65,7 +65,6 @@ public class ApplicationController implements Initializable {
         this.groupsService = groupsService;
         this.applicationService = applicationService;
     }
-//    ------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,7 +76,6 @@ public class ApplicationController implements Initializable {
 
         calendarFillUpcomingEventsList();
     }
-//    ------------------------------------------------------------------------------------------------------------------
 
     /**
      * Обработка нажатия кнопки нового события, на вкладке Календарь
@@ -96,7 +94,7 @@ public class ApplicationController implements Initializable {
                 actionEvent
         );
 
-        calendarHandleUpdateUpcomingEventsList(null);
+        calendarHandleUpdateUpcomingEventsList();
     }
 
     /**
@@ -115,7 +113,7 @@ public class ApplicationController implements Initializable {
                 calendarPriorityPicker,
                 actionEvent);
 
-        calendarHandleUpdateUpcomingEventsList(null);
+        calendarHandleUpdateUpcomingEventsList();
     }
 
     /**
@@ -138,7 +136,7 @@ public class ApplicationController implements Initializable {
     }
 
 
-    public void calendarHandleUpdateUpcomingEventsList(ActionEvent actionEvent) {
+    public void calendarHandleUpdateUpcomingEventsList() {
         applicationService.calendarFillUpcomingEventsList(calendarUpcomingEventsListView);
     }
 }

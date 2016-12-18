@@ -6,8 +6,11 @@
 	   xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns="http://www.springframework.org/schema/beans"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
+	<!--Система уведомлений-->
+	<!--<import resource="quartz-context.xml"/>-->
+
 	<!--Сканируем содержимое указанных пакетов на бины-->
-	<context:component-scan base-package="repository, service, controller"/>
+	<context:component-scan base-package="repository, service, controller, core.converters"/>
 
 	<!--Указываем расположение properties файла-->
 	<context:property-placeholder location="properties/application.properties"/>
@@ -28,10 +31,12 @@
 				<!--DTO to Entity-->
 				<ref bean="eventsDTOToEntityConverter"/>
 				<ref bean="groupsDTOToEntityConverter"/>
+				<ref bean="rulersDTOToEntityConverter"/>
 
 				<!--Entity to DTO-->
 				<ref bean="eventsEntityToDTOConverter"/>
 				<ref bean="groupsEntityToDTOConverter"/>
+				<ref bean="rulersEntityToDTOConverter"/>
 			</set>
 		</property>
 	</bean>

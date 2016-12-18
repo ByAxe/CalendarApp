@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 import static core.api.IEssence.ID_COLUMN_NAME;
 import static core.api.IEssence.UUID_COLUMN_NAME;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -15,7 +17,7 @@ import static core.api.IEssence.UUID_COLUMN_NAME;
         @UniqueConstraint(columnNames = ID_COLUMN_NAME),
         @UniqueConstraint(columnNames = UUID_COLUMN_NAME)
 }, indexes = {
-        @Index(name = "groups_id_idx", unique = true, columnList = ID_COLUMN_NAME),
+        @Index(name = "groups_pkey", unique = true, columnList = ID_COLUMN_NAME),
         @Index(name = "groups_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME)
 })
 @SequenceGenerator(name = "groups_id_seq", sequenceName = "groups_id_seq", allocationSize = 1)
@@ -24,12 +26,14 @@ public class GroupsEntity extends APersistentEntity {
     private Long id;
     private String title;
     private String specialization;
+    private String qualification;
     private String description;
     private String number;
     private Integer hours;
+    private RulersEntity ruler;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groups_id_seq")
+    @GeneratedValue(strategy = SEQUENCE, generator = "groups_id_seq")
     @Column(name = ID_COLUMN_NAME, unique = true, nullable = false)
     public Long getId() {
         return id;
@@ -57,6 +61,15 @@ public class GroupsEntity extends APersistentEntity {
         this.specialization = specialization;
     }
 
+    @Column(name = "qualification", nullable = false)
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
     @Column(name = "description", length = 1000, columnDefinition = "TEXT")
     public String getDescription() {
         return description;
@@ -82,5 +95,14 @@ public class GroupsEntity extends APersistentEntity {
 
     public void setHours(Integer hours) {
         this.hours = hours;
+    }
+
+    @ManyToOne(cascade = ALL)
+    public RulersEntity getRuler() {
+        return ruler;
+    }
+
+    public void setRuler(RulersEntity ruler) {
+        this.ruler = ruler;
     }
 }

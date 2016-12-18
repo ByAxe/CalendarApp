@@ -1,5 +1,6 @@
 package service.api;
 
+import core.api.IEssence;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -9,11 +10,11 @@ import java.io.Serializable;
 /**
  * Created by byaxe on 26.11.16.
  */
-public interface IEssenceService<T, UUID extends Serializable> {
+public interface IEssenceService<T extends IEssence, ID extends Serializable> {
 
-    T save(T entity);
+    T save(T dto);
 
-    Iterable<T> save(Iterable<T> entities);
+    Iterable<T> save(Iterable<T> dtoList);
 
     Iterable<T> findAll(Sort sort);
 
@@ -21,19 +22,19 @@ public interface IEssenceService<T, UUID extends Serializable> {
 
     Iterable<T> findAll();
 
-    Iterable<T> findAll(Iterable<UUID> idList);
+    Iterable<T> findAll(Iterable<ID> idList);
 
-    T findOne(UUID id);
+    T findOne(ID id);
 
     long count();
 
-    boolean exists(UUID id);
+    boolean exists(ID id);
 
-    void delete(UUID id);
+    void delete(ID id);
 
-    void delete(T entity);
+    void delete(T dto);
 
-    void delete(Iterable<? extends T> entities);
+    void delete(Iterable<? extends T> dtoList);
 
     void deleteAll();
 }

@@ -16,11 +16,11 @@ public enum Priority {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public static Priority getDefault() {
+        return NORMAL;
     }
 
-    public static Priority getDefault(){
-        return NORMAL;
+    public String getName() {
+        return name;
     }
 }

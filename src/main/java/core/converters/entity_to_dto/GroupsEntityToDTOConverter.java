@@ -1,8 +1,9 @@
-package repository.converters.entity_to_dto;
+package core.converters.entity_to_dto;
 
 import core.dto.GroupsDTOImpl;
 import core.dto.api.IGroupsDTO;
 import model.entity.GroupsEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GroupsEntityToDTOConverter implements Converter<GroupsEntity, IGroupsDTO> {
+
+    private final RulersEntityToDTOConverter rulersEntityToDTOConverter;
+
+    @Autowired
+    public GroupsEntityToDTOConverter(RulersEntityToDTOConverter rulersEntityToDTOConverter) {
+        this.rulersEntityToDTOConverter = rulersEntityToDTOConverter;
+    }
 
     @Override
     public IGroupsDTO convert(GroupsEntity source) {
@@ -25,6 +33,8 @@ public class GroupsEntityToDTOConverter implements Converter<GroupsEntity, IGrou
         target.setSpecialization(source.getSpecialization());
         target.setNumber(source.getNumber());
         target.setDescription(source.getDescription());
+        target.setQualification(source.getQualification());
+        target.setRuler(rulersEntityToDTOConverter.convert(source.getRuler()));
 
         return target;
     }

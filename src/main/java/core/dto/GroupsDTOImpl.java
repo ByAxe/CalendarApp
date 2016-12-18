@@ -3,6 +3,7 @@ package core.dto;
 import core.api.AEssence;
 import core.api.IEssence;
 import core.dto.api.IGroupsDTO;
+import core.dto.api.IRulersDTO;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -11,9 +12,11 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
 
     private String title;
     private String specialization;
+    private String qualification;
     private String description;
     private String number;
     private Integer hours;
+    private IRulersDTO ruler;
 
     public GroupsDTOImpl() {
     }
@@ -26,18 +29,23 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
         if (essence != null) {
             this.title = essence.getTitle();
             this.specialization = essence.getSpecialization();
+            this.qualification = essence.getQualification();
             this.description = essence.getDescription();
             this.number = essence.getNumber();
             this.hours = essence.getHours();
+            this.ruler = essence.getRuler();
         }
     }
 
-    public GroupsDTOImpl(String title, String specialization, String description, String number, Integer hours) {
+    public GroupsDTOImpl(String title, String specialization, String qualification,
+                         String description, String number, Integer hours, IRulersDTO ruler) {
         this.title = title;
         this.specialization = specialization;
+        this.qualification = qualification;
         this.description = description;
         this.number = number;
         this.hours = hours;
+        this.ruler = ruler;
     }
 
     public String getTitle() {
@@ -54,6 +62,14 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
     }
 
     public String getDescription() {
@@ -78,5 +94,15 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
 
     public void setHours(Integer hours) {
         this.hours = hours;
+    }
+
+    @Override
+    public IRulersDTO getRuler() {
+        return ruler;
+    }
+
+    @Override
+    public void setRuler(IRulersDTO ruler) {
+        this.ruler = ruler;
     }
 }

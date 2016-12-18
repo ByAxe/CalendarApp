@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.EventsRepository;
 import service.api.IEventsService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,9 +47,7 @@ public class EventsServiceImpl implements IEventsService {
 
         EventsEntity savedEntity = eventsRepository.save(sourceEntity);
 
-        IEventsDTO savedDto = convertEntityToDto(savedEntity);
-
-        return savedDto;
+        return convertEntityToDto(savedEntity);
     }
 
     /**
@@ -66,9 +63,7 @@ public class EventsServiceImpl implements IEventsService {
 
         Iterable<EventsEntity> savedEntities = eventsRepository.save(sourceEntities);
 
-        List<IEventsDTO> savedDtoList = convertListEntityToDto(savedEntities);
-
-        return savedDtoList;
+        return convertListEntityToDto(savedEntities);
     }
 
     /**
@@ -81,9 +76,7 @@ public class EventsServiceImpl implements IEventsService {
     public Iterable<IEventsDTO> findAll(Sort sort) {
         Iterable<EventsEntity> entities = eventsRepository.findAll(sort);
 
-        List<IEventsDTO> dtoList = convertListEntityToDto(entities);
-
-        return dtoList;
+        return convertListEntityToDto(entities);
     }
 
     /**
@@ -110,9 +103,7 @@ public class EventsServiceImpl implements IEventsService {
     public Iterable<IEventsDTO> findAll() {
         Iterable<EventsEntity> eventsEntities = eventsRepository.findAll();
 
-        List<IEventsDTO> dtoList = convertListEntityToDto(eventsEntities);
-
-        return dtoList;
+        return convertListEntityToDto(eventsEntities);
     }
 
     /**
@@ -125,9 +116,7 @@ public class EventsServiceImpl implements IEventsService {
     public Iterable<IEventsDTO> findAll(Iterable<Long> idList) {
         Iterable<EventsEntity> eventsEntities = eventsRepository.findAll(idList);
 
-        List<IEventsDTO> dtoList = convertListEntityToDto(eventsEntities);
-
-        return dtoList;
+        return convertListEntityToDto(eventsEntities);
     }
 
     /**
@@ -140,9 +129,7 @@ public class EventsServiceImpl implements IEventsService {
     public IEventsDTO findOne(Long id) {
         EventsEntity entity = eventsRepository.findOne(id);
 
-        IEventsDTO dto = convertEntityToDto(entity);
-
-        return dto;
+        return convertEntityToDto(entity);
     }
 
     /**
@@ -220,57 +207,15 @@ public class EventsServiceImpl implements IEventsService {
     public List<IEventsDTO> findUpcomingEvents() {
         List<EventsEntity> entities = eventsRepository.findUpcomingEvents();
 
-        List<IEventsDTO> dtoList = convertListEntityToDto(entities);
-
-        return dtoList;
+        return convertListEntityToDto(entities);
     }
 
-    /**
-     * Конвертируем DTO в Сущность
-     *
-     * @param eventsDTO Исходный DTO
-     * @return Сущность
-     */
-    private EventsEntity convertDtoToEntity(IEventsDTO eventsDTO) {
-        return conversionService.convert(eventsDTO, EventsEntity.class);
+    public EventsEntity convertDtoToEntity(IEventsDTO dto) {
+        return conversionService.convert(dto, EventsEntity.class);
     }
 
-    /**
-     * Конвертируем Сущность в DTO
-     *
-     * @param entity Исходная сущность
-     * @return DTO
-     */
-    private IEventsDTO convertEntityToDto(EventsEntity entity) {
+    public IEventsDTO convertEntityToDto(EventsEntity entity) {
         return conversionService.convert(entity, IEventsDTO.class);
-    }
-
-    /**
-     * Конвертация списка DTO в список Сущностей
-     *
-     * @param sourceDtoList Список DTO
-     * @return Список Сущсностей
-     */
-    private List<EventsEntity> convertListDtoToEntity(Iterable<IEventsDTO> sourceDtoList) {
-        final List<EventsEntity> sourceEntities = new ArrayList<>();
-
-        sourceDtoList.forEach(d -> sourceEntities.add(convertDtoToEntity(d)));
-
-        return sourceEntities;
-    }
-
-    /**
-     * Конвертация списка Сущностей в список DTO
-     *
-     * @param sourceEntities Список Сущностей
-     * @return Список DTO
-     */
-    private List<IEventsDTO> convertListEntityToDto(Iterable<EventsEntity> sourceEntities) {
-        final List<IEventsDTO> savedDtoList = new ArrayList<>();
-
-        sourceEntities.forEach(e -> savedDtoList.add(convertEntityToDto(e)));
-
-        return savedDtoList;
     }
 
 }

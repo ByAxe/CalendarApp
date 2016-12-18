@@ -1,4 +1,4 @@
-package repository.converters.dto_to_entity;
+package core.converters.dto_to_entity;
 
 import core.dto.api.IEventsDTO;
 import model.entity.EventsEntity;

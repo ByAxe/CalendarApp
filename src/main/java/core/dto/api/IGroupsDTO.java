@@ -15,6 +15,10 @@ public interface IGroupsDTO extends IEssence {
 
     void setSpecialization(String specialization);
 
+    String getQualification();
+
+    void setQualification(String qualification);
+
     String getDescription();
 
     void setDescription(String description);
@@ -26,4 +30,8 @@ public interface IGroupsDTO extends IEssence {
     Integer getHours();
 
     void setHours(Integer hours);
+
+    IRulersDTO getRuler();
+
+    void setRuler(IRulersDTO rulersList);
 }

@@ -1,0 +1,10 @@
+https://howtoprogramwithjava.com/hibernate-onetomany-bidirectional-relationship/
+
+To persist all the objects correctly you’ll need to follow these generic steps:
+
+1) Instantiate/Load parent object
+2) Instantiate/Load child objects
+3) Set the parent object in the child objects
+4) Create a collection of child objects
+5) Set the collection of child objects on the parent
+6) Save the parent

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="myJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="service.tasks.MyJob"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="someParam" value="some value"/>
+				<entry key="someParam2" value="1"/>
+			</map>
+		</property>
+	</bean>
+
+	<util:list id="quartz-triggers">
+		<bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+
+			<!-- Reference to the job bean that will be triggered: -->
+			<property name="jobDetail" ref="myJob"/>
+
+			<!-- Cron expression, usually comes from a property -->
+			<property name="cronExpression" value="0 15 11-12 ? * MON-FRI"/>
+
+			<!-- What to do if the job has missed its time
+				 because the previous job was running for too long.
+				 Usually, it's OK to do nothing, but Quartz has other strategies as well,
+				 notably 'MISFIRE_INSTRUCTION_FIRE_ONCE_NOW' -->
+			<property name="misfireInstruction"
+					  value="#{T(org.quartz.CronTrigger).MISFIRE_INSTRUCTION_DO_NOTHING}"/>
+		</bean>
+	</util:list>
+
+</beans>

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calendar-app</groupId>
 	<artifactId>calendar-root</artifactId>
-	<version>0.2.2</version>
+	<version>0.2.3</version>
 
 	<name>calendar-root</name>
 	<url>http://maven.apache.org</url>
@@ -29,6 +29,7 @@
 		<jfoenix-version>RELEASE</jfoenix-version>
 		<testfx-version>RELEASE</testfx-version>
 		<jfxtras-version>8.0-r6-SNAPSHOT</jfxtras-version>
+		<quartz-version>RELEASE</quartz-version>
 
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 		<maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
@@ -292,6 +293,17 @@
 			<groupId>org.jfxtras</groupId>
 			<artifactId>jfxtras-all</artifactId>
 			<version>${jfxtras-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz-version}</version>
 		</dependency>
 		<!--********************************************************************-->
 		<!--end::MISCELLANEOUS DEPENDENCIES-->

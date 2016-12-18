@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.GroupsRepository;
 import service.api.IGroupsService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +25,6 @@ public class GroupsServiceImpl implements IGroupsService {
     private final GroupsRepository groupsRepository;
 
     private final ConversionService conversionService;
-
     @Autowired
     public GroupsServiceImpl(GroupsRepository groupsRepository, ConversionService conversionService) {
         this.groupsRepository = groupsRepository;
@@ -36,34 +34,39 @@ public class GroupsServiceImpl implements IGroupsService {
     @Override
     @Transactional
     public IGroupsDTO save(IGroupsDTO sourceDto) {
+        if (sourceDto == null) throw new IllegalArgumentException();
+
+/*        IRulersDTO ruler = sourceDto.getRuler();
+
+        if (ruler == null) throw new IllegalStateException();
+
+        ruler.getGroups().add(sourceDto);*/
+
         GroupsEntity sourceEntity = convertDtoToEntity(sourceDto);
 
         GroupsEntity savedEntity = groupsRepository.save(sourceEntity);
 
-        IGroupsDTO savedDto = convertEntityToDto(savedEntity);
-
-        return savedDto;
+        return convertEntityToDto(savedEntity);
     }
 
     @Override
     @Transactional
     public Iterable<IGroupsDTO> save(Iterable<IGroupsDTO> sourceDtoList) {
+
+        if (sourceDtoList == null) throw new IllegalArgumentException();
+
         List<GroupsEntity> sourceEntities = convertListDtoToEntity(sourceDtoList);
 
         Iterable<GroupsEntity> savedEntities = groupsRepository.save(sourceEntities);
 
-        List<IGroupsDTO> savedDtoList = convertListEntityToDto(savedEntities);
-
-        return savedDtoList;
+        return convertListEntityToDto(savedEntities);
     }
 
     @Override
     public Iterable<IGroupsDTO> findAll(Sort sort) {
         Iterable<GroupsEntity> entities = groupsRepository.findAll(sort);
 
-        List<IGroupsDTO> dtoList = convertListEntityToDto(entities);
-
-        return dtoList;
+        return convertListEntityToDto(entities);
     }
 
     @Override
@@ -79,27 +82,21 @@ public class GroupsServiceImpl implements IGroupsService {
     public Iterable<IGroupsDTO> findAll() {
         Iterable<GroupsEntity> entities = groupsRepository.findAll();
 
-        List<IGroupsDTO> dtoList = convertListEntityToDto(entities);
-
-        return dtoList;
+        return convertListEntityToDto(entities);
     }
 
     @Override
     public Iterable<IGroupsDTO> findAll(Iterable<Long> ids) {
         Iterable<GroupsEntity> entities = groupsRepository.findAll(ids);
 
-        List<IGroupsDTO> dtoList = convertListEntityToDto(entities);
-
-        return dtoList;
+        return convertListEntityToDto(entities);
     }
 
     @Override
     public IGroupsDTO findOne(Long id) {
         GroupsEntity entity = groupsRepository.findOne(id);
 
-        IGroupsDTO groupsDTO = convertEntityToDto(entity);
-
-        return groupsDTO;
+        return convertEntityToDto(entity);
     }
 
     @Override
@@ -140,52 +137,11 @@ public class GroupsServiceImpl implements IGroupsService {
     }
 
 
-    /**
-     * Конвертируем DTO в Сущность
-     *
-     * @param eventsDTO Исходный DTO
-     * @return Сущность
-     */
-    private GroupsEntity convertDtoToEntity(IGroupsDTO eventsDTO) {
-        return conversionService.convert(eventsDTO, GroupsEntity.class);
+    public GroupsEntity convertDtoToEntity(IGroupsDTO dto) {
+        return conversionService.convert(dto, GroupsEntity.class);
     }
 
-    /**
-     * Конвертируем Сущность в DTO
-     *
-     * @param entity Исходная сущность
-     * @return DTO
-     */
-    private IGroupsDTO convertEntityToDto(GroupsEntity entity) {
+    public IGroupsDTO convertEntityToDto(GroupsEntity entity) {
         return conversionService.convert(entity, IGroupsDTO.class);
-    }
-
-    /**
-     * Конвертация списка DTO в список Сущностей
-     *
-     * @param sourceDtoList Список DTO
-     * @return Список Сущсностей
-     */
-    private List<GroupsEntity> convertListDtoToEntity(Iterable<IGroupsDTO> sourceDtoList) {
-        final List<GroupsEntity> sourceEntities = new ArrayList<>();
-
-        sourceDtoList.forEach(d -> sourceEntities.add(convertDtoToEntity(d)));
-
-        return sourceEntities;
-    }
-
-    /**
-     * Конвертация списка Сущностей в список DTO
-     *
-     * @param sourceEntities Список Сущностей
-     * @return Список DTO
-     */
-    private List<IGroupsDTO> convertListEntityToDto(Iterable<GroupsEntity> sourceEntities) {
-
-        final List<IGroupsDTO> savedDtoList = new ArrayList<>();
-
-        sourceEntities.forEach(e -> savedDtoList.add(convertEntityToDto(e)));
-
-        return savedDtoList;
     }
 }

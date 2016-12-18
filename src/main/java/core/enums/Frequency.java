@@ -16,12 +16,12 @@ public enum Frequency {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public static Frequency getDefault() {
+        return ONCE;
     }
 
-    public static Frequency getDefault(){
-        return ONCE;
+    public String getName() {
+        return name;
     }
 
 }
