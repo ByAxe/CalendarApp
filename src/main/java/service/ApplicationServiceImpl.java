@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static core.commons.Utils.raiseMessageBox;
 import static core.enums.ResultEnum.SUCCESS;
 import static java.util.stream.Collectors.toList;
 
@@ -173,23 +174,5 @@ public class ApplicationServiceImpl implements IApplicationService {
                         .stream()
                         .map(event -> new Label(event.toPrettyString()))
                         .collect(toList()));
-    }
-
-    /**
-     * Создает сообщение
-     *
-     * @param type   Тип сообщения
-     * @param title  Надпись сверху
-     * @param header Заголовок
-     * @param body   Основной текст сообщения
-     */
-    private void raiseMessageBox(Alert.AlertType type, String title, String header, String body) {
-        Alert alert = new Alert(type);
-
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(body);
-
-        alert.showAndWait();
     }
 }
