@@ -2,8 +2,8 @@
 - Implement model for: students, organisations, orders, compensations, allocation 
     1) ~~Entity~~
     2) ~~DTO~~
-    3) Repository
-    4) Converters
+    3) ~~Repository~~
+    4) ~~Converters~~
     5) Service
 - Create Scheduler for Notifications (allocation-finish(!) and events)
 - Add material menu

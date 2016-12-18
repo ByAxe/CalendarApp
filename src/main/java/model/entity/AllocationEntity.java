@@ -2,7 +2,7 @@ package model.entity;
 
 import core.enums.Stage;
 import model.api.APersistentEntity;
-import model.api.StringArray;
+import model.api.types.StringArray;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 

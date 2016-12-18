@@ -5,8 +5,7 @@ import model.entity.EventsEntity;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.time.ZoneId;
-import java.util.Date;
+import static core.commons.Utils.convertLocalDateTimeToDate;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -24,8 +23,8 @@ public class EventsDTOToEntityConverter implements Converter<IEventsDTO, EventsE
         target.setUuid(source.getUuid());
         target.setDtUpdate(source.getDtUpdate());
 
-        target.setStarts(Date.from(source.getStarts().atZone(ZoneId.systemDefault()).toInstant()));
-        target.setEnds(Date.from(source.getEnds().atZone(ZoneId.systemDefault()).toInstant()));
+        target.setStarts(convertLocalDateTimeToDate(source.getStarts()));
+        target.setEnds(convertLocalDateTimeToDate(source.getEnds()));
         target.setTitle(source.getTitle());
         target.setPriority(source.getPriority());
         target.setNoticePeriod(source.getNoticePeriod());

@@ -32,11 +32,19 @@
 				<ref bean="eventsDTOToEntityConverter"/>
 				<ref bean="groupsDTOToEntityConverter"/>
 				<ref bean="rulersDTOToEntityConverter"/>
+				<ref bean="ordersDTOToEntityConverter"/>
+				<ref bean="organisationsDTOToEntityConverter"/>
+				<ref bean="studentsDTOToEntityConverter"/>
+				<ref bean="allocationDTOToEntityConverter"/>
 
 				<!--Entity to DTO-->
 				<ref bean="eventsEntityToDTOConverter"/>
 				<ref bean="groupsEntityToDTOConverter"/>
 				<ref bean="rulersEntityToDTOConverter"/>
+				<ref bean="ordersEntityToDTOConverter"/>
+				<ref bean="organisationsEntityToDTOConverter"/>
+				<ref bean="studentsEntityToDTOConverter"/>
+				<ref bean="allocationEntityToDTOConverter"/>
 			</set>
 		</property>
 	</bean>

@@ -1,4 +1,4 @@
-package model.api;
+package model.api.types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
