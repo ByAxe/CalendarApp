@@ -3,8 +3,9 @@ package core.dto;
 import core.api.AEssence;
 import core.api.IEssence;
 import core.dto.api.*;
+import core.enums.Stage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -17,12 +18,12 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
     private boolean freeAllocation;
     private boolean voluntaryCompensation;
 
-    private String stage;
+    private Stage stage;
     private String cortOrderNumber;
     private String voluntaryCompensationOrderNumber;
-    private Date voluntaryCompensationOrderDate;
-    private Date voluntaryCompensationConfirmationDate;
-    private Date cortOrderDate;
+    private LocalDateTime voluntaryCompensationOrderDate;
+    private LocalDateTime voluntaryCompensationConfirmationDate;
+    private LocalDateTime cortOrderDate;
     private String[] confirmations;
 
     private IGroupsDTO group;
@@ -64,6 +65,29 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.order = essence.getOrder();
     }
 
+    public AllocationDTOImpl(Long id, UUID parentUuid, boolean army, boolean freeAllocation, boolean voluntaryCompensation,
+                             Stage stage, String cortOrderNumber, String voluntaryCompensationOrderNumber,
+                             LocalDateTime voluntaryCompensationOrderDate, LocalDateTime voluntaryCompensationConfirmationDate,
+                             LocalDateTime cortOrderDate, String[] confirmations, IGroupsDTO group, IOrganisationsDTO organisation,
+                             IStudentsDTO student, IOrdersDTO order) {
+        this.id = id;
+        this.parentUuid = parentUuid;
+        this.army = army;
+        this.freeAllocation = freeAllocation;
+        this.voluntaryCompensation = voluntaryCompensation;
+        this.stage = stage;
+        this.cortOrderNumber = cortOrderNumber;
+        this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
+        this.voluntaryCompensationOrderDate = voluntaryCompensationOrderDate;
+        this.voluntaryCompensationConfirmationDate = voluntaryCompensationConfirmationDate;
+        this.cortOrderDate = cortOrderDate;
+        this.confirmations = confirmations;
+        this.group = group;
+        this.organisation = organisation;
+        this.student = student;
+        this.order = order;
+    }
+
     public UUID getParentUuid() {
         return parentUuid;
     }
@@ -96,11 +120,11 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.voluntaryCompensation = voluntaryCompensation;
     }
 
-    public String getStage() {
+    public Stage getStage() {
         return stage;
     }
 
-    public void setStage(String stage) {
+    public void setStage(Stage stage) {
         this.stage = stage;
     }
 
@@ -120,27 +144,27 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
     }
 
-    public Date getVoluntaryCompensationOrderDate() {
+    public LocalDateTime getVoluntaryCompensationOrderDate() {
         return voluntaryCompensationOrderDate;
     }
 
-    public void setVoluntaryCompensationOrderDate(Date voluntaryCompensationOrderDate) {
+    public void setVoluntaryCompensationOrderDate(LocalDateTime voluntaryCompensationOrderDate) {
         this.voluntaryCompensationOrderDate = voluntaryCompensationOrderDate;
     }
 
-    public Date getVoluntaryCompensationConfirmationDate() {
+    public LocalDateTime getVoluntaryCompensationConfirmationDate() {
         return voluntaryCompensationConfirmationDate;
     }
 
-    public void setVoluntaryCompensationConfirmationDate(Date voluntaryCompensationConfirmationDate) {
+    public void setVoluntaryCompensationConfirmationDate(LocalDateTime voluntaryCompensationConfirmationDate) {
         this.voluntaryCompensationConfirmationDate = voluntaryCompensationConfirmationDate;
     }
 
-    public Date getCortOrderDate() {
+    public LocalDateTime getCortOrderDate() {
         return cortOrderDate;
     }
 
-    public void setCortOrderDate(Date cortOrderDate) {
+    public void setCortOrderDate(LocalDateTime cortOrderDate) {
         this.cortOrderDate = cortOrderDate;
     }
 

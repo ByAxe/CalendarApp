@@ -1,8 +1,9 @@
 package core.dto.api;
 
 import core.api.IEssence;
+import core.enums.Stage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -26,9 +27,9 @@ public interface IAllocationDTO extends IEssence {
 
     void setVoluntaryCompensation(boolean voluntaryCompensation);
 
-    String getStage();
+    Stage getStage();
 
-    void setStage(String stage);
+    void setStage(Stage stage);
 
     String getCortOrderNumber();
 
@@ -38,17 +39,17 @@ public interface IAllocationDTO extends IEssence {
 
     void setVoluntaryCompensationOrderNumber(String voluntaryCompensationOrderNumber);
 
-    Date getVoluntaryCompensationOrderDate();
+    LocalDateTime getVoluntaryCompensationOrderDate();
 
-    void setVoluntaryCompensationOrderDate(Date voluntaryCompensationOrderDate);
+    void setVoluntaryCompensationOrderDate(LocalDateTime voluntaryCompensationOrderDate);
 
-    Date getVoluntaryCompensationConfirmationDate();
+    LocalDateTime getVoluntaryCompensationConfirmationDate();
 
-    void setVoluntaryCompensationConfirmationDate(Date voluntaryCompensationConfirmationDate);
+    void setVoluntaryCompensationConfirmationDate(LocalDateTime voluntaryCompensationConfirmationDate);
 
-    Date getCortOrderDate();
+    LocalDateTime getCortOrderDate();
 
-    void setCortOrderDate(Date cortOrderDate);
+    void setCortOrderDate(LocalDateTime cortOrderDate);
 
     String[] getConfirmations();
 
