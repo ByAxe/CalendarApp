@@ -5,7 +5,10 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import core.commons.Result;
 import core.dto.EventsDTOImpl;
+import core.dto.GroupsDTOImpl;
 import core.dto.api.IEventsDTO;
+import core.dto.api.IGroupsDTO;
+import core.dto.api.IRulersDTO;
 import core.enums.Frequency;
 import core.enums.NoticePeriod;
 import core.enums.Priority;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import service.api.IApplicationService;
 import service.api.IEventsService;
 import service.api.IGroupsService;
+import service.api.IRulersService;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -42,13 +46,16 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     private final IGroupsService groupsService;
 
+    private final IRulersService rulersService;
+
     private final CalendarValidator calendarValidator;
 
     @Autowired
     public ApplicationServiceImpl(IEventsService eventsService, IGroupsService groupsService,
-                                  CalendarValidator calendarValidator) {
+                                  IRulersService rulersService, CalendarValidator calendarValidator) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
+        this.rulersService = rulersService;
         this.calendarValidator = calendarValidator;
     }
 
@@ -157,6 +164,24 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         priorityPicker.getItems()
                 .addAll(Stream.of(Priority.values()).map(Priority::getName).collect(toList()));
+
+        createGroup();
+    }
+
+    private void createGroup() {
+        IRulersDTO rulersDTO = rulersService.findOne(1L);
+
+        IGroupsDTO groupsDTO = new GroupsDTOImpl();
+        groupsDTO.setUuid(UUID.randomUUID());
+        groupsDTO.setDtUpdate(new Date());
+        groupsDTO.setNumber("143ТП");
+        groupsDTO.setQualification("Technician programmers");
+        groupsDTO.setSpecialization("Economical truth");
+        groupsDTO.setTitle("Tech prog");
+        groupsDTO.setHours(196);
+        groupsDTO.setRuler(rulersDTO);
+
+        groupsService.save(groupsDTO);
     }
 
     /**

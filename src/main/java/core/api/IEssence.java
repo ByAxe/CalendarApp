@@ -11,6 +11,10 @@ public interface IEssence {
     String UUID_COLUMN_NAME = "uuid";
     String DATE_UPDATE_COLUMN_NAME = "dt_update";
 
+    Long getId();
+
+    void setId(Long id);
+
     UUID getUuid();
 
     void setUuid(UUID uuid);

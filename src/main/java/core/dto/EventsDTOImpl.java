@@ -36,6 +36,7 @@ public class EventsDTOImpl extends AEssence implements IEventsDTO {
 
     public EventsDTOImpl(IEventsDTO event) {
         if (event != null) {
+            this.id = event.getId();
             this.starts = event.getStarts();
             this.ends = event.getEnds();
             this.title = event.getTitle();
@@ -45,8 +46,9 @@ public class EventsDTOImpl extends AEssence implements IEventsDTO {
         }
     }
 
-    public EventsDTOImpl(LocalDateTime starts, LocalDateTime ends, String title,
+    public EventsDTOImpl(Long id, LocalDateTime starts, LocalDateTime ends, String title,
                          NoticePeriod noticePeriod, Priority priority, Frequency frequency) {
+        this.id = id;
         this.starts = starts;
         this.ends = ends;
         this.title = title;

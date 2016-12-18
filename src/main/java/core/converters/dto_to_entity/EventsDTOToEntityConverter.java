@@ -20,6 +20,7 @@ public class EventsDTOToEntityConverter implements Converter<IEventsDTO, EventsE
 
         EventsEntity target = new EventsEntity();
 
+        target.setId(source.getId());
         target.setUuid(source.getUuid());
         target.setDtUpdate(source.getDtUpdate());
 

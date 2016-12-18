@@ -2,8 +2,6 @@ package core.dto.api;
 
 import core.api.IEssence;
 
-import java.util.Set;
-
 /**
  * Created by byaxe on 17.12.16.
  */
@@ -24,8 +22,4 @@ public interface IRulersDTO extends IEssence {
     String getPayload();
 
     void setPayload(String payload);
-
-    Set<IGroupsDTO> getGroups();
-
-    void setGroups(Set<IGroupsDTO> groups);
 }

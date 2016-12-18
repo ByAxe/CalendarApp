@@ -2,6 +2,7 @@ package service;
 
 import core.dto.api.IGroupsDTO;
 import model.entity.GroupsEntity;
+import model.entity.RulersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.GroupsRepository;
 import service.api.IGroupsService;
+import service.api.IRulersService;
 
 import java.util.List;
 
@@ -24,10 +26,14 @@ public class GroupsServiceImpl implements IGroupsService {
 
     private final GroupsRepository groupsRepository;
 
+    private final IRulersService rulersService;
+
     private final ConversionService conversionService;
+
     @Autowired
-    public GroupsServiceImpl(GroupsRepository groupsRepository, ConversionService conversionService) {
+    public GroupsServiceImpl(GroupsRepository groupsRepository, IRulersService rulersService, ConversionService conversionService) {
         this.groupsRepository = groupsRepository;
+        this.rulersService = rulersService;
         this.conversionService = conversionService;
     }
 
@@ -36,15 +42,13 @@ public class GroupsServiceImpl implements IGroupsService {
     public IGroupsDTO save(IGroupsDTO sourceDto) {
         if (sourceDto == null) throw new IllegalArgumentException();
 
-/*        IRulersDTO ruler = sourceDto.getRuler();
+        GroupsEntity newEntity = convertDtoToEntity(sourceDto);
 
-        if (ruler == null) throw new IllegalStateException();
+        RulersEntity ruler = rulersService.getActualEntity(newEntity.getRuler().getId());
 
-        ruler.getGroups().add(sourceDto);*/
+        newEntity.setRuler(ruler);
 
-        GroupsEntity sourceEntity = convertDtoToEntity(sourceDto);
-
-        GroupsEntity savedEntity = groupsRepository.save(sourceEntity);
+        GroupsEntity savedEntity = groupsRepository.save(newEntity);
 
         return convertEntityToDto(savedEntity);
     }
@@ -52,10 +56,14 @@ public class GroupsServiceImpl implements IGroupsService {
     @Override
     @Transactional
     public Iterable<IGroupsDTO> save(Iterable<IGroupsDTO> sourceDtoList) {
-
         if (sourceDtoList == null) throw new IllegalArgumentException();
 
         List<GroupsEntity> sourceEntities = convertListDtoToEntity(sourceDtoList);
+
+        sourceEntities.forEach(newEntity -> {
+            RulersEntity ruler = rulersService.getActualEntity(newEntity.getRuler().getId());
+            newEntity.setRuler(ruler);
+        });
 
         Iterable<GroupsEntity> savedEntities = groupsRepository.save(sourceEntities);
 

@@ -27,6 +27,7 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
 
     public GroupsDTOImpl(IGroupsDTO essence) {
         if (essence != null) {
+            this.id = essence.getId();
             this.title = essence.getTitle();
             this.specialization = essence.getSpecialization();
             this.qualification = essence.getQualification();
@@ -37,8 +38,9 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
         }
     }
 
-    public GroupsDTOImpl(String title, String specialization, String qualification,
+    public GroupsDTOImpl(Long id, String title, String specialization, String qualification,
                          String description, String number, Integer hours, IRulersDTO ruler) {
+        this.id = id;
         this.title = title;
         this.specialization = specialization;
         this.qualification = qualification;

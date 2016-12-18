@@ -3,12 +3,9 @@ package model.entity;
 import model.api.APersistentEntity;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 import static core.api.IEssence.ID_COLUMN_NAME;
 import static core.api.IEssence.UUID_COLUMN_NAME;
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
@@ -30,7 +27,6 @@ public class RulersEntity extends APersistentEntity {
     private String middleName;
     private String lastName;
     private String payload;
-    private Set<GroupsEntity> groups = new HashSet<>(1);
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "rulers_id_seq")
@@ -77,14 +73,5 @@ public class RulersEntity extends APersistentEntity {
 
     public void setPayload(String payload) {
         this.payload = payload;
-    }
-
-    @OneToMany(cascade = ALL, mappedBy = "ruler")
-    public Set<GroupsEntity> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<GroupsEntity> groups) {
-        this.groups = groups;
     }
 }

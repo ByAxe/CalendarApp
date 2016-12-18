@@ -8,6 +8,7 @@ import java.util.UUID;
  * Created by byaxe on 26.11.16.
  */
 public abstract class AEssence implements Serializable, IEssence {
+    protected Long id;
     protected UUID uuid;
     protected Date dtUpdate;
 
@@ -19,6 +20,14 @@ public abstract class AEssence implements Serializable, IEssence {
             this.uuid = essence.getUuid();
             this.dtUpdate = essence.getDtUpdate();
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public UUID getUuid() {

@@ -13,11 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.RulersRepository;
 import service.api.IRulersService;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * Created by byaxe on 17.12.16.
@@ -41,8 +37,6 @@ public class RulersServiceImpl implements IRulersService {
     public IRulersDTO save(IRulersDTO dto) {
         if (dto == null) throw new IllegalArgumentException();
 
-        ofNullable(dto.getGroups()).ifPresent(groups -> groups.forEach(g -> g.setRuler(dto)));
-
         RulersEntity sourceEntity = convertDtoToEntity(dto);
 
         RulersEntity savedEntity = rulersRepository.save(sourceEntity);
@@ -54,12 +48,6 @@ public class RulersServiceImpl implements IRulersService {
     @Transactional
     public Iterable<IRulersDTO> save(Iterable<IRulersDTO> dtoList) {
         if (dtoList == null) throw new IllegalArgumentException();
-
-        ((Collection<IRulersDTO>) dtoList)
-                .stream()
-                .filter(Objects::nonNull)
-                .forEach(dto -> ofNullable(dto.getGroups())
-                        .ifPresent(groups -> groups.forEach(g -> g.setRuler(dto))));
 
         List<RulersEntity> sourceEntities = convertListDtoToEntity(dtoList);
 
@@ -100,9 +88,12 @@ public class RulersServiceImpl implements IRulersService {
 
     @Override
     public IRulersDTO findOne(Long id) {
-        RulersEntity entity = rulersRepository.findOne(id);
+        return convertEntityToDto(getActualEntity(id));
+    }
 
-        return convertEntityToDto(entity);
+    @Override
+    public RulersEntity getActualEntity(Long id) {
+        return rulersRepository.findOne(id);
     }
 
     @Override

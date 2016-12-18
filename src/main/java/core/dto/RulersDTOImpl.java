@@ -2,11 +2,7 @@ package core.dto;
 
 import core.api.AEssence;
 import core.api.IEssence;
-import core.dto.api.IGroupsDTO;
 import core.dto.api.IRulersDTO;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by byaxe on 17.12.16.
@@ -17,7 +13,6 @@ public class RulersDTOImpl extends AEssence implements IRulersDTO {
     private String middleName;
     private String lastName;
     private String payload;
-    private Set<IGroupsDTO> groups = new HashSet<>(1);
 
     public RulersDTOImpl() {
     }
@@ -26,22 +21,22 @@ public class RulersDTOImpl extends AEssence implements IRulersDTO {
         super(essence);
     }
 
-    public RulersDTOImpl(String firstName, String middleName, String lastName, String payload, Set<IGroupsDTO> groups) {
+    public RulersDTOImpl(Long id, String firstName, String middleName, String lastName, String payload) {
+        this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.payload = payload;
-        this.groups = groups;
     }
 
 
     public RulersDTOImpl(IRulersDTO rulersDTO) {
         if (rulersDTO != null) {
+            this.id = rulersDTO.getId();
             this.firstName = rulersDTO.getFirstName();
             this.middleName = rulersDTO.getMiddleName();
             this.lastName = rulersDTO.getLastName();
             this.payload = rulersDTO.getPayload();
-            this.groups = rulersDTO.getGroups();
         }
     }
 
@@ -75,13 +70,5 @@ public class RulersDTOImpl extends AEssence implements IRulersDTO {
 
     public void setPayload(String payload) {
         this.payload = payload;
-    }
-
-    public Set<IGroupsDTO> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<IGroupsDTO> groups) {
-        this.groups = groups;
     }
 }

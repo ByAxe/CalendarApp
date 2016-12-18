@@ -21,8 +21,10 @@ public class EventsEntityToDTOConverter implements Converter<EventsEntity, IEven
 
         IEventsDTO target = new EventsDTOImpl();
 
+        target.setId(source.getId());
         target.setUuid(source.getUuid());
         target.setDtUpdate(source.getDtUpdate());
+
         target.setStarts(LocalDateTime.ofInstant(source.getStarts().toInstant(), ZoneId.systemDefault()));
         target.setEnds(LocalDateTime.ofInstant(source.getEnds().toInstant(), ZoneId.systemDefault()));
         target.setTitle(source.getTitle());

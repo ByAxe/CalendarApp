@@ -25,8 +25,10 @@ public class GroupsDTOToEntityConverter implements Converter<IGroupsDTO, GroupsE
 
         GroupsEntity target = new GroupsEntity();
 
+        target.setId(source.getId());
         target.setUuid(source.getUuid());
         target.setDtUpdate(source.getDtUpdate());
+
         target.setTitle(source.getTitle());
         target.setHours(source.getHours());
         target.setDescription(source.getDescription());
