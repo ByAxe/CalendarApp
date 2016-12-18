@@ -1,10 +1,10 @@
 ####Close plans:
 - Implement model for: students, organisations, orders, compensations, allocation 
-    1) Entity students
-    2) DTO students
-    3) Students repository
-    4) Students converters
-    5) Students service
+    1) ~~Entity~~
+    2) ~~DTO~~
+    3) Repository
+    4) Converters
+    5) Service
 - Create Scheduler for Notifications (allocation-finish(!) and events)
 - Add material menu
 - Add menu items and help

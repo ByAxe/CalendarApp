@@ -1,3 +1,5 @@
+https://howtoprogramwithjava.com/hibernate-manytoone-unidirectional-tutorial/
+
 To persist all the objects correctly you’ll need to follow these generic steps:
 
 1) Instantiate/Load parent object

@@ -112,50 +112,39 @@ CREATE TABLE cld.orders (
   uuid       UUID           NOT NULL,
   dt_update  TIMESTAMPTZ(6) NOT NULL,
   profession VARCHAR(100)   NOT NULL,
-  rank       INT            NOT NULL DEFAULT 1,
-  starts     TIMESTAMPTZ(6) NOT NULL,
-  number     VARCHAR(50)    NOT NULL
+  rank       INT            NOT NULL DEFAULT 1, -- Разряд
+  starts     TIMESTAMPTZ(6) NOT NULL, -- Дата приказа
+  number     VARCHAR(50)    NOT NULL, -- Номер приказа
+  payload    TEXT
 );
 
 CREATE UNIQUE INDEX orders_uuid_idx
   ON cld.orders USING BTREE (uuid);
 
 -- ----------------------------
--- TABLE compensations
--- ----------------------------
-DROP TABLE IF EXISTS cld.compensations;
-CREATE TABLE cld.compensations (
-  id                BIGSERIAL PRIMARY KEY,
-  uuid              UUID           NOT NULL,
-  dt_update         TIMESTAMPTZ(6) NOT NULL,
-  cort              BOOLEAN        NOT NULL DEFAULT FALSE,
-  order_date        TIMESTAMPTZ(6) NOT NULL,
-  order_number      VARCHAR(50)    NOT NULL,
-  confirmation_date TIMESTAMPTZ(6) NOT NULL
-);
-
-CREATE UNIQUE INDEX compensations_uuid_idx
-  ON cld.compensations USING BTREE (uuid);
-
--- ----------------------------
 -- TABLE allocation
 -- ----------------------------
 DROP TABLE IF EXISTS cld.allocation;
 CREATE TABLE cld.allocation (
-  id                     BIGSERIAL PRIMARY KEY,
-  uuid                   UUID           NOT NULL,
-  dt_update              TIMESTAMPTZ(6) NOT NULL,
-  parent_uuid            UUID,
-  group_id               BIGINT         NOT NULL,
-  organisation_id        BIGINT         NOT NULL,
-  student_id             BIGINT         NOT NULL,
-  order_id               BIGINT,
-  compensation_id        BIGINT,
-  confirmation           VARCHAR ARRAY,
-  army                   BOOLEAN        NOT NULL DEFAULT FALSE,
-  stage                  VARCHAR        NOT NULL DEFAULT 'FIRST',
-  free_allocation        BOOLEAN        NOT NULL DEFAULT FALSE,
-  free_allocation_reason TEXT
+  id                                       BIGSERIAL PRIMARY KEY,
+  uuid                                     UUID           NOT NULL,
+  dt_update                                TIMESTAMPTZ(6) NOT NULL,
+  parent_uuid                              UUID,
+  group_id                                 BIGINT         NOT NULL,
+  organisation_id                          BIGINT         NOT NULL,
+  student_id                               BIGINT         NOT NULL,
+  order_id                                 BIGINT,
+  confirmations                            VARCHAR ARRAY, -- Подтверждения об отработке
+  army                                     BOOLEAN        NOT NULL DEFAULT FALSE,
+  stage                                    VARCHAR        NOT NULL DEFAULT 'FIRST', -- Ступень образования
+  free_allocation                          BOOLEAN        NOT NULL DEFAULT FALSE, -- Свободное распределение
+  free_allocation_reason                   TEXT, -- Причина свободного распределения
+  voluntary_compensation                   BOOLEAN        NOT NULL DEFAULT TRUE, -- Добровольное возмещение
+  voluntary_compensation_order_date        TIMESTAMPTZ(6), -- Дата приказа по добровольному возмещению
+  voluntary_compensation_order_number      VARCHAR(50), -- Номер приказа по добровольному возмещению
+  voluntary_compensation_confirmation_date TIMESTAMPTZ(6), -- Дата получения извещения о добровольном возмещение
+  cort_order_date                          TIMESTAMPTZ(6), -- Возмещение через суд, Дата приказа
+  cort_order_number                        VARCHAR(50) -- Возмещение через суд, Номер приказа
 );
 
 CREATE UNIQUE INDEX allocation_uuid_idx
@@ -181,6 +170,3 @@ ALTER TABLE cld.allocation
 
 ALTER TABLE cld.allocation
   ADD FOREIGN KEY (order_id) REFERENCES cld.orders;
-
-ALTER TABLE cld.allocation
-  ADD FOREIGN KEY (compensation_id) REFERENCES cld.compensations;

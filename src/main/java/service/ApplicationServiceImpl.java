@@ -165,10 +165,10 @@ public class ApplicationServiceImpl implements IApplicationService {
         priorityPicker.getItems()
                 .addAll(Stream.of(Priority.values()).map(Priority::getName).collect(toList()));
 
-        createGroup();
+//        test();
     }
 
-    private void createGroup() {
+    private void test() {
         IRulersDTO rulersDTO = rulersService.findOne(1L);
 
         IGroupsDTO groupsDTO = new GroupsDTOImpl();
