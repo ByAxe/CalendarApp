@@ -25,7 +25,6 @@ import java.util.List;
 public class EventsServiceImpl implements IEventsService {
 
     private final EventsRepository eventsRepository;
-
     private final ConversionService conversionService;
 
     @Autowired
@@ -89,9 +88,7 @@ public class EventsServiceImpl implements IEventsService {
     public Page<IEventsDTO> findAll(Pageable pageable) {
         Page<EventsEntity> entities = eventsRepository.findAll(pageable);
 
-        List<IEventsDTO> dtoList = convertListEntityToDto(entities);
-
-        return new PageImpl<>(dtoList);
+        return new PageImpl<>(convertListEntityToDto(entities));
     }
 
     /**

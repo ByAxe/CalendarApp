@@ -4,8 +4,12 @@ import core.enums.ResultEnum;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+
 /**
  * Created by A.Litvinau on 12/10/2016.
+ * <p>
+ * Класс-обертка для переноса результатов выполнения методов.
  */
 public class Result {
 
@@ -46,5 +50,9 @@ public class Result {
 
     public void setPayload(List<String> payload) {
         this.payload = payload;
+    }
+
+    public String errorsToString() {
+        return payload.stream().collect(joining("\n"));
     }
 }

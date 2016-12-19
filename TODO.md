@@ -1,11 +1,6 @@
 ####Close plans:
-- Implement model for: students, organisations, orders, compensations, allocation 
-    1) ~~Entity~~
-    2) ~~DTO~~
-    3) ~~Repository~~
-    4) ~~Converters~~
-    5) Service
-- Create Scheduler for Notifications (allocation-finish(!) and events)
+- Add scheduler to application
+- Tune scheduler for Notifications (allocation-finish date and events)
 - Add material menu
 - Add menu items and help
 - Solve problem with TestNG

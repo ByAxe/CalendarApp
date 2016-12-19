@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
+
+import static core.enums.ResultEnum.ERROR;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -56,6 +59,18 @@ public class Utils {
      */
     public static Date convertLocalDateTimeToDate(LocalDateTime source) {
         return Date.from(source.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * Оборачивает {@link List<String>} ошибок в {@link Result}
+     * И форматирует {@link List<String>} ошибок для подготовки к выводу для пользователя
+     * <p>
+     *
+     * @param errors {@link List<String>} ошибок
+     * @return {@link Result} специальная обертка
+     */
+    public static Result wrapErrorsList(List<String> errors) {
+        return new Result(ERROR, errors);
     }
 
 }

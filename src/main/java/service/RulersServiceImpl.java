@@ -23,7 +23,6 @@ import java.util.List;
 public class RulersServiceImpl implements IRulersService {
 
     private final RulersRepository rulersRepository;
-
     private final ConversionService conversionService;
 
     @Autowired

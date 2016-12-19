@@ -25,9 +25,7 @@ import java.util.List;
 public class GroupsServiceImpl implements IGroupsService {
 
     private final GroupsRepository groupsRepository;
-
     private final IRulersService rulersService;
-
     private final ConversionService conversionService;
 
     @Autowired
