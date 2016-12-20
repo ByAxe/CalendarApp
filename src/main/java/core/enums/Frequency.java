@@ -7,8 +7,7 @@ public enum Frequency {
     ONCE("Не повторяется"),
     DAILY("Ежедневно"),
     WEEKLY("Еженедельно"),
-    MONTHLY("Ежемесячно"),
-    ANNUALLY("Ежегодно");
+    MONTHLY("Ежемесячно");
 
     private String name;
 

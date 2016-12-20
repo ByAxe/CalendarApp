@@ -4,6 +4,10 @@ import core.api.AEssence;
 import core.api.IEssence;
 import core.dto.api.IStudentsDTO;
 
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
+
 /**
  * Created by byaxe on 18.12.16.
  */
@@ -83,5 +87,10 @@ public class StudentsDTOImpl extends AEssence implements IStudentsDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String getCredentials() {
+        return Stream.of(firstName, middleName, lastName).collect(joining(" "));
     }
 }

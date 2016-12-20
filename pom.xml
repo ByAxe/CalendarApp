@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calendar-app</groupId>
 	<artifactId>calendar-root</artifactId>
-	<version>0.3.0</version>
+	<version>0.4.0</version>
 
 	<name>calendar-root</name>
 	<url>http://maven.apache.org</url>
@@ -69,6 +69,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

@@ -17,6 +17,7 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
     private boolean army;
     private boolean freeAllocation;
     private boolean voluntaryCompensation;
+    private boolean archive;
 
     private Stage stage;
     private String cortOrderNumber;
@@ -50,6 +51,7 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.army = essence.isArmy();
         this.freeAllocation = essence.isFreeAllocation();
         this.voluntaryCompensation = essence.isVoluntaryCompensation();
+        this.archive = essence.isArchive();
 
         this.stage = essence.getStage();
         this.cortOrderNumber = essence.getCortOrderNumber();
@@ -66,7 +68,7 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
     }
 
     public AllocationDTOImpl(Long id, UUID parentUuid, boolean army, boolean freeAllocation, boolean voluntaryCompensation,
-                             Stage stage, String cortOrderNumber, String voluntaryCompensationOrderNumber,
+                             boolean archive, Stage stage, String cortOrderNumber, String voluntaryCompensationOrderNumber,
                              LocalDateTime voluntaryCompensationOrderDate, LocalDateTime voluntaryCompensationConfirmationDate,
                              LocalDateTime cortOrderDate, String[] confirmations, IGroupsDTO group, IOrganisationsDTO organisation,
                              IStudentsDTO student, IOrdersDTO order) {
@@ -75,6 +77,7 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.army = army;
         this.freeAllocation = freeAllocation;
         this.voluntaryCompensation = voluntaryCompensation;
+        this.archive = archive;
         this.stage = stage;
         this.cortOrderNumber = cortOrderNumber;
         this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
@@ -118,6 +121,16 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
 
     public void setVoluntaryCompensation(boolean voluntaryCompensation) {
         this.voluntaryCompensation = voluntaryCompensation;
+    }
+
+    @Override
+    public boolean isArchive() {
+        return archive;
+    }
+
+    @Override
+    public void setArchive(boolean archive) {
+        this.archive = archive;
     }
 
     public Stage getStage() {

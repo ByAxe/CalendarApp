@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static core.commons.Utils.covertDateToLocalDateTime;
+import static core.commons.Utils.convertDateToLocalDateTime;
 
 /**
  * Created by byaxe on 18.12.16.
@@ -44,14 +44,15 @@ public class AllocationEntityToDTOConverter implements Converter<AllocationEntit
         target.setArmy(source.isArmy());
         target.setFreeAllocation(source.isFreeAllocation());
         target.setVoluntaryCompensation(source.isVoluntaryCompensation());
+        target.setArchive(source.isArchive());
 
         target.setStage(source.getStage());
         target.setCortOrderNumber(source.getCortOrderNumber());
         target.setVoluntaryCompensationOrderNumber(source.getVoluntaryCompensationOrderNumber());
 
-        target.setVoluntaryCompensationOrderDate(covertDateToLocalDateTime(source.getVoluntaryCompensationOrderDate()));
-        target.setVoluntaryCompensationConfirmationDate(covertDateToLocalDateTime(source.getVoluntaryCompensationConfirmationDate()));
-        target.setCortOrderDate(covertDateToLocalDateTime(source.getCortOrderDate()));
+        target.setVoluntaryCompensationOrderDate(convertDateToLocalDateTime(source.getVoluntaryCompensationOrderDate()));
+        target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(source.getVoluntaryCompensationConfirmationDate()));
+        target.setCortOrderDate(convertDateToLocalDateTime(source.getCortOrderDate()));
 
         target.setConfirmations(source.getConfirmations());
 

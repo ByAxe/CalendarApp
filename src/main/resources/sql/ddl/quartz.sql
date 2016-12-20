@@ -2,18 +2,18 @@
 --
 -- In your Quartz properties file, you'll need to set 
 -- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
-
-DROP TABLE qrtz_fired_triggers;
-DROP TABLE QRTZ_PAUSED_TRIGGER_GRPS;
-DROP TABLE QRTZ_SCHEDULER_STATE;
-DROP TABLE QRTZ_LOCKS;
-DROP TABLE qrtz_simple_triggers;
-DROP TABLE qrtz_cron_triggers;
-DROP TABLE qrtz_simprop_triggers;
-DROP TABLE QRTZ_BLOB_TRIGGERS;
-DROP TABLE qrtz_triggers;
-DROP TABLE qrtz_job_details;
-DROP TABLE qrtz_calendars;
+SET search_path TO cld;
+DROP TABLE IF EXISTS qrtz_fired_triggers;
+DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
+DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;
+DROP TABLE IF EXISTS QRTZ_LOCKS;
+DROP TABLE IF EXISTS qrtz_simple_triggers;
+DROP TABLE IF EXISTS qrtz_cron_triggers;
+DROP TABLE IF EXISTS qrtz_simprop_triggers;
+DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS;
+DROP TABLE IF EXISTS qrtz_triggers;
+DROP TABLE IF EXISTS qrtz_job_details;
+DROP TABLE IF EXISTS qrtz_calendars;
 
 CREATE TABLE qrtz_job_details
 (
@@ -203,5 +203,3 @@ CREATE INDEX idx_qrtz_ft_t_g
 CREATE INDEX idx_qrtz_ft_tg
   ON qrtz_fired_triggers (SCHED_NAME, TRIGGER_GROUP);
 
-
-COMMIT;

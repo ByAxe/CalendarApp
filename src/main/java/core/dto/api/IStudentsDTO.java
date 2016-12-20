@@ -26,4 +26,6 @@ public interface IStudentsDTO extends IEssence {
     String getAddress();
 
     void setAddress(String address);
+
+    String getCredentials();
 }

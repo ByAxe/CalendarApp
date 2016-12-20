@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:util="http://www.springframework.org/schema/util"
 	   xmlns="http://www.springframework.org/schema/beans"
-	   xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
-	<bean id="myJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="service.tasks.MyJob"/>
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="someParam" value="some value"/>
-				<entry key="someParam2" value="1"/>
-			</map>
-		</property>
+	<bean id="quartzJobFactory" class="service.quartz.AutowiringSpingBeanJobFactory">
+		<property name="ignoredUnknownProperties" value="applicationContext"/>
 	</bean>
 
-	<util:list id="quartz-triggers">
-		<bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- Quartz requires a separate 'quartz.properties' file -->
+		<property name="configLocation" value="properties/quartz.properties"/>
 
-			<!-- Reference to the job bean that will be triggered: -->
-			<property name="jobDetail" ref="myJob"/>
+		<!-- Naturally, Quartz with the DB requires references to the data source and transaction manager beans -->
+		<property name="dataSource" ref="dataSource"/>
+		<property name="transactionManager" ref="transactionManager"/>
 
-			<!-- Cron expression, usually comes from a property -->
-			<property name="cronExpression" value="0 15 11-12 ? * MON-FRI"/>
+		<!-- reference to our 'autowiring job factory bean', defined above: -->
+		<property name="jobFactory" ref="quartzJobFactory"/>
 
-			<!-- What to do if the job has missed its time
-				 because the previous job was running for too long.
-				 Usually, it's OK to do nothing, but Quartz has other strategies as well,
-				 notably 'MISFIRE_INSTRUCTION_FIRE_ONCE_NOW' -->
-			<property name="misfireInstruction"
-					  value="#{T(org.quartz.CronTrigger).MISFIRE_INSTRUCTION_DO_NOTHING}"/>
-		</bean>
-	</util:list>
+		<!-- Boolean controlling whether you want to override the job definitions in the DB on the app start up. -->
+		<property name="overwriteExistingJobs" value="true"/>
+
+		<property name="autoStartup" value="false"/>
+		<property name="schedulerName" value="quartzScheduler"/>
+		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+
+		<!-- Controls whether to wait for jobs completion on app shutdown, we use 'true' -->
+		<property name="waitForJobsToCompleteOnShutdown"
+				  value="false"/>
+
+		<!-- You can override any property from the 'quartz.properties' here,
+			 using the more flexible Spring mechanisms, for example: -->
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.scheduler.instanceId">
+					${org.quartz.scheduler.instanceId}
+				</prop>
+				<prop key="org.quartz.scheduler.instanceName">
+					${org.quartz.scheduler.instanceName}
+				</prop>
+			</props>
+		</property>
+	</bean>
 
 </beans>

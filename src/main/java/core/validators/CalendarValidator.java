@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static core.commons.Utils.wrapErrorsList;
-import static core.enums.ResultEnum.SUCCESS;
+import static core.commons.Utils.wrapResult;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 /**
@@ -22,8 +21,7 @@ public class CalendarValidator {
     private int MINIMAL_EVENT_LONGING_MINUTES;
 
     /**
-     * В случае Успеха возвращает {@link Result} где лежит {@link core.enums.ResultEnum.SUCCESS}, а payload пустой
-     * В случае Ошибок возвращает {@link Result} где лежит {@link core.enums.ResultEnum.ERROR} и payload с ошибками
+     * Валидирует новое событие {@link IEventsDTO}
      *
      * @param event Новое событие {@link IEventsDTO}
      * @return Экземпляр результата {@link Result}
@@ -43,10 +41,6 @@ public class CalendarValidator {
             errors.add("Описание события не может быть пустым.");
         }
 
-        if (errors.isEmpty()) {
-            return new Result(SUCCESS);
-        } else {
-            return wrapErrorsList(errors);
-        }
+        return wrapResult(errors);
     }
 }

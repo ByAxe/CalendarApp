@@ -6,7 +6,7 @@ import model.entity.OrdersEntity;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static core.commons.Utils.covertDateToLocalDateTime;
+import static core.commons.Utils.convertDateToLocalDateTime;
 
 /**
  * Created by byaxe on 18.12.16.
@@ -28,7 +28,7 @@ public class OrdersEntityToDTOConverter implements Converter<OrdersEntity, IOrde
         target.setPayload(source.getPayload());
         target.setNumber(source.getNumber());
         target.setRank(source.getRank());
-        target.setStarts(covertDateToLocalDateTime(source.getStarts()));
+        target.setStarts(convertDateToLocalDateTime(source.getStarts()));
 
         return target;
     }

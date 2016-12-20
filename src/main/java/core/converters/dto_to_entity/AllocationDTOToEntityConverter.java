@@ -43,6 +43,7 @@ public class AllocationDTOToEntityConverter implements Converter<IAllocationDTO,
         target.setArmy(source.isArmy());
         target.setFreeAllocation(source.isFreeAllocation());
         target.setVoluntaryCompensation(source.isVoluntaryCompensation());
+        target.setArchive(source.isArchive());
 
         target.setStage(source.getStage());
         target.setCortOrderNumber(source.getCortOrderNumber());

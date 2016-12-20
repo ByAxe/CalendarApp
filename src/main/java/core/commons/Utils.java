@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import static core.enums.ResultEnum.ERROR;
+import static core.enums.ResultEnum.SUCCESS;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -36,6 +37,9 @@ public class Utils {
         alert.setHeaderText(header);
         alert.setContentText(body);
 
+        alert.setHeight(300);
+        alert.setWidth(200);
+
         alert.showAndWait();
     }
 
@@ -46,7 +50,7 @@ public class Utils {
      * @param source Исходная дата в {@link Date}
      * @return Результативная дата в {@link LocalDateTime}
      */
-    public static LocalDateTime covertDateToLocalDateTime(Date source) {
+    public static LocalDateTime convertDateToLocalDateTime(Date source) {
         return LocalDateTime.ofInstant(source.toInstant(), ZoneId.systemDefault());
     }
 
@@ -63,14 +67,20 @@ public class Utils {
 
     /**
      * Оборачивает {@link List<String>} ошибок в {@link Result}
-     * И форматирует {@link List<String>} ошибок для подготовки к выводу для пользователя
      * <p>
+     * В случае Успеха (пустой errors) возвращает {@link Result} где лежит {@link core.enums.ResultEnum.SUCCESS},
+     * payload {@link List<String>} == null
+     * </p>
+     * <p>
+     * В случае Ошибок (не пустой errors) возвращает {@link Result} где лежит {@link core.enums.ResultEnum.ERROR},
+     * payload {@link List<String>} с ошибками
+     * </p>
      *
      * @param errors {@link List<String>} ошибок
      * @return {@link Result} специальная обертка
      */
-    public static Result wrapErrorsList(List<String> errors) {
-        return new Result(ERROR, errors);
+    public static Result wrapResult(final List<String> errors) {
+        return errors.isEmpty() ? new Result(SUCCESS) : new Result(ERROR, errors);
     }
 
 }

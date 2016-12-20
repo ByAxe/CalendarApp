@@ -1,7 +1,10 @@
 package service;
 
 import core.dto.api.IAllocationDTO;
+import core.enums.EventType;
 import model.entity.AllocationEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.AllocationRepository;
 import service.api.*;
+import service.quartz.JobInitializer;
 
 import java.util.List;
 
@@ -22,12 +26,17 @@ import java.util.List;
 @Transactional(readOnly = true, rollbackFor = {Exception.class})
 public class AllocationServiceImpl implements IAllocationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AllocationServiceImpl.class);
+
     private final AllocationRepository allocationRepository;
     private final ConversionService conversionService;
     private final IGroupsService groupsService;
     private final IOrganisationsService organisationsService;
     private final IStudentsService studentsService;
     private final IOrdersService ordersService;
+
+    @Autowired
+    private JobInitializer jobInitializer;
 
     @Autowired
     public AllocationServiceImpl(AllocationRepository allocationRepository, ConversionService conversionService,
@@ -50,7 +59,11 @@ public class AllocationServiceImpl implements IAllocationService {
 
         AllocationEntity savedEntity = allocationRepository.save(entity);
 
-        return convertEntityToDto(savedEntity);
+        IAllocationDTO allocation = convertEntityToDto(savedEntity);
+
+        jobInitializer.synchronizeJobWithAllocation(allocation, EventType.SAVE);
+
+        return allocation;
     }
 
     @Override
@@ -62,7 +75,42 @@ public class AllocationServiceImpl implements IAllocationService {
 
         Iterable<AllocationEntity> savedEntity = allocationRepository.save(entities);
 
-        return convertListEntityToDto(savedEntity);
+        List<IAllocationDTO> allocations = convertListEntityToDto(savedEntity);
+
+        allocations.forEach(a -> jobInitializer.synchronizeJobWithAllocation(a, EventType.SAVE));
+
+        return allocations;
+    }
+
+    /**
+     * Перемещение записи в архив
+     *
+     * @param id идентификатор перемещаемой записи
+     */
+    @Override
+    public void moveToArchive(Long id) {
+        try {
+            IAllocationDTO row = findOne(id);
+            row.setArchive(true);
+            save(row);
+        } catch (Exception e) {
+            logger.error("Ошибка при попытке перемещения записи в архив", e);
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<IAllocationDTO> findByArchiveTrue() {
+        List<AllocationEntity> entities = allocationRepository.findByArchiveTrue();
+
+        return convertListEntityToDto(entities);
+    }
+
+    @Override
+    public List<IAllocationDTO> findByArchiveFalse() {
+        List<AllocationEntity> entities = allocationRepository.findByArchiveFalse();
+
+        return convertListEntityToDto(entities);
     }
 
     @Override
@@ -113,12 +161,16 @@ public class AllocationServiceImpl implements IAllocationService {
     @Override
     @Transactional
     public void delete(Long id) {
+        jobInitializer.synchronizeJobWithAllocation(findOne(id), EventType.DELETE);
+
         allocationRepository.delete(id);
     }
 
     @Override
     @Transactional
     public void delete(IAllocationDTO dto) {
+        jobInitializer.synchronizeJobWithAllocation(dto, EventType.DELETE);
+
         AllocationEntity entity = convertDtoToEntity(dto);
 
         allocationRepository.delete(entity);
@@ -127,6 +179,8 @@ public class AllocationServiceImpl implements IAllocationService {
     @Override
     @Transactional
     public void delete(Iterable<? extends IAllocationDTO> dtoList) {
+        dtoList.forEach(a -> jobInitializer.synchronizeJobWithAllocation(a, EventType.DELETE));
+
         List<AllocationEntity> entities = convertListDtoToEntity((Iterable<IAllocationDTO>) dtoList);
 
         allocationRepository.delete(entities);

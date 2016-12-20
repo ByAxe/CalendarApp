@@ -1,6 +1,7 @@
 package service;
 
 import core.dto.api.IEventsDTO;
+import core.enums.EventType;
 import model.entity.EventsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.EventsRepository;
 import service.api.IEventsService;
+import service.quartz.JobInitializer;
 
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class EventsServiceImpl implements IEventsService {
 
     private final EventsRepository eventsRepository;
     private final ConversionService conversionService;
+
+    @Autowired
+    private JobInitializer jobInitializer;
 
     @Autowired
     public EventsServiceImpl(EventsRepository eventsRepository, ConversionService conversionService) {
@@ -46,7 +51,11 @@ public class EventsServiceImpl implements IEventsService {
 
         EventsEntity savedEntity = eventsRepository.save(sourceEntity);
 
-        return convertEntityToDto(savedEntity);
+        IEventsDTO newEvent = convertEntityToDto(savedEntity);
+
+        jobInitializer.synchronizeJobWithCalendarEvents(newEvent, EventType.SAVE);
+
+        return newEvent;
     }
 
     /**
@@ -62,7 +71,11 @@ public class EventsServiceImpl implements IEventsService {
 
         Iterable<EventsEntity> savedEntities = eventsRepository.save(sourceEntities);
 
-        return convertListEntityToDto(savedEntities);
+        List<IEventsDTO> newEvents = convertListEntityToDto(savedEntities);
+
+        newEvents.forEach(e -> jobInitializer.synchronizeJobWithCalendarEvents(e, EventType.SAVE));
+
+        return newEvents;
     }
 
     /**
@@ -158,6 +171,8 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     @Transactional
     public void delete(Long id) {
+        jobInitializer.synchronizeJobWithCalendarEvents(findOne(id), EventType.DELETE);
+
         eventsRepository.delete(id);
     }
 
@@ -169,6 +184,8 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     @Transactional
     public void delete(IEventsDTO dto) {
+        jobInitializer.synchronizeJobWithCalendarEvents(dto, EventType.DELETE);
+
         EventsEntity entity = convertDtoToEntity(dto);
 
         eventsRepository.delete(entity);
@@ -182,6 +199,8 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     @Transactional
     public void delete(Iterable<? extends IEventsDTO> dtoList) {
+        dtoList.forEach(e -> jobInitializer.synchronizeJobWithCalendarEvents(e, EventType.DELETE));
+
         List<EventsEntity> entities = convertListDtoToEntity((Iterable<IEventsDTO>) dtoList);
 
         eventsRepository.delete(entities);

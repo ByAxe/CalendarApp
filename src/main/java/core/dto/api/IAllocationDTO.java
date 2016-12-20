@@ -27,6 +27,10 @@ public interface IAllocationDTO extends IEssence {
 
     void setVoluntaryCompensation(boolean voluntaryCompensation);
 
+    boolean isArchive();
+
+    void setArchive(boolean archive);
+
     Stage getStage();
 
     void setStage(Stage stage);

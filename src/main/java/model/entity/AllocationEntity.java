@@ -36,6 +36,7 @@ public class AllocationEntity extends APersistentEntity {
     private boolean army;
     private boolean freeAllocation;
     private boolean voluntaryCompensation;
+    private boolean archive;
 
     private Stage stage;
     private String cortOrderNumber;
@@ -98,6 +99,15 @@ public class AllocationEntity extends APersistentEntity {
         this.voluntaryCompensation = voluntaryCompensation;
     }
 
+    @Column(name = "archive")
+    public boolean isArchive() {
+        return archive;
+    }
+
+    public void setArchive(boolean archive) {
+        this.archive = archive;
+    }
+
     @Column(name = "stage", nullable = false)
     @Enumerated(EnumType.STRING)
     public Stage getStage() {
@@ -154,7 +164,7 @@ public class AllocationEntity extends APersistentEntity {
     }
 
     @Type(type = "stringArray")
-    @Column(name = "confirmation")
+    @Column(name = "confirmations")
     public String[] getConfirmations() {
         return confirmations;
     }

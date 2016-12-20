@@ -144,11 +144,47 @@ CREATE TABLE cld_test.allocation (
   voluntary_compensation_order_number      VARCHAR(50), -- Номер приказа по добровольному возмещению
   voluntary_compensation_confirmation_date TIMESTAMPTZ(6), -- Дата получения извещения о добровольном возмещение
   cort_order_date                          TIMESTAMPTZ(6), -- Возмещение через суд, Дата приказа
-  cort_order_number                        VARCHAR(50) -- Возмещение через суд, Номер приказа
+  cort_order_number                        VARCHAR(50), -- Возмещение через суд, Номер приказа
+  archive                                  BOOLEAN                 DEFAULT FALSE -- Пометка о том, что запись находится в архиве
 );
 
 CREATE UNIQUE INDEX allocation_uuid_idx
   ON cld_test.allocation USING BTREE (uuid);
+
+-- ----------------------------
+-- TABLE preferences
+-- ----------------------------
+DROP TABLE IF EXISTS cld_test.preferences;
+CREATE TABLE cld_test.preferences (
+  id                         BIGSERIAL PRIMARY KEY,
+  uuid                       UUID           NOT NULL,
+  dt_update                  TIMESTAMPTZ(6) NOT NULL,
+  notifications_enabled      BOOLEAN        NOT NULL DEFAULT TRUE, -- Включены/Выключены уведомления
+  archive_enabled            BOOLEAN        NOT NULL DEFAULT TRUE, -- Включен/Выключен архив
+  archive_term               INT            NOT NULL DEFAULT 30, -- Архивный период записей по отработки. После этого числа дней запись будет перемещена в архив
+  confirmation_notice_term   INT            NOT NULL DEFAULT 3, -- За какое количество дней будет выдано уведомление о том, что у конкретного человека истекает подтверждение об отработке
+  allocation_end_notice_term INT            NOT NULL DEFAULT 1 -- За какое количество дней до окончания срока отработки будет выданно данное сообщение
+);
+
+CREATE UNIQUE INDEX preferences_uuid_idx
+  ON cld_test.preferences USING BTREE (uuid);
+
+-- ----------------------------
+-- TABLE notifications
+-- ----------------------------
+DROP TABLE IF EXISTS cld_test.notifications_log;
+CREATE TABLE cld_test.notifications_log (
+  id                BIGSERIAL PRIMARY KEY,
+  uuid              UUID           NOT NULL,
+  dt_update         TIMESTAMPTZ(6) NOT NULL,
+  viewed            BOOLEAN        NOT NULL DEFAULT FALSE, -- Признак того что уведомление было прочитано
+  notification_date TIMESTAMPTZ(6) NOT NULL, -- Когда уведомление было создано
+  notification_type VARCHAR        NOT NULL DEFAULT 'ALLOCATION_END',
+  payload           TEXT           NOT NULL -- Непосредственно текст уведомления
+);
+
+CREATE UNIQUE INDEX notifications_log_uuid_idx
+  ON cld_test.notifications_log USING BTREE (uuid);
 
 -- ----------------------------
 -- Foreign Key structure for table cld_test.groups

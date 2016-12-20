@@ -1,4 +1,4 @@
-package service.factory;
+package service.quartz;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
