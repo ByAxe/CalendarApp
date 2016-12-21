@@ -18,6 +18,9 @@ import service.api.IGroupsService;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static javafx.scene.input.MouseButton.SECONDARY;
+import static javafx.scene.input.MouseEvent.MOUSE_RELEASED;
+
 /**
  * Created by byaxe on 03.12.16.
  */
@@ -75,6 +78,8 @@ public class ApplicationController implements Initializable {
         calendarCleanEventForm(null);
 
         calendarFillUpcomingEventsList();
+
+        calendarAddHandlerToUpcomingEventsList();
     }
 
     /**
@@ -125,6 +130,14 @@ public class ApplicationController implements Initializable {
                 calendarFrequencyPicker,
                 calendarPriorityPicker
         );
+    }
+
+    private void calendarAddHandlerToUpcomingEventsList() {
+        calendarUpcomingEventsListView.addEventFilter(MOUSE_RELEASED, e -> {
+            if (e.getButton() == SECONDARY) e.consume();
+        });
+
+        calendarUpcomingEventsListView.setOnMouseClicked(e -> System.out.println("right click!"));
     }
 
     /**
