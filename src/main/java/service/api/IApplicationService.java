@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 
 /**
@@ -34,4 +35,6 @@ public interface IApplicationService {
     void showHelp();
 
     void showAbout();
+
+    void calendarCreateBigCalendar(Pane calendarRightPaneBottomBlock, Label calendarUpcomingEventsLabel, JFXListView<Label> calendarUpcomingEventsListView);
 }

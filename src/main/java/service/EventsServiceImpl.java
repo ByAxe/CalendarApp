@@ -19,6 +19,7 @@ import repository.EventsRepository;
 import service.api.IEventsService;
 import service.quartz.JobInitializer;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -226,6 +227,14 @@ public class EventsServiceImpl implements IEventsService {
     @Override
     public List<IEventsDTO> findUpcomingEvents() {
         List<EventsEntity> entities = eventsRepository.findUpcomingEvents();
+
+        return convertListEntityToDto(entities);
+    }
+
+
+    @Override
+    public List<IEventsDTO> findUpcomingEventsForPeriod(Date starts, Date ends) {
+        List<EventsEntity> entities = eventsRepository.findUpcomingEventsForPeriod(starts, ends);
 
         return convertListEntityToDto(entities);
     }

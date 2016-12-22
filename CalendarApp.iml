@@ -99,5 +99,10 @@
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.3" level="project" />
     <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.3" level="project" />
+    <orderEntry type="library" name="Maven: com.guigarage:material-design-fx:0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.guigarage:controls:0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.guigarage:ui-basics:0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.reactfx:reactfx:1.4" level="project" />
+    <orderEntry type="library" name="Maven: com.guigarage:css-helper:0.7" level="project" />
   </component>
 </module>

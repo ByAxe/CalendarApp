@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,5 +20,8 @@ public interface EventsRepository extends PagingAndSortingRepository<EventsEntit
 
     @Query(value = "SELECT * FROM cld.events WHERE ends >= CURRENT_TIMESTAMP(2) ORDER BY starts LIMIT 20", nativeQuery = true)
     List<EventsEntity> findUpcomingEvents();
+
+    @Query(value = "SELECT * FROM cld.events WHERE ends >= CURRENT_TIMESTAMP(2) AND starts BETWEEN ?1 AND ?2 ORDER BY starts LIMIT 20", nativeQuery = true)
+    List<EventsEntity> findUpcomingEventsForPeriod(Date starts, Date ends);
 
 }

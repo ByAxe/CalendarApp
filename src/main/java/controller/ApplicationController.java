@@ -8,11 +8,9 @@ import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,6 +57,15 @@ public class ApplicationController implements Initializable {
     public MenuItem preferencesMenuItem;
     public MenuItem helpMenuItem;
     public MenuItem aboutMenuItem;
+    public Pane calendarRightPaneTopBlock;
+    public Label calendarMonthTitle;
+    public ButtonBar calendarLeftButtonBar;
+    public JFXButton calendarLeftMonthButton;
+    public ButtonBar calendarRightButtonBar;
+    public JFXButton calendarRightMonthButton;
+    public Pane calendarRightPaneBottomBlock;
+    public JFXButton calendarLeftYearButton;
+    public JFXButton calendarRightYearButton;
     private IApplicationService applicationService;
     private IEventsService eventsService;
     private IGroupsService groupsService;
@@ -85,7 +92,13 @@ public class ApplicationController implements Initializable {
 
         calendarFillUpcomingEventsList();
 
+        calendarCreateBigCalendar();
+
 //        calendarAddContextMenuToUpcomingEventsList();
+    }
+
+    private void calendarCreateBigCalendar() {
+        applicationService.calendarCreateBigCalendar(calendarRightPaneBottomBlock, calendarUpcomingEventsLabel, calendarUpcomingEventsListView);
     }
 
     /**

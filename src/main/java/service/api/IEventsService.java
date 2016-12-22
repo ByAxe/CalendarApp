@@ -7,6 +7,7 @@ package service.api;
 import core.dto.api.IEventsDTO;
 import model.entity.EventsEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,4 +15,6 @@ import java.util.List;
  */
 public interface IEventsService extends IEssenceService<IEventsDTO, Long>, IConversionService<IEventsDTO, EventsEntity> {
     List<IEventsDTO> findUpcomingEvents();
+
+    List<IEventsDTO> findUpcomingEventsForPeriod(Date starts, Date ends);
 }

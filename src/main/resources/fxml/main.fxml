@@ -10,27 +10,23 @@
 <?import javafx.scene.layout.*?>
 <?import jfxtras.scene.control.LocalDateTimeTextField?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-			minWidth="-Infinity"
-			prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
-			xmlns="http://javafx.com/javafx/8.0.60" fx:controller="controller.ApplicationController">
+			minWidth="-Infinity" prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
+			xmlns="http://javafx.com/javafx/8.0.65" fx:controller="controller.ApplicationController">
 	<MenuBar id="menu-bar" layoutX="1.0" layoutY="2.0" prefHeight="28.0" prefWidth="1100.0"
 			 AnchorPane.bottomAnchor="707.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 			 AnchorPane.topAnchor="0.0">
 		<menus>
 			<Menu mnemonicParsing="false" text="Файл">
 				<items>
-					<MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Выход"
-							  onAction="#handleExit"/>
+					<MenuItem fx:id="exitMenuItem" mnemonicParsing="false" onAction="#handleExit" text="Выход"/>
 					<!--					<MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" text="Настройки"
 												  onAction="#handlePreferencesClick"/>-->
 				</items>
 			</Menu>
 			<Menu mnemonicParsing="false" text="Помощь">
 				<items>
-					<MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="Справка"
-							  onAction="#handleHelp"/>
-					<MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="О программе"
-							  onAction="#handleAbout"/>
+					<MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Справка"/>
+					<MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#handleAbout" text="О программе"/>
 				</items>
 			</Menu>
 		</menus>
@@ -76,17 +72,17 @@
 								<LocalDateTimeTextField fx:id="calendarEndDatePicker" layoutX="141.0" layoutY="60.0"
 														prefHeight="25.0" prefWidth="198.0"/>
 
-								<JFXButton fx:id="calendarClearEventButton" buttonType="RAISED" cancelButton="true"
-										   layoutX="223.0" layoutY="260.0" onAction="#calendarCleanEventForm"
-										   prefHeight="35.0" prefWidth="120.0" ripplerFill="#82c9e1"
-										   style="-fx-background-color: #47a4c5;" text="Очистить" textFill="WHITE"
-										   id="calendarMainButtons">
+								<JFXButton id="calendarMainButtons" fx:id="calendarClearEventButton" buttonType="RAISED"
+										   cancelButton="true" layoutX="223.0" layoutY="260.0"
+										   onAction="#calendarCleanEventForm" prefHeight="35.0" prefWidth="120.0"
+										   ripplerFill="#82c9e1" style="-fx-background-color: #47a4c5;" text="Очистить"
+										   textFill="WHITE">
 								</JFXButton>
-								<JFXButton fx:id="calendarCreateEventButton" buttonType="RAISED" layoutX="13.0"
-										   layoutY="260.0" onAction="#calendarCreateNewEvent" prefHeight="35.0"
-										   prefWidth="120.0" ripplerFill="#82c9e1"
-										   style="-fx-background-color: #47a4c5;" text="Создать" textFill="WHITE"
-										   id="calendarMainButtons">
+								<JFXButton id="calendarMainButtons" fx:id="calendarCreateEventButton"
+										   buttonType="RAISED" layoutX="13.0" layoutY="260.0"
+										   onAction="#calendarCreateNewEvent" prefHeight="35.0" prefWidth="120.0"
+										   ripplerFill="#82c9e1" style="-fx-background-color: #47a4c5;" text="Создать"
+										   textFill="WHITE">
 								</JFXButton>
 								<JFXTextField fx:id="calendarEventTitlePicker" focusColor="#03a9f4" layoutX="8.0"
 											  layoutY="96.0" maxWidth="336.0" minWidth="330.0" prefHeight="31.0"
@@ -101,11 +97,11 @@
 								<Label fx:id="calendarUpcomingEventsLabel" layoutX="10.0" layoutY="3.0"
 									   prefHeight="27.0" prefWidth="274.0" text="Список предстоящих событий"
 									   textAlignment="CENTER"/>
-								<JFXButton fx:id="calendarUpdateUpcomingEventsListButton" layoutX="278.0" layoutY="4.0"
+								<JFXButton id="calendarUpdateUpcomingEventsListButton"
+										   fx:id="calendarUpdateUpcomingEventsListButton" layoutX="278.0" layoutY="4.0"
 										   onAction="#calendarHandleUpdateUpcomingEventsList" prefHeight="23.0"
 										   prefWidth="65.0" ripplerFill="#6bd1d6" style="-fx-background-color: #47a4c5;"
-										   text="Обновить.." textFill="WHITE"
-										   id="calendarUpdateUpcomingEventsListButton">
+										   text="Обновить.." textFill="WHITE">
 									<opaqueInsets>
 										<Insets/>
 									</opaqueInsets>
@@ -113,11 +109,28 @@
 							</AnchorPane>
 						</SplitPane>
 					</AnchorPane>
-					<AnchorPane fx:id="calendarRightPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-								prefWidth="100.0">
-						<JFXMasonryPane layoutX="46.0" layoutY="100.0" prefHeight="440.0" prefWidth="555.0"
-										AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-										AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+					<AnchorPane id="calendarRightPane" fx:id="calendarRightPane" minHeight="0.0" minWidth="0.0"
+								prefHeight="160.0" prefWidth="100.0">
+						<!--<Pane id="calendarRightPaneTopBlock" fx:id="calendarRightPaneTopBlock" prefHeight="50.0" prefWidth="732.0">-->
+						<!--<children>-->
+						<!--<Label id="calendarMonthTitle" fx:id="calendarMonthTitle" layoutX="310.0" layoutY="17.0" text="Название месяца" />-->
+						<!--<ButtonBar fx:id="calendarLeftButtonBar" layoutX="115.0" layoutY="6.0" prefHeight="40.0" prefWidth="153.0">-->
+						<!--<buttons>-->
+						<!--<JFXButton id="calendarLeftYearButton" fx:id="calendarLeftYearButton" buttonType="RAISED" ripplerFill="#c4f0ff" text="&lt;&lt;" textFill="#808080" />-->
+						<!--<JFXButton fx:id="calendarLeftMonthButton" buttonType="RAISED" ripplerFill="#c4f0ff" text="&lt;" textFill="#808080" />-->
+						<!--</buttons>-->
+						<!--</ButtonBar>-->
+						<!--<ButtonBar fx:id="calendarRightButtonBar" layoutX="466.0" layoutY="6.0" prefHeight="40.0" prefWidth="153.0">-->
+						<!--<buttons>-->
+						<!--<JFXButton id="calendarRightMonthButton" fx:id="calendarRightMonthButton" buttonType="RAISED" ripplerFill="#c4f0ff" text="&gt;" textFill="#808080" />-->
+						<!--<JFXButton id="calendarRightYearButton" fx:id="calendarRightYearButton" buttonType="RAISED" ripplerFill="#c4f0ff" text="&gt;&gt;" textFill="#808080" />-->
+						<!--</buttons>-->
+						<!--</ButtonBar>-->
+						<!--</children>-->
+						<!--</Pane>-->
+						<Pane id="calendarRightPaneBottomBlock" fx:id="calendarRightPaneBottomBlock" layoutX="46.0"
+							  layoutY="50.0" prefHeight="675.0" prefWidth="732.0" AnchorPane.bottomAnchor="0.0"
+							  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 					</AnchorPane>
 				</SplitPane>
 			</AnchorPane>

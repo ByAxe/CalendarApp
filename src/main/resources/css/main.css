@@ -23,3 +23,16 @@
 #calendarMainButtons {
     -fx-font-size: 14;
 }
+
+#calendarRightPaneTopBlock {
+    -fx-font-size: 17;
+    -fx-font-weight: 100;
+}
+
+#calendarRightPaneTopBlock .jfx-button {
+    -fx-background-color: white;
+}
+
+#calendarRightPaneBottomBlock {
+
+}

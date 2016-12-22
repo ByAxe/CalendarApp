@@ -7,6 +7,8 @@ package core.commons;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +28,7 @@ public class Utils {
     public static final String TOMORROW = "ЗАВТРА";
 
     public static final DateTimeFormatter PRETTY_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMM HH:mm");
+    public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
 
     /**
      * Создает сообщение с помощью {@link Alert}
@@ -117,4 +120,46 @@ public class Utils {
         return errors.isEmpty() ? new Result(SUCCESS) : new Result(ERROR, errors);
     }
 
+
+    /**
+     * Дата в нормальном виде, для заголовка календаря
+     *
+     * @param date настоящая дата
+     * @return форматированная дата
+     */
+    public static String formatDateForCalendarTitle(Date date) {
+        return new SimpleDateFormat("MMMM").format(date) + " " + new SimpleDateFormat("yyyy").format(date);
+    }
+
+    /**
+     * Возвращает начало дня переданной даты в {@link Date}
+     *
+     * @param date Дата
+     * @return Та же дата, но время установлено на начало дня
+     */
+    public static Date getStartOfDay(LocalDateTime date) {
+        long epochDay = getEpochDays(date);
+        return Date.from((LocalDate.ofEpochDay(epochDay).atStartOfDay().atZone(ZoneId.systemDefault())).toInstant());
+    }
+
+    /**
+     * Возвращает конец ддня переданной даты в {@link Date}
+     *
+     * @param date Дата
+     * @return Та же дата, но время установлено на конец дня 23.59.00
+     */
+    public static Date getEndOfDay(LocalDateTime date) {
+        long epochDay = getEpochDays(date);
+        return Date.from((LocalDate.ofEpochDay(epochDay).atTime(23, 59).atZone(ZoneId.systemDefault()).toInstant()));
+    }
+
+    /**
+     * Возвращает количество дней с начала эпохи по определенной дате
+     *
+     * @param date Дата
+     * @return Дата в днях с начала эпохи
+     */
+    public static long getEpochDays(LocalDateTime date) {
+        return date.atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay();
+    }
 }

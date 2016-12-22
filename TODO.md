@@ -1,6 +1,6 @@
 ##Plan    
 - ####**Thursday**
-    1) Tiles with dates for calendar
+    1) ~~Tiles with dates for calendar~~
     2) Installer
     3) Allocation tab
         1) core implementation of table
@@ -19,9 +19,7 @@
     1) Documentation fulfilment
     
 
-##Additional improvements 
-- ~~*Add documentation to JobInitializer*~~
-- ~~*Apply CSS*~~
+##Additional improvements
 - *Solve problem with Quartz*
 - *Add Preferences*
 - *Add modifying buttons for events (delete/update)*

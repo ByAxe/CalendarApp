@@ -1,0 +1,74 @@
+/*
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ */
+
+.date-chooser {
+    -fx-skin: "view.controlls.DateChooserSkin";
+}
+
+.date-chooser .jfx-button, .date-chooser .jfx-button:hover {
+    -fx-font-size: 18px !important;
+    -fx-text-fill: #555555 !important;
+    -fx-border-radius: 50%;
+}
+
+.weekday-cell {
+    -fx-background-radius: 50% 50%;
+    -fx-background-insets: 2 2 2 2;
+    -fx-text-fill: #f5f5f5;
+    -fx-text-alignment: left;
+    -fx-font-size: 13pt;
+}
+
+.week-of-year-cell {
+    -fx-background-insets: 2 2 2 2;
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+    -fx-font-size: 12pt;
+}
+
+.calendar-cell {
+    -fx-background-radius: 50% 50%;
+    -fx-background-insets: 15 15 15 15;
+    -fx-text-fill: skyblue;
+    -fx-text-alignment: left;
+    -fx-font-size: 12pt;
+}
+
+.calendar-cell:hover {
+    -fx-background-color: skyblue;
+    -fx-text-fill: white;
+}
+
+.calendar-cell:pressed {
+    -fx-background-color: skyblue;
+    -fx-text-fill: green;
+}
+
+.calendar-cell-selected {
+    -fx-background-radius: 50%;
+    -fx-background-insets: 15 15 15 15;
+    -fx-text-alignment: left;
+    -fx-font-size: 12pt;
+    -fx-background-color: skyblue;
+    -fx-text-fill: white;
+}
+
+.calendar-cell-inactive {
+    -fx-background-color: derive(lightgray, 75%);
+    -fx-background-radius: 50%;
+    -fx-background-insets: 20 20 20 20;
+    -fx-text-fill: #f5f5f5;
+    -fx-text-alignment: left;
+    -fx-font-size: 12pt;
+}
+
+.calendar-cell-today {
+    -fx-background-color: #cfedf6;
+    -fx-background-radius: 50%;
+    -fx-background-insets: 15 15 15 15;
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+    -fx-font-size: 14pt;
+}
+

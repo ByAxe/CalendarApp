@@ -19,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +27,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import service.api.*;
+import view.controlls.DateChooser;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
-import static core.commons.Utils.raiseMessageBox;
-import static core.commons.Utils.raiseMessageBoxWithCustomSize;
+import static core.commons.Utils.*;
 import static core.enums.ResultEnum.SUCCESS;
 import static java.util.stream.Collectors.toList;
 import static javafx.scene.control.Alert.AlertType.*;
@@ -204,7 +203,11 @@ public class ApplicationServiceImpl implements IApplicationService {
         calendarUpcomingEventsListView.getItems()
                 .addAll(eventsService.findUpcomingEvents()
                         .stream()
-                        .map(event -> new Label(event.toPrettyString()))
+                        .map(event -> {
+                            Label label = new Label(event.toPrettyString());
+                            label.setId(String.valueOf(event.getUuid()));
+                            return label;
+                        })
                         .collect(toList()));
     }
 
@@ -220,17 +223,25 @@ public class ApplicationServiceImpl implements IApplicationService {
         MenuItem delete = new MenuItem("Удалить");
         MenuItem change = new MenuItem("Редактировать");
 
-        calendarUpcomingEventsContextMenu.getItems().addAll(delete, change);
+        calendarUpcomingEventsContextMenu.getItems().addAll(delete/*, change*/);
 
         delete.setOnAction(event -> {
             Label item = calendarUpcomingEventsListView.getSelectionModel().getSelectedItem();
 
             boolean isOk = raiseMessageBox(CONFIRMATION, "Внимание", "Удалить элемент?", "Вы действительно хотите удалить данное событие: \"" + item.getText() + "\"?");
 
-            // TODO Как определить по какому элементу он кликнул?...
-//            if(isOk)
+            if (!isOk) return;
+
+            //Если он все же подтвердил удаление - удаляем элемент
+            Optional.ofNullable(eventsService.findUpcomingEvents())
+                    .ifPresent(l -> l.stream()
+                            .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
+                            .forEach(eventsService::delete));
+
         });
-        change.setOnAction(event -> System.out.println("change..."));
+        change.setOnAction(event -> {
+            System.out.println("change...");
+        });
 
         calendarUpcomingEventsListView.setContextMenu(calendarUpcomingEventsContextMenu);
     }
@@ -244,4 +255,53 @@ public class ApplicationServiceImpl implements IApplicationService {
     public void showAbout() {
         raiseMessageBoxWithCustomSize(INFORMATION, "О программе", null, ABOUT_BODY, 400, 600);
     }
+
+    /**
+     * Создаем большой календарь и вешаем обработчик по нажатию на определенные даты
+     *
+     * @param calendarRightPaneBottomBlock   Вся панель в которую будет всунут календарь
+     * @param calendarUpcomingEventsLabel    Заголовок списка предстоящих событий
+     * @param calendarUpcomingEventsListView Список предстоящих событий
+     */
+    @Override
+    public void calendarCreateBigCalendar(Pane calendarRightPaneBottomBlock, Label calendarUpcomingEventsLabel, JFXListView<Label> calendarUpcomingEventsListView) {
+        final DateChooser dateChooser = new DateChooser();
+
+        calendarRightPaneBottomBlock.getChildren().add(dateChooser);
+
+        dateChooser.setOnMouseClicked(e -> calendarHandleClickOnDay(dateChooser, calendarUpcomingEventsLabel, calendarUpcomingEventsListView));
+    }
+
+    /**
+     * По нажатию на календарь, берем выбранную дату {@link Date} и вписываем в список предстоящих событий те,
+     * которые будут ТОЛЬКО в этот выбранный день
+     *
+     * @param dateChooser                    Календарь
+     * @param calendarUpcomingEventsLabel    Заголовок списка предстоящих событий
+     * @param calendarUpcomingEventsListView Список предстоящих событий
+     */
+    private void calendarHandleClickOnDay(DateChooser dateChooser, Label calendarUpcomingEventsLabel, JFXListView<Label> calendarUpcomingEventsListView) {
+        // Получаем нажатую дату
+        LocalDateTime dateTime = convertDateToLocalDateTime(dateChooser.getDate());
+
+        // Вписываем в заголовок таблицы предстоящих событий, что показывает события за определенный день
+        calendarUpcomingEventsLabel.setText("Список событий на " + dateTime.format(CALENDAR_ON_DATE_FORMATTER));
+
+        // Получаем события ТОЛЬКО за определенный период
+        List<IEventsDTO> upcomingEventsForPeriod = eventsService.findUpcomingEventsForPeriod(getStartOfDay(dateTime), getEndOfDay(dateTime));
+
+        // Чистим список
+        calendarUpcomingEventsListView.getItems().clear();
+
+        // Заполняем список событиями ТОЛЬКО за определенный период
+        calendarUpcomingEventsListView.getItems()
+                .addAll(upcomingEventsForPeriod.stream()
+                        .map(e -> {
+                            Label label = new Label(e.toPrettyString());
+                            label.setId(String.valueOf(e.getUuid()));
+                            return label;
+                        })
+                        .collect(toList()));
+    }
+
 }
