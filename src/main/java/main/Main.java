@@ -1,5 +1,5 @@
 /*
- * // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
  */
 
 package main;

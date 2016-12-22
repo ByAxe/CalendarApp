@@ -1,13 +1,8 @@
-##Plan
-  
-- ####**Wednesday** 
-    1) ~~Update, delete operations for calendar (clicks on events)~~
-    2) Add menu with Preferences and Help
-    3) Tiles with dates for calendar
-    
-- ####**Thursday** 
-    1) Installer
-    2) Allocation tab
+##Plan    
+- ####**Thursday**
+    1) Tiles with dates for calendar
+    2) Installer
+    3) Allocation tab
         1) core implementation of table
         2) archive flag
         3) notification log tab

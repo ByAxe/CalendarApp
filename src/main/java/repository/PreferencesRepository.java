@@ -1,3 +1,7 @@
+/*
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ */
+
 package repository;
 
 import model.entity.PreferencesEntity;

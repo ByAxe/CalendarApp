@@ -1,6 +1,7 @@
 <component name="CopyrightManager">
   <copyright>
+    <option name="allowReplaceKeyword" value="Litvinau" />
     <option name="myName" value="UncommercialUse" />
-    <option name="notice" value="// Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved." />
+    <option name="notice" value=" Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved." />
   </copyright>
 </component>

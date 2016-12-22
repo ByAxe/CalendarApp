@@ -1,3 +1,7 @@
+/*
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ */
+
 package model.entity;
 
 import core.enums.Frequency;

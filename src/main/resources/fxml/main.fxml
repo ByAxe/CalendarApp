@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  ~  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+  -->
+
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import jfxtras.scene.control.LocalDateTimeTextField?>
-<!--
-  ~ // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
-  -->
-
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 			minWidth="-Infinity"
 			prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"

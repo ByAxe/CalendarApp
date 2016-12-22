@@ -1,3 +1,7 @@
+/*
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ */
+
 package service.aop;
 
 import org.aspectj.lang.annotation.Aspect;

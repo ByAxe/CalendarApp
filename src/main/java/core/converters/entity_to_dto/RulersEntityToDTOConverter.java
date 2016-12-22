@@ -1,3 +1,7 @@
+/*
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ */
+
 package core.converters.entity_to_dto;
 
 import core.dto.RulersDTOImpl;

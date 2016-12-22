@@ -1,3 +1,7 @@
+<!--
+  ~  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+  -->
+
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Suite" parallel="false">
 	<test name="core">

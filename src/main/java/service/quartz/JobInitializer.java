@@ -1,3 +1,7 @@
+/*
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ */
+
 package service.quartz;
 
 import core.dto.api.IAllocationDTO;
@@ -48,20 +52,26 @@ import static org.quartz.impl.matchers.GroupMatcher.jobGroupEquals;
 public class JobInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(JobInitializer.class);
+
     private final String CALENDAR_EVENT_JOBS_GROUP = "CALENDAR_EVENT_JOBS_GROUP";
     private final String CALENDAR_EVENT_TRIGGERS_GROUP = "CALENDAR_EVENT_TRIGGERS_GROUP";
     private final String ALLOCATION_END_JOBS_GROUP = "ALLOCATION_END_JOBS_GROUP";
     private final String ALLOCATION_END_TRIGGERS_GROUP = "ALLOCATION_END_TRIGGERS_GROUP";
     private final String ALLOCATION_ARCHIVE_JOBS_GROUP = "ALLOCATION_ARCHIVE_JOBS_GROUP";
     private final String ALLOCATION_ARCHIVE_TRIGGERS_GROUP = "ALLOCATION_ARCHIVE_TRIGGERS_GROUP";
+
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
+
     @Autowired
     private IEventsService eventsService;
+
     @Autowired
     private IAllocationService allocationService;
+
     @Autowired
     private IPreferencesService preferencesService;
+
     @Value("${notification.type.k}")
     private String NOTIFICATION_TYPE_KEY;
 
@@ -159,6 +169,7 @@ public class JobInitializer implements ApplicationListener<ContextRefreshedEvent
             }
 
         } catch (SchedulerException e) {
+            logger.error("Ошибка при удалении уведомления, где name = " + name + " и grouId = " + groupId);
             e.printStackTrace();
         }
     }
