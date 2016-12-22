@@ -1,9 +1,9 @@
 ##Plan
   
 - ####**Wednesday** 
-    1) Update, delete operations for calendar (clicks on events)
-    2) Tiles with dates for calendar
-    3) Add menu with Preferences and Help
+    1) ~~Update, delete operations for calendar (clicks on events)~~
+    2) Add menu with Preferences and Help
+    3) Tiles with dates for calendar
     
 - ####**Thursday** 
     1) Installer
@@ -25,8 +25,11 @@
     
 
 ##Additional improvements 
--  ~~*Add documentation to JobInitializer*~~
+- ~~*Add documentation to JobInitializer*~~
+- ~~*Apply CSS*~~
+- *Solve problem with Quartz*
+- *Add Preferences*
+- *Add modifying buttons for events (delete/update)*
 - *Solve problem with TestNG*
-- *Apply CSS*
 
 ___

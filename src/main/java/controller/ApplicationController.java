@@ -1,3 +1,7 @@
+/*
+ * // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
+ */
+
 package controller;
 
 import com.jfoenix.controls.*;
@@ -5,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
@@ -17,9 +22,6 @@ import service.api.IGroupsService;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static javafx.scene.input.MouseButton.SECONDARY;
-import static javafx.scene.input.MouseEvent.MOUSE_RELEASED;
 
 /**
  * Created by byaxe on 03.12.16.
@@ -53,6 +55,10 @@ public class ApplicationController implements Initializable {
     public AnchorPane calendarLeftPane;
     public Tab allocationTab;
     public JFXButton calendarUpdateUpcomingEventsListButton;
+    public MenuItem exitMenuItem;
+    public MenuItem preferencesMenuItem;
+    public MenuItem helpMenuItem;
+    public MenuItem aboutMenuItem;
     private IApplicationService applicationService;
     private IEventsService eventsService;
     private IGroupsService groupsService;
@@ -79,7 +85,7 @@ public class ApplicationController implements Initializable {
 
         calendarFillUpcomingEventsList();
 
-        calendarAddHandlerToUpcomingEventsList();
+//        calendarAddContextMenuToUpcomingEventsList();
     }
 
     /**
@@ -121,6 +127,27 @@ public class ApplicationController implements Initializable {
         calendarHandleUpdateUpcomingEventsList();
     }
 
+    @FXML
+    private void handleExit(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
+/*    @FXML
+    private void handlePreferencesClick(ActionEvent actionEvent) {
+        applicationService.showPreferences();
+    }*/
+
+    @FXML
+    private void handleHelp(ActionEvent actionEvent) {
+        applicationService.showHelp();
+    }
+
+
+    @FXML
+    private void handleAbout(ActionEvent actionEvent) {
+        applicationService.showAbout();
+    }
+
     /**
      * Заполняет комбобоксы календаря перечислениями
      */
@@ -132,12 +159,11 @@ public class ApplicationController implements Initializable {
         );
     }
 
-    private void calendarAddHandlerToUpcomingEventsList() {
-        calendarUpcomingEventsListView.addEventFilter(MOUSE_RELEASED, e -> {
-            if (e.getButton() == SECONDARY) e.consume();
-        });
-
-        calendarUpcomingEventsListView.setOnMouseClicked(e -> System.out.println("right click!"));
+    /**
+     *
+     */
+    private void calendarAddContextMenuToUpcomingEventsList() {
+        applicationService.calendarAddContextMenuToUpcomingEventsList(calendarUpcomingEventsListView);
     }
 
     /**
@@ -149,6 +175,9 @@ public class ApplicationController implements Initializable {
     }
 
 
+    /**
+     *
+     */
     public void calendarHandleUpdateUpcomingEventsList() {
         applicationService.calendarFillUpcomingEventsList(calendarUpcomingEventsListView);
     }

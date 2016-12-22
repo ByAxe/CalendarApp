@@ -1,3 +1,7 @@
+/*
+ * // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
+ */
+
 package main;
 
 import javafx.application.Application;
@@ -39,7 +43,7 @@ public class Main extends Application {
         stage.setScene(scene);
 
         stage.setResizable(false);
-        stage.hide();
+        stage.setMaximized(false);
 
         stage.show();
     }

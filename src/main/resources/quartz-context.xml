@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
+  -->
+
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns="http://www.springframework.org/schema/beans"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
@@ -19,7 +23,7 @@
 		<property name="jobFactory" ref="quartzJobFactory"/>
 
 		<!-- Boolean controlling whether you want to override the job definitions in the DB on the app start up. -->
-		<property name="overwriteExistingJobs" value="true"/>
+		<property name="overwriteExistingJobs" value="false"/>
 
 		<property name="autoStartup" value="false"/>
 		<property name="schedulerName" value="quartzScheduler"/>

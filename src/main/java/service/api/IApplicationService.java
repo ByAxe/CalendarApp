@@ -1,3 +1,7 @@
+/*
+ * // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
+ */
+
 package service.api;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -24,4 +28,10 @@ public interface IApplicationService {
                                 JFXComboBox priorityPicker);
 
     void calendarFillUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView);
+
+    void calendarAddContextMenuToUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView);
+
+    void showHelp();
+
+    void showAbout();
 }

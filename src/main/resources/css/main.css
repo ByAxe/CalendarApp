@@ -1,0 +1,25 @@
+/*
+ * // Copyright © 2016 Litvinau Alekisei (ByAxe). All rights reserved.
+ */
+
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    fon-family: 'OpenSans-light';
+    src: url('../fonts/OpenSans-light.ttf');
+}
+
+* {
+    -fx-font-family: "Roboto-Regular";
+}
+
+#calendarUpdateUpcomingEventsListButton {
+    -fx-font-size: 9;
+}
+
+#calendarMainButtons {
+    -fx-font-size: 14;
+}
