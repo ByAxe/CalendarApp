@@ -1,5 +1,6 @@
 /*
- *  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+ *  Copyright © 2016 Litvinau Aleksei (ByAxe).
+ *  Licensed under the Apache License, Version 2.0
  */
 
 package repository;

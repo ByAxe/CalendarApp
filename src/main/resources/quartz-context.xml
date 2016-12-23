@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~  Copyright © 2016 Litvinau Aleksei (ByAxe). All rights reserved.
+  ~  Copyright © 2016 Litvinau Aleksei (ByAxe).
+  ~  Licensed under the Apache License, Version 2.0
   -->
 
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
