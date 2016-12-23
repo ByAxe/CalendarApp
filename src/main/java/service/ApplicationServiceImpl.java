@@ -228,16 +228,22 @@ public class ApplicationServiceImpl implements IApplicationService {
         delete.setOnAction(event -> {
             Label item = calendarUpcomingEventsListView.getSelectionModel().getSelectedItem();
 
+            // Если кликнули по пустому месту
+            if (item == null) return;
+
             boolean isOk = raiseMessageBox(CONFIRMATION, "Внимание", "Удалить элемент?", "Вы действительно хотите удалить данное событие: \"" + item.getText() + "\"?");
 
+            // Если отказался удалять выбранный элемент
             if (!isOk) return;
 
-            //Если он все же подтвердил удаление - удаляем элемент
+            // Если он все же подтвердил удаление - удаляем элемент
             Optional.ofNullable(eventsService.findUpcomingEvents())
                     .ifPresent(l -> l.stream()
                             .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
                             .forEach(eventsService::delete));
 
+            // Обновляем список, иначе для пользователя останется виден удаленный элемент
+            calendarFillUpcomingEventsList(calendarUpcomingEventsListView);
         });
         change.setOnAction(event -> {
             System.out.println("change...");

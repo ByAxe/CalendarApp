@@ -109,7 +109,7 @@ public class DateChooserSkin extends SkinBase<DateChooser> {
         public CalendarCell(Date day, String text) {
             this.date = day;
             Label label = new Label(text);
-            getChildren().add(label);
+            getChildren().addAll(label);
         }
 
         public Date getDate() {
@@ -137,7 +137,7 @@ public class DateChooserSkin extends SkinBase<DateChooser> {
             setPrefSize(MAIN_WIDTH, MAIN_HEIGHT);
             woyCell.getStyleClass().add("week-of-year-cell");
             setPadding(new Insets(30, 5, 5, 0));
-            this.columns = 6;
+            this.columns = 7;
             this.rows = 5;
 
             // use a copy of Date, because it's mutable
@@ -171,7 +171,7 @@ public class DateChooserSkin extends SkinBase<DateChooser> {
             Date copy = new Date(cal.getTime().getTime());
 
             // empty cell header of weak-of-year row
-//            super.getChildren().add(woyCell);
+            super.getChildren().add(woyCell);
 
             // Display a styleable row of localized weekday symbols
             DateFormatSymbols symbols = new DateFormatSymbols();
@@ -225,10 +225,10 @@ public class DateChooserSkin extends SkinBase<DateChooser> {
 
             for (int i = 0; i < (rows); i++) {
 
-                // first column shows the week of year
-//                CalendarCell calendarCell = new CalendarCell(cal.getTime(), "" + cal.get(Calendar.WEEK_OF_YEAR));
-//                calendarCell.getStyleClass().add("week-of-year-cell");
-//                super.getChildren().add(calendarCell);
+//                 first column shows the week of year
+                CalendarCell calendarCell = new CalendarCell(cal.getTime(), "" + cal.get(Calendar.WEEK_OF_YEAR));
+                calendarCell.getStyleClass().add("week-of-year-cell");
+                super.getChildren().add(calendarCell);
 
                 // loop through current week
                 for (int j = 0; j < columns; j++) {
@@ -247,7 +247,7 @@ public class DateChooserSkin extends SkinBase<DateChooser> {
                         }
 
                     }
-                    dayCell.setOnMouseClicked(arg0 -> {
+                    dayCell.setOnMouseClicked(e -> {
                         if (selectedDayCell != null) {
                             selectedDayCell.getStyleClass().add("calendar-cell");
                             selectedDayCell.getStyleClass().remove("calendar-cell-selected");
@@ -276,6 +276,8 @@ public class DateChooserSkin extends SkinBase<DateChooser> {
                     });
 
                     dayCell.setCursor(Cursor.HAND);
+//                    JFXRippler jfxRippler = new JFXRippler(dayCell);
+//                    jfxRippler.setEnabled(true);
 
                     super.getChildren().add(dayCell);
                     cal.add(DATE, 1);  // number of days to add

@@ -24,7 +24,12 @@
     -fx-background-insets: 2 2 2 2;
     -fx-text-fill: white;
     -fx-text-alignment: left;
-    -fx-font-size: 12pt;
+    -fx-font-size: 10pt;
+    -fx-font-weight: 100;
+}
+
+.week-of-year-cell .label {
+    -fx-color-label-visible: white;
 }
 
 .calendar-cell {
@@ -50,7 +55,7 @@
     -fx-background-insets: 15 15 15 15;
     -fx-text-alignment: left;
     -fx-font-size: 12pt;
-    -fx-background-color: skyblue;
+    -fx-background-color: skyblue !important;
     -fx-text-fill: white;
 }
 
@@ -64,11 +69,13 @@
 }
 
 .calendar-cell-today {
-    -fx-background-color: #cfedf6;
-    -fx-background-radius: 50%;
+    -fx-background-color: transparent;
+    -fx-border-color: #f5f5f5;
+    -fx-border-radius: 50%;
     -fx-background-insets: 15 15 15 15;
-    -fx-text-fill: white;
+    -fx-text-fill: #313131 !important;
+    -fx-font-style: italic !important;
     -fx-text-alignment: left;
-    -fx-font-size: 14pt;
+    -fx-font-size: 15pt;
 }
 

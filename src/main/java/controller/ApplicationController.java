@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import service.api.IApplicationService;
 import service.api.IEventsService;
@@ -20,6 +21,8 @@ import service.api.IGroupsService;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static core.commons.Utils.CALENDAR_DATE_PICKER_FORMATTER;
 
 /**
  * Created by byaxe on 03.12.16.
@@ -71,6 +74,8 @@ public class ApplicationController implements Initializable {
     private IGroupsService groupsService;
     private ResourceBundle resourceBundle;
     private URL location;
+    @Value("${calendar.upcoming.events.label.text}")
+    private String upcomingEventsLabelText;
 
     public ApplicationController() {
     }
@@ -92,13 +97,11 @@ public class ApplicationController implements Initializable {
 
         calendarFillUpcomingEventsList();
 
+        calendarSetFormatForDatePickers();
+
         calendarCreateBigCalendar();
 
-//        calendarAddContextMenuToUpcomingEventsList();
-    }
-
-    private void calendarCreateBigCalendar() {
-        applicationService.calendarCreateBigCalendar(calendarRightPaneBottomBlock, calendarUpcomingEventsLabel, calendarUpcomingEventsListView);
+        calendarAddContextMenuToUpcomingEventsList();
     }
 
     /**
@@ -162,6 +165,15 @@ public class ApplicationController implements Initializable {
     }
 
     /**
+     * Выводит в список все планируемые события
+     */
+    @FXML
+    private void calendarHandleUpdateUpcomingEventsList() {
+        calendarUpcomingEventsLabel.setText(upcomingEventsLabelText);
+        applicationService.calendarFillUpcomingEventsList(calendarUpcomingEventsListView);
+    }
+
+    /**
      * Заполняет комбобоксы календаря перечислениями
      */
     private void calendarFillComboBoxes() {
@@ -184,14 +196,22 @@ public class ApplicationController implements Initializable {
      * Отсортирован по началу события (ASC) (сверху - ближайшие)
      */
     private void calendarFillUpcomingEventsList() {
+        calendarUpcomingEventsLabel.setText(upcomingEventsLabelText);
         applicationService.calendarFillUpcomingEventsList(calendarUpcomingEventsListView);
     }
 
+    /**
+     * Создаем большой календарь для вкладки "Ежедневник"
+     */
+    private void calendarCreateBigCalendar() {
+        applicationService.calendarCreateBigCalendar(calendarRightPaneBottomBlock, calendarUpcomingEventsLabel, calendarUpcomingEventsListView);
+    }
 
     /**
-     *
+     * Устанавливаем спец формат для дата в полях выбора начала и конца нового события
      */
-    public void calendarHandleUpdateUpcomingEventsList() {
-        applicationService.calendarFillUpcomingEventsList(calendarUpcomingEventsListView);
+    private void calendarSetFormatForDatePickers() {
+        calendarStartDatePicker.setDateTimeFormatter(CALENDAR_DATE_PICKER_FORMATTER);
+        calendarEndDatePicker.setDateTimeFormatter(CALENDAR_DATE_PICKER_FORMATTER);
     }
 }

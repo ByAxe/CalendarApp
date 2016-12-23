@@ -29,6 +29,7 @@ public class Utils {
 
     public static final DateTimeFormatter PRETTY_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMM HH:mm");
     public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
+    public static final DateTimeFormatter CALENDAR_DATE_PICKER_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     /**
      * Создает сообщение с помощью {@link Alert}
