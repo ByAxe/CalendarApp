@@ -14,15 +14,25 @@ public enum NotificationType {
     /**
      * Подтверждение об отработке
      */
-    CONFIRMATION,
+    CONFIRMATION("Подтверждение об отработке"),
 
     /**
      * Окончание срока отработки
      */
-    ALLOCATION_END,
+    ALLOCATION_END("Окончание срока отработки"),
 
     /**
      * Перемещение в архив
      */
-    ARCHIVE
+    ARCHIVE("Перемещение в архив");
+
+    private final String description;
+
+    NotificationType(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

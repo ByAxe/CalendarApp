@@ -6,6 +6,7 @@
 package service;
 
 import core.dto.NotificationsLogDTOImpl;
+import core.dto.api.INotificationLogTableDTO;
 import core.dto.api.INotificationsLogDTO;
 import core.enums.NotificationType;
 import model.entity.NotificationsLogEntity;
@@ -25,6 +26,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by byaxe on 20.12.16.
@@ -109,6 +112,15 @@ public class NotificationsLogServiceImpl implements INotificationsLogService {
         Iterable<NotificationsLogEntity> entities = notificationsLogRepository.findAll(idList);
 
         return convertListEntityToDto(entities);
+    }
+
+    @Override
+    public List<INotificationLogTableDTO> findAllForTable() {
+        List<NotificationsLogEntity> entities = (List<NotificationsLogEntity>) notificationsLogRepository.findAll();
+
+        return entities.stream()
+                .map(e -> conversionService.convert(e, INotificationLogTableDTO.class))
+                .collect(toList());
     }
 
     @Override

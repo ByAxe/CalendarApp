@@ -55,6 +55,7 @@
 				<ref bean="preferencesEntityToDTOConverter"/>
 				<ref bean="notificationsLogEntityToDTOConverter"/>
 				<ref bean="allocationEntityToAllocationTableDTOConverter"/>
+				<ref bean="notificationsLogEntityToNotificationLogTableConverter"/>
 			</set>
 		</property>
 	</bean>

@@ -8,10 +8,12 @@ package controller;
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
 import core.dto.api.IAllocationTableDTO;
+import core.dto.api.INotificationLogTableDTO;
 import core.enums.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -45,7 +47,6 @@ import static javafx.scene.control.Alert.AlertType.INFORMATION;
 public class ApplicationController implements Initializable {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
-
 
     public Label calendarStartDateLabel;
     public JFXTextField calendarEventTitlePicker;
@@ -88,8 +89,6 @@ public class ApplicationController implements Initializable {
     public Tab notificationsTab;
     public TableView<IAllocationTableDTO> allocationTable;
     public Tab allocationTableTab;
-    public SplitPane allocationTableSplitPane;
-    public AnchorPane allocationTableTopPane;
     public Label allocationTableStageLabel;
     public JFXComboBox allocationTableStageComboBox;
     public JFXButton allocationTablePrintButton;
@@ -140,6 +139,12 @@ public class ApplicationController implements Initializable {
     public JFXButton allocationTableFilterApplyButton;
     public Label allocationTableTitle;
     public JFXTextField allocationTableIssueYear;
+    public TableView<INotificationLogTableDTO> notificationsTable;
+    public TableColumn notificationsTableId;
+    public TableColumn notificationsTableDate;
+    public TableColumn notificationsTableType;
+    public TableColumn notificationsTableDescription;
+    public JFXButton notificationsClearButton;
 
     private ResourceBundle resourceBundle;
     private URL location;
@@ -522,7 +527,49 @@ public class ApplicationController implements Initializable {
      * Дергает и делает все, что вкладка Уведомлений была успешна инициализированна и заполнена
      */
     private void initNotificationTab() {
-
+        notificationsTableAddFactoryForColumns();
+        notificationsTableUpdate();
     }
 
+    /**
+     * Обновляем таблицу Уведомлений
+     */
+    private void notificationsTableUpdate() {
+        ObservableList<INotificationLogTableDTO> content = FXCollections.observableArrayList();
+        content.addAll(notificationsLogService.findAllForTable());
+
+        notificationsTable.setItems(content);
+
+        logger.info("Загружен контент в таблицу уведомлений.");
+    }
+
+    /**
+     * Даем колонкам понять, откуда брать значения для заполнения
+     */
+    private void notificationsTableAddFactoryForColumns() {
+        notificationsTableId.setCellValueFactory(new PropertyValueFactory<INotificationLogTableDTO, String>("id"));
+        notificationsTableDate.setCellValueFactory(new PropertyValueFactory<INotificationLogTableDTO, String>("date"));
+        notificationsTableType.setCellValueFactory(new PropertyValueFactory<INotificationLogTableDTO, String>("type"));
+        notificationsTableDescription.setCellValueFactory(new PropertyValueFactory<INotificationLogTableDTO, String>("description"));
+    }
+
+    /**
+     * Обрабатываем нажатие на очистку уведомлений
+     *
+     * @param actionEvent
+     */
+    @FXML
+    public void handleNotificationsClear(ActionEvent actionEvent) {
+        notificationsLogService.deleteAll();
+        notificationsTable.setItems(FXCollections.observableArrayList());
+    }
+
+    /**
+     * Нажатие на вкладку "Уведомлений"
+     *
+     * @param event
+     */
+    public void notificationsTabChoose(Event event) {
+        notificationsTableUpdate();
+    }
 }

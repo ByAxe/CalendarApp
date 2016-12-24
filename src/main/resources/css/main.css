@@ -34,6 +34,24 @@
     -fx-background-color: white;
 }
 
-#calendarRightPaneBottomBlock {
-
+#notificationsLogLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: 100;
 }
+
+#calendarUpcomingEventsLabel {
+    -fx-font-weight: bold;
+}
+
+/*
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: white;
+}
+
+.table-view .table-column {
+    -fx-background-color: #488cc0;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+}
+*/

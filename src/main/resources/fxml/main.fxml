@@ -99,7 +99,7 @@
 											 AnchorPane.topAnchor="32.0"/>
 								<Label fx:id="calendarUpcomingEventsLabel" layoutX="10.0" layoutY="3.0"
 									   prefHeight="27.0" prefWidth="274.0" text="Список предстоящих событий"
-									   textAlignment="CENTER"/>
+									   textAlignment="CENTER" id="calendarUpcomingEventsLabel"/>
 								<JFXButton id="calendarUpdateUpcomingEventsListButton"
 										   fx:id="calendarUpdateUpcomingEventsListButton" layoutX="278.0" layoutY="4.0"
 										   onAction="#calendarHandleUpdateUpcomingEventsList" prefHeight="23.0"
@@ -179,193 +179,192 @@
 		<Tab fx:id="allocationTableTab" text="Распределение (таблица)">
 			<AnchorPane prefHeight="200.0" prefWidth="200.0">
 				<children>
-					<SplitPane id="allocationSplitPane" fx:id="allocationTableSplitPane" dividerPositions="0.1"
-							   layoutX="93.0" layoutY="129.0" orientation="VERTICAL" prefHeight="677.0"
-							   prefWidth="1100.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0"
-							   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-						<items>
-							<AnchorPane id="allocationTableTopPane" fx:id="allocationTableTopPane" minHeight="0.0"
-										minWidth="0.0" prefHeight="63.0" prefWidth="1098.0">
-								<children>
-									<Label id="allocationTableStageLabel" fx:id="allocationTableStageLabel"
-										   layoutX="291.0" layoutY="25.0" text="Ступень:"/>
-									<JFXComboBox id="allocationTableStageComboBox" fx:id="allocationTableStageComboBox"
-												 layoutX="362.0" layoutY="19.0" prefHeight="27.0" prefWidth="170.0"/>
-									<JFXCheckBox id="allocationArchiveFlag" fx:id="allocationArchiveFlag"
-												 checkedColor="#6ac1d7" layoutX="542.0" layoutY="25.0" text="Архив"/>
-									<ButtonBar layoutX="761.0" layoutY="12.0" prefHeight="40.0" prefWidth="323.0">
-										<buttons>
-											<JFXButton id="allocationTableFilterApplyButton"
-													   fx:id="allocationTableFilterApplyButton" buttonType="RAISED"
-													   onAction="#allocationTableFilterApply" ripplerFill="#82c9e1"
-													   style="-fx-background-color: #36a4c0;" text="Применить фильтр"
-													   textFill="WHITE"/>
-											<JFXButton id="allocationTablePrintButton"
-													   fx:id="allocationTablePrintButton" buttonType="RAISED"
-													   onAction="#allocationPrintButtonClick" ripplerFill="#82c9e1"
-													   style="-fx-background-color: #36a4c0;" text="Печать"
-													   textFill="WHITE"/>
-										</buttons>
-									</ButtonBar>
-									<Label id="allocationTableTitle" fx:id="allocationTableTitle" layoutX="14.0"
-										   layoutY="24.0" text="Фильтр:"/>
-									<JFXTextField id="allocationTableIssueYear" fx:id="allocationTableIssueYear"
-												  focusColor="#82c9e1" labelFloat="true" layoutX="94.0" layoutY="17.0"
-												  promptText="Год выпуска"/>
-								</children>
-							</AnchorPane>
-							<AnchorPane id="allocationTableBottomPane" fx:id="allocationTableBottomPane" minHeight="0.0"
-										minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-								<children>
-									<ScrollPane prefHeight="603.0" prefWidth="1098.0"
-												style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0"
-												AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-												AnchorPane.topAnchor="0.0">
-										<content>
-											<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="3000.0"
-														prefWidth="4000.0">
-												<children>
-													<TableView id="allocationTable" fx:id="allocationTable"
-															   prefHeight="1500.0" prefWidth="3500.0"
-															   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-															   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					<Label id="allocationTableStageLabel" fx:id="allocationTableStageLabel" layoutX="365.0"
+						   layoutY="24.0" text="Ступень:"/>
+					<JFXComboBox id="allocationTableStageComboBox" fx:id="allocationTableStageComboBox" layoutX="451.0"
+								 layoutY="20.0" prefHeight="27.0" prefWidth="170.0"/>
+					<JFXCheckBox id="allocationArchiveFlag" fx:id="allocationArchiveFlag" checkedColor="#6ac1d7"
+								 layoutX="660.0" layoutY="24.0" text="Архив"/>
+					<ButtonBar layoutX="763.0" layoutY="10.0" prefHeight="40.0" prefWidth="323.0">
+						<buttons>
+							<JFXButton id="allocationTableFilterApplyButton" fx:id="allocationTableFilterApplyButton"
+									   buttonType="RAISED" onAction="#allocationTableFilterApply" ripplerFill="#82c9e1"
+									   style="-fx-background-color: #36a4c0;" text="Применить фильтр" textFill="WHITE"/>
+							<JFXButton id="allocationTablePrintButton" fx:id="allocationTablePrintButton"
+									   buttonType="RAISED" onAction="#allocationPrintButtonClick" ripplerFill="#82c9e1"
+									   style="-fx-background-color: #36a4c0;" text="Печать" textFill="WHITE"/>
+						</buttons>
+					</ButtonBar>
+					<JFXTextField id="allocationTableIssueYear" fx:id="allocationTableIssueYear" focusColor="#82c9e1"
+								  labelFloat="true" layoutX="151.0" layoutY="16.0" promptText="Год выпуска"/>
+					<AnchorPane id="allocationTableBottomPane" fx:id="allocationTableBottomPane" layoutY="55.0"
+								minHeight="0.0" minWidth="0.0" prefHeight="622.0" prefWidth="1100.0"
+								AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+								AnchorPane.topAnchor="55.0">
+						<children>
+							<ScrollPane prefHeight="603.0" prefWidth="1098.0" style="-fx-background-color: white;"
+										AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+										AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+								<content>
+									<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="3000.0" prefWidth="4000.0">
+										<children>
+											<TableView id="allocationTable" fx:id="allocationTable" prefHeight="1500.0"
+													   prefWidth="3500.0" AnchorPane.bottomAnchor="0.0"
+													   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+													   AnchorPane.topAnchor="0.0">
+												<columns>
+													<TableColumn fx:id="allocationTableId" prefWidth="116.233642578125"
+																 text="Идентификатор"/>
+													<TableColumn fx:id="allocationTableStudent" prefWidth="600.0"
+																 text="Выпускник">
 														<columns>
-															<TableColumn fx:id="allocationTableId"
-																		 prefWidth="116.233642578125"
-																		 text="Идентификатор"/>
-															<TableColumn fx:id="allocationTableStudent"
-																		 prefWidth="600.0" text="Выпускник">
-																<columns>
-																	<TableColumn fx:id="allocationTableStudentFirstName"
-																				 prefWidth="75.0" text="Имя"/>
-																	<TableColumn fx:id="allocationTableStudentLastName"
-																				 prefWidth="75.0" text="Фамилия"/>
-																	<TableColumn
-																			fx:id="allocationTableStudentMiddleName"
-																			prefWidth="75.0" text="Отчество"/>
-																	<TableColumn fx:id="allocationTableStudentAddress"
-																				 prefWidth="75.0" text="Адрес"/>
-																	<TableColumn fx:id="allocationTableStudentTelephone"
-																				 prefWidth="75.0" text="Телефон"/>
-																	<TableColumn fx:id="allocationTableGroupNumber"
-																				 prefWidth="75.0" text="Группа"/>
-																</columns>
-															</TableColumn>
-															<TableColumn fx:id="allocationTableOrganisation"
-																		 prefWidth="300.0" text="Организация">
-																<columns>
-																	<TableColumn
-																			fx:id="allocationTableOrganisationTitle"
-																			prefWidth="75.0" text="Название"/>
-																	<TableColumn
-																			fx:id="allocationTableOrganisationAddress"
-																			prefWidth="75.0" text="Адрес"/>
-																	<TableColumn
-																			fx:id="allocationTableOrganisationTelephone"
-																			prefWidth="75.0" text="Телефон"/>
-																	<TableColumn
-																			fx:id="allocationTableOrganisationContacts"
-																			prefWidth="75.0" text="Контакты"/>
-																</columns>
-															</TableColumn>
-															<TableColumn fx:id="allocationTableOrder" prefWidth="195.0"
-																		 text="Приказ о приеме на работу">
-																<columns>
-																	<TableColumn fx:id="allocationTableOrderDate"
-																				 prefWidth="75.0" text="Дата"/>
-																	<TableColumn fx:id="allocationTableOrderNumber"
-																				 prefWidth="75.0" text="Номер"/>
-																	<TableColumn fx:id="allocationTableOrderProfession"
-																				 prefWidth="75.0" text="Профессия"/>
-																	<TableColumn fx:id="allocationTableOrderRank"
-																				 prefWidth="75.0" text="Разряд"/>
-																</columns>
-															</TableColumn>
-															<TableColumn fx:id="allocationTableConfirmations"
-																		 prefWidth="260.0"
-																		 text="Подтверждение об отработке">
-																<columns>
-																	<TableColumn fx:id="allocationTableConfirmations_1"
-																				 prefWidth="75.0" text="Сентябрь"/>
-																	<TableColumn fx:id="allocationTableConfirmations_2"
-																				 prefWidth="75.0" text="Декабрь"/>
-																	<TableColumn fx:id="allocationTableConfirmations_3"
-																				 prefWidth="75.0" text="Март"/>
-																	<TableColumn fx:id="allocationTableConfirmations_4"
-																				 prefWidth="75.0" text="Июнь"/>
-																	<TableColumn fx:id="allocationTableConfirmations_5"
-																				 prefWidth="75.0" text="Сентябрь"/>
-																</columns>
-															</TableColumn>
-															<TableColumn fx:id="allocationTableArmy"
-																		 prefWidth="113.990966796875"
-																		 text="Призыв в ВС"/>
-															<TableColumn fx:id="allocationTableFreeAllocation"
-																		 minWidth="350.0" prefWidth="350.0"
-																		 text="Свободное распределение">
-																<columns>
-																	<TableColumn
-																			fx:id="allocationTableFreeAllocationFlag"
-																			prefWidth="75.0" text="Да/Нет"/>
-																	<TableColumn
-																			fx:id="allocationTableFreeAllocationReason"
-																			prefWidth="75.0" text="Причина"/>
-																</columns>
-															</TableColumn>
-															<TableColumn fx:id="allocationTableReallocation"
-																		 prefWidth="350.0" text="Перераспределение">
-																<columns>
-																	<TableColumn fx:id="allocationTableReallocationFlag"
-																				 prefWidth="75.0" text="Да/Нет"/>
-																	<TableColumn fx:id="allocationTableReallocationId"
-																				 prefWidth="200.0"
-																				 text="Идентификатор записи"/>
-																</columns>
-															</TableColumn>
-															<TableColumn fx:id="allocationTableVoluntaryCompensation"
-																		 prefWidth="350.0"
-																		 text="Возмещение в добровольном порядке">
-																<columns>
-																	<TableColumn
-																			fx:id="allocationTableVoluntaryCompensationOrderDate"
-																			prefWidth="75.0" text="Дата приказа"/>
-																	<TableColumn
-																			fx:id="allocationTableVoluntaryCompensationOrderNumber"
-																			prefWidth="75.0" text="Номер приказа"/>
-																</columns>
-															</TableColumn>
-															<TableColumn
-																	fx:id="allocationTableVoluntaryCompensationConfirmationDate"
-																	prefWidth="450.0"
-																	text="Дата получения извещения о добровольном возмещении"/>
-															<TableColumn fx:id="allocationTableCortCompensation"
-																		 minWidth="300.0" prefWidth="300.0"
-																		 text="Возмещение через суд">
-																<columns>
-																	<TableColumn
-																			fx:id="allocationTableCortCompensationOrderNumber"
-																			prefWidth="75.0" text="Дата приказа"/>
-																	<TableColumn
-																			fx:id="allocationTableCortCompensationOrderDate"
-																			prefWidth="75.0" text="Номер приказа"/>
-																</columns>
-															</TableColumn>
+															<TableColumn fx:id="allocationTableStudentFirstName"
+																		 prefWidth="75.0" text="Имя"/>
+															<TableColumn fx:id="allocationTableStudentLastName"
+																		 prefWidth="75.0" text="Фамилия"/>
+															<TableColumn fx:id="allocationTableStudentMiddleName"
+																		 prefWidth="75.0" text="Отчество"/>
+															<TableColumn fx:id="allocationTableStudentAddress"
+																		 prefWidth="75.0" text="Адрес"/>
+															<TableColumn fx:id="allocationTableStudentTelephone"
+																		 prefWidth="75.0" text="Телефон"/>
+															<TableColumn fx:id="allocationTableGroupNumber"
+																		 prefWidth="75.0" text="Группа"/>
 														</columns>
-													</TableView>
-												</children>
-											</AnchorPane>
-										</content>
-									</ScrollPane>
-								</children>
-							</AnchorPane>
-						</items>
-					</SplitPane>
+													</TableColumn>
+													<TableColumn fx:id="allocationTableOrganisation" prefWidth="300.0"
+																 text="Организация">
+														<columns>
+															<TableColumn fx:id="allocationTableOrganisationTitle"
+																		 prefWidth="75.0" text="Название"/>
+															<TableColumn fx:id="allocationTableOrganisationAddress"
+																		 prefWidth="75.0" text="Адрес"/>
+															<TableColumn fx:id="allocationTableOrganisationTelephone"
+																		 prefWidth="75.0" text="Телефон"/>
+															<TableColumn fx:id="allocationTableOrganisationContacts"
+																		 prefWidth="75.0" text="Контакты"/>
+														</columns>
+													</TableColumn>
+													<TableColumn fx:id="allocationTableOrder" prefWidth="195.0"
+																 text="Приказ о приеме на работу">
+														<columns>
+															<TableColumn fx:id="allocationTableOrderDate"
+																		 prefWidth="75.0" text="Дата"/>
+															<TableColumn fx:id="allocationTableOrderNumber"
+																		 prefWidth="75.0" text="Номер"/>
+															<TableColumn fx:id="allocationTableOrderProfession"
+																		 prefWidth="75.0" text="Профессия"/>
+															<TableColumn fx:id="allocationTableOrderRank"
+																		 prefWidth="75.0" text="Разряд"/>
+														</columns>
+													</TableColumn>
+													<TableColumn fx:id="allocationTableConfirmations" prefWidth="260.0"
+																 text="Подтверждение об отработке">
+														<columns>
+															<TableColumn fx:id="allocationTableConfirmations_1"
+																		 prefWidth="120.0" text="Сентябрь"/>
+															<TableColumn fx:id="allocationTableConfirmations_2"
+																		 prefWidth="120.0" text="Декабрь"/>
+															<TableColumn fx:id="allocationTableConfirmations_3"
+																		 prefWidth="120.0" text="Март"/>
+															<TableColumn fx:id="allocationTableConfirmations_4"
+																		 prefWidth="120.0" text="Июнь"/>
+															<TableColumn fx:id="allocationTableConfirmations_5"
+																		 prefWidth="120.0" text="Сентябрь"/>
+														</columns>
+													</TableColumn>
+													<TableColumn fx:id="allocationTableArmy"
+																 prefWidth="113.990966796875" text="Призыв в ВС"/>
+													<TableColumn fx:id="allocationTableFreeAllocation" minWidth="350.0"
+																 prefWidth="350.0" text="Свободное распределение">
+														<columns>
+															<TableColumn fx:id="allocationTableFreeAllocationFlag"
+																		 prefWidth="75.0" text="Да/Нет"/>
+															<TableColumn fx:id="allocationTableFreeAllocationReason"
+																		 prefWidth="75.0" text="Причина"/>
+														</columns>
+													</TableColumn>
+													<TableColumn fx:id="allocationTableReallocation" prefWidth="350.0"
+																 text="Перераспределение">
+														<columns>
+															<TableColumn fx:id="allocationTableReallocationFlag"
+																		 prefWidth="75.0" text="Да/Нет"/>
+															<TableColumn fx:id="allocationTableReallocationId"
+																		 prefWidth="200.0" text="Идентификатор записи"/>
+														</columns>
+													</TableColumn>
+													<TableColumn fx:id="allocationTableVoluntaryCompensation"
+																 prefWidth="350.0"
+																 text="Возмещение в добровольном порядке">
+														<columns>
+															<TableColumn
+																	fx:id="allocationTableVoluntaryCompensationOrderDate"
+																	prefWidth="75.0" text="Дата приказа"/>
+															<TableColumn
+																	fx:id="allocationTableVoluntaryCompensationOrderNumber"
+																	prefWidth="75.0" text="Номер приказа"/>
+														</columns>
+													</TableColumn>
+													<TableColumn
+															fx:id="allocationTableVoluntaryCompensationConfirmationDate"
+															prefWidth="450.0"
+															text="Дата получения извещения о добровольном возмещении"/>
+													<TableColumn fx:id="allocationTableCortCompensation"
+																 minWidth="300.0" prefWidth="300.0"
+																 text="Возмещение через суд">
+														<columns>
+															<TableColumn
+																	fx:id="allocationTableCortCompensationOrderNumber"
+																	prefWidth="75.0" text="Дата приказа"/>
+															<TableColumn
+																	fx:id="allocationTableCortCompensationOrderDate"
+																	prefWidth="75.0" text="Номер приказа"/>
+														</columns>
+													</TableColumn>
+												</columns>
+											</TableView>
+										</children>
+									</AnchorPane>
+								</content>
+							</ScrollPane>
+						</children>
+					</AnchorPane>
+					<Label id="allocationTableTitle" fx:id="allocationTableTitle" layoutX="14.0" layoutY="21.0"
+						   text="Фильтр:"/>
 				</children>
 			</AnchorPane>
 		</Tab>
-		<Tab id="notificationsTab" fx:id="notificationsTab" text="Уведомления">
+		<Tab id="notificationsTab" fx:id="notificationsTab" onSelectionChanged="#notificationsTabChoose"
+			 text="Уведомления">
 			<content>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<TableView id="notificationTable" fx:id="notificationsTable" layoutY="49.0" prefHeight="628.0"
+								   prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+								   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
+							<columns>
+								<TableColumn fx:id="notificationsTableId" prefWidth="126.7490234375"
+											 text="Идентификатор"/>
+								<TableColumn fx:id="notificationsTableDate" minWidth="0.0" prefWidth="135.17236328125"
+											 text="Дата уведомления"/>
+								<TableColumn fx:id="notificationsTableType" prefWidth="152.82763671875"
+											 text="Тип уведомления"/>
+								<TableColumn fx:id="notificationsTableDescription" prefWidth="687.03759765625"
+											 text="Описание"/>
+							</columns>
+						</TableView>
+						<Label layoutX="19.0" layoutY="16.0" text="Список новых уведомлений"
+							   id="notificationsLogLabel"/>
+						<ButtonBar layoutX="876.0" layoutY="4.0" prefHeight="40.0" prefWidth="200.0">
+							<buttons>
+								<JFXButton id="notificationsClearButton" fx:id="notificationsClearButton"
+										   buttonType="RAISED" onAction="#handleNotificationsClear"
+										   ripplerFill="#82c9e1" style="-fx-background-color: #36a4c0;"
+										   text="Очистить уведомления" textFill="WHITE"/>
+							</buttons>
+						</ButtonBar>
+					</children>
+				</AnchorPane>
 			</content>
 		</Tab>
 		<opaqueInsets>

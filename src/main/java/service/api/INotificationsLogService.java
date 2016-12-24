@@ -21,6 +21,8 @@ public interface INotificationsLogService extends IEssenceService<INotifications
 
     List<INotificationsLogDTO> findByViewedFalse();
 
+    <T> List<T> findAllForTable();
+
     long countFindByViewedFalse();
 
     void addNotification(NotificationType notificationType, String payload);
