@@ -5,7 +5,9 @@
 
 package service.api;
 
+import com.jfoenix.controls.JFXComboBox;
 import core.dto.api.IAllocationDTO;
+import core.enums.Stage;
 import model.entity.AllocationEntity;
 
 import java.util.List;
@@ -16,9 +18,15 @@ import java.util.List;
 public interface IAllocationService extends IEssenceService<IAllocationDTO, Long>,
         IConversionService<IAllocationDTO, AllocationEntity> {
 
-    List<IAllocationDTO> findByArchiveTrue();
+    <T> List<T> findByArchiveTrue();
 
-    List<IAllocationDTO> findByArchiveFalse();
+    <T> List<T> findByArchiveFalse();
+
+    <T> List<T> find(Stage stage, Boolean archive, Integer issueYear);
 
     void moveToArchive(Long id);
+
+    void fillComboBox(JFXComboBox allocationTableStageComboBox);
+
+    void setDefaultValues(JFXComboBox allocationTableStageComboBox);
 }

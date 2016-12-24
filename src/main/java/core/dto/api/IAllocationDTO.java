@@ -9,16 +9,15 @@ import core.api.IEssence;
 import core.enums.Stage;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * Created by byaxe on 18.12.16.
  */
 public interface IAllocationDTO extends IEssence {
 
-    UUID getParentUuid();
+    Long getParentId();
 
-    void setParentUuid(UUID parentUuid);
+    void setParentId(Long parentId);
 
     boolean isArmy();
 
@@ -79,4 +78,12 @@ public interface IAllocationDTO extends IEssence {
     IOrdersDTO getOrder();
 
     void setOrder(IOrdersDTO order);
+
+    String getFreeAllocationReason();
+
+    void setFreeAllocationReason(String freeAllocationReason);
+
+    Integer getIssueYear();
+
+    void setIssueYear(Integer issueYear);
 }

@@ -5,8 +5,10 @@
 
 package core.commons;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -28,9 +30,16 @@ public class Utils {
     public static final String TODAY = "СЕГОДНЯ";
     public static final String TOMORROW = "ЗАВТРА";
 
+    public static final String CONFIRMATION_PERIOD_1 = "Сентябрь";
+    public static final String CONFIRMATION_PERIOD_2 = "Декабрь";
+    public static final String CONFIRMATION_PERIOD_3 = "Март";
+    public static final String CONFIRMATION_PERIOD_4 = "Июнь";
+    public static final String CONFIRMATION_PERIOD_5 = CONFIRMATION_PERIOD_1;
+
     public static final DateTimeFormatter PRETTY_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMM HH:mm");
     public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
     public static final DateTimeFormatter CALENDAR_DATE_PICKER_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    public static final DateTimeFormatter ALLOCATION_TABLE_FORMATTER = DateTimeFormatter.ofPattern("dd MMMMM yyyy");
 
     /**
      * Создает сообщение с помощью {@link Alert}
@@ -164,4 +173,39 @@ public class Utils {
     public static long getEpochDays(LocalDateTime date) {
         return date.atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay();
     }
+
+
+    /**
+     * Конвертируем дату {@link LocalDateTime} в {@link SimpleStringProperty}
+     *
+     * @param source Дата в {@link LocalDateTime}
+     * @return Дата в {@link SimpleStringProperty}
+     */
+    public static SimpleStringProperty dateToStringProperty(LocalDateTime source) {
+        return new SimpleStringProperty(source.format(ALLOCATION_TABLE_FORMATTER));
+    }
+
+    /**
+     * Добавляем год в название колонки
+     *
+     * @param column Колонка
+     * @param year   Какой год добавить
+     */
+    public static void addYearToColumnTitle(TableColumn column, int year) {
+        column.setText(column.getText() + " " + year);
+    }
+
+    /**
+     * Создает колонку с определенным текстом
+     *
+     * @param text Текст
+     * @return Новая колонка
+     */
+    public static TableColumn createTableColumn(String text) {
+        TableColumn column = new TableColumn(text);
+        column.setPrefWidth(120);
+        return column;
+    }
+
+
 }

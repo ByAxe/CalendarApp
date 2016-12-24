@@ -5,8 +5,11 @@
 
 package service;
 
+import com.jfoenix.controls.JFXComboBox;
 import core.dto.api.IAllocationDTO;
+import core.dto.api.IAllocationTableDTO;
 import core.enums.EventType;
+import core.enums.Stage;
 import model.entity.AllocationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,9 @@ import service.api.*;
 import service.quartz.JobInitializer;
 
 import java.util.List;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by byaxe on 18.12.16.
@@ -53,6 +59,27 @@ public class AllocationServiceImpl implements IAllocationService {
         this.organisationsService = organisationsService;
         this.studentsService = studentsService;
         this.ordersService = ordersService;
+    }
+
+    /**
+     * Заполняем комбобоксы значениями
+     *
+     * @param allocationTableStageComboBox то что нужно заполнить
+     */
+    @Override
+    public void fillComboBox(JFXComboBox allocationTableStageComboBox) {
+        allocationTableStageComboBox.getItems()
+                .addAll(Stream.of(Stage.values()).map(Stage::getTitle).collect(toList()));
+    }
+
+    /**
+     * Устанавливаем значения по умолчанию на управляющие элементы во вкладке Распределение (Таблица)
+     *
+     * @param allocationTableStageComboBox Заполнен ступенями образования {@link Stage}
+     */
+    @Override
+    public void setDefaultValues(JFXComboBox allocationTableStageComboBox) {
+        allocationTableStageComboBox.setValue(Stage.FIRST.getTitle());
     }
 
     @Override
@@ -105,17 +132,30 @@ public class AllocationServiceImpl implements IAllocationService {
     }
 
     @Override
-    public List<IAllocationDTO> findByArchiveTrue() {
+    public List<IAllocationTableDTO> findByArchiveTrue() {
         List<AllocationEntity> entities = allocationRepository.findByArchiveTrue();
 
-        return convertListEntityToDto(entities);
+        return entities.stream()
+                .map(e -> conversionService.convert(e, IAllocationTableDTO.class))
+                .collect(toList());
     }
 
     @Override
-    public List<IAllocationDTO> findByArchiveFalse() {
+    public List<IAllocationTableDTO> findByArchiveFalse() {
         List<AllocationEntity> entities = allocationRepository.findByArchiveFalse();
 
-        return convertListEntityToDto(entities);
+        return entities.stream()
+                .map(e -> conversionService.convert(e, IAllocationTableDTO.class))
+                .collect(toList());
+    }
+
+    @Override
+    public List<IAllocationTableDTO> find(Stage stage, Boolean archive, Integer issueYear) {
+        List<AllocationEntity> entities = allocationRepository.find(stage, archive, issueYear);
+
+        return entities.stream()
+                .map(e -> conversionService.convert(e, IAllocationTableDTO.class))
+                .collect(toList());
     }
 
     @Override

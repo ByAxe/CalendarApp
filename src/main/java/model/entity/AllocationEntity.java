@@ -13,7 +13,6 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.UUID;
 
 import static core.api.IEssence.ID_COLUMN_NAME;
 import static core.api.IEssence.UUID_COLUMN_NAME;
@@ -30,13 +29,14 @@ import static javax.persistence.GenerationType.SEQUENCE;
         @UniqueConstraint(columnNames = UUID_COLUMN_NAME)
 }, indexes = {
         @Index(name = "allocation_pkey", unique = true, columnList = ID_COLUMN_NAME),
-        @Index(name = "allocation_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME)
+        @Index(name = "allocation_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME),
+        @Index(name = "allocation_issue_year_idx", unique = true, columnList = "issue_year")
 })
 @SequenceGenerator(name = "allocation_id_seq", sequenceName = "allocation_id_seq", allocationSize = 1)
 public class AllocationEntity extends APersistentEntity {
 
     private Long id;
-    private UUID parentUuid;
+    private Long parentId;
 
     private boolean army;
     private boolean freeAllocation;
@@ -50,6 +50,8 @@ public class AllocationEntity extends APersistentEntity {
     private Date voluntaryCompensationConfirmationDate;
     private Date cortOrderDate;
     private String[] confirmations;
+    private String freeAllocationReason;
+    private Integer issueYear;
 
     private GroupsEntity group;
     private OrganisationsEntity organisation;
@@ -67,14 +69,13 @@ public class AllocationEntity extends APersistentEntity {
         this.id = id;
     }
 
-    @Column(name = "parent_uuid", nullable = false)
-    @Type(type = "pg-uuid")
-    public UUID getParentUuid() {
-        return parentUuid;
+    @Column(name = "parent_id", nullable = false)
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setParentUuid(UUID parentUuid) {
-        this.parentUuid = parentUuid;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     @Column(name = "army")
@@ -212,5 +213,23 @@ public class AllocationEntity extends APersistentEntity {
 
     public void setOrder(OrdersEntity order) {
         this.order = order;
+    }
+
+    @Column(name = "free_allocation_reason", columnDefinition = "TEXT")
+    public String getFreeAllocationReason() {
+        return freeAllocationReason;
+    }
+
+    public void setFreeAllocationReason(String freeAllocationReason) {
+        this.freeAllocationReason = freeAllocationReason;
+    }
+
+    @Column(name = "issue_year", nullable = false)
+    public Integer getIssueYear() {
+        return issueYear;
+    }
+
+    public void setIssueYear(Integer issueYear) {
+        this.issueYear = issueYear;
     }
 }

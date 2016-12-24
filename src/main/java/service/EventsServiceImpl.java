@@ -5,8 +5,24 @@
 
 package service;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
+import core.commons.Result;
+import core.dto.EventsDTOImpl;
 import core.dto.api.IEventsDTO;
 import core.enums.EventType;
+import core.enums.Frequency;
+import core.enums.NoticePeriod;
+import core.enums.Priority;
+import core.validators.CalendarValidator;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
+import jfxtras.scene.control.LocalDateTimeTextField;
 import model.entity.EventsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
@@ -15,13 +31,22 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import repository.EventsRepository;
 import service.api.IEventsService;
 import service.quartz.JobInitializer;
+import view.controlls.DateChooser;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Stream;
+
+import static core.commons.Utils.*;
+import static core.enums.ResultEnum.SUCCESS;
+import static java.time.temporal.ChronoUnit.HOURS;
+import static java.util.stream.Collectors.toList;
+import static javafx.scene.control.Alert.AlertType.*;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -29,19 +54,241 @@ import java.util.List;
  * Бизнес-логика событий
  */
 @Service("eventsService")
-@Transactional(readOnly = true, rollbackFor = {Exception.class})
+@Transactional(readOnly = true, propagation = Propagation.NESTED, rollbackFor = {Exception.class})
 public class EventsServiceImpl implements IEventsService {
 
     private final EventsRepository eventsRepository;
     private final ConversionService conversionService;
+    private final CalendarValidator calendarValidator;
 
     @Autowired
     private JobInitializer jobInitializer;
 
     @Autowired
-    public EventsServiceImpl(EventsRepository eventsRepository, ConversionService conversionService) {
+    public EventsServiceImpl(EventsRepository eventsRepository, ConversionService conversionService, CalendarValidator calendarValidator) {
         this.eventsRepository = eventsRepository;
         this.conversionService = conversionService;
+        this.calendarValidator = calendarValidator;
+    }
+
+
+    /**
+     * Обработка нажатия кнопки нового события, на вкладке Календарь
+     *
+     * @param title        Суть события
+     * @param starts       Дата начала события
+     * @param ends         Дата окончания события
+     * @param noticePeriod Период напоминания о событии
+     * @param frequency    Частота происхождения события
+     * @param priority     Приорит события
+     * @param actionEvent  Тип события (JavaFx событие)
+     */
+    @Override
+    @Transactional
+    public void createNewEvent(JFXTextField title, LocalDateTimeTextField starts, LocalDateTimeTextField ends,
+                               JFXComboBox noticePeriod, JFXComboBox frequency, JFXComboBox priority,
+                               ActionEvent actionEvent) {
+        final IEventsDTO event = new EventsDTOImpl();
+
+        event.setUuid(UUID.randomUUID());
+        event.setDtUpdate(new Date());
+
+        event.setTitle(title.getText());
+        event.setStarts(starts.getLocalDateTime());
+        event.setEnds(ends.getLocalDateTime());
+
+        Stream.of(NoticePeriod.values()).forEach(np -> {
+            if (np.getName().equals(String.valueOf(noticePeriod.getValue()))) event.setNoticePeriod(np);
+        });
+
+        Stream.of(Frequency.values()).forEach(f -> {
+            if (f.getName().equals(String.valueOf(frequency.getValue()))) event.setFrequency(f);
+        });
+
+        Stream.of(Priority.values()).forEach(p -> {
+            if (p.getName().equals(String.valueOf(priority.getValue()))) event.setPriority(p);
+        });
+
+        final Alert.AlertType alertType;
+        final String alertTitle;
+        final String alertHeader;
+        final String alertBody;
+
+        final Result result = calendarValidator.validateNewEvent(event);
+
+        if (Objects.equals(result.getResult(), SUCCESS)) {
+            save(event);
+
+            alertType = INFORMATION;
+            alertTitle = "Информация";
+            alertHeader = "Создано событие";
+            alertBody = "Было создано новое событие";
+
+            cleanEventForm(title, starts, ends, noticePeriod, frequency, priority, null);
+        } else {
+            alertType = ERROR;
+
+            alertTitle = "Ошибка";
+            alertHeader = "При заполнении данных вы допустили следущие ошибки";
+            alertBody = result.errorsToString();
+        }
+
+        raiseMessageBox(alertType, alertTitle, alertHeader, alertBody);
+    }
+
+    /**
+     * Обработка нажатия кнопки очистки формы для создания нового события, на вкладке Календарь
+     *
+     * @param title        Суть события
+     * @param starts       Дата начала события
+     * @param ends         Дата окончания события
+     * @param noticePeriod Период напоминания о событии
+     * @param frequency    Частота происхождения события
+     * @param priority     Приорит события
+     * @param actionEvent  Тип события (JavaFx событие)
+     */
+    @Override
+    public void cleanEventForm(JFXTextField title, LocalDateTimeTextField starts, LocalDateTimeTextField ends,
+                               JFXComboBox noticePeriod, JFXComboBox frequency, JFXComboBox priority,
+                               ActionEvent actionEvent) {
+        starts.setLocalDateTime(LocalDateTime.now());
+        ends.setLocalDateTime(LocalDateTime.now().plus(1, HOURS));
+        title.setText("");
+        noticePeriod.setValue(NoticePeriod.getDefault().getName());
+        frequency.setValue(Frequency.getDefault().getName());
+        priority.setValue(Priority.getDefault().getName());
+    }
+
+
+    /**
+     * Заполняет комбобоксы перечислениями
+     *
+     * @param noticePeriodPicker Комбобокс выбора периода напоминания
+     * @param frequencyPicker    Комбобокс выбора частотности
+     * @param priorityPicker     Комбобокс выбора приоритета
+     */
+    @Override
+    public void fillComboBoxes(JFXComboBox noticePeriodPicker, JFXComboBox frequencyPicker,
+                               JFXComboBox priorityPicker) {
+        noticePeriodPicker.getItems()
+                .addAll(Stream.of(NoticePeriod.values()).map(NoticePeriod::getName).collect(toList()));
+
+        frequencyPicker.getItems()
+                .addAll(Stream.of(Frequency.values()).map(Frequency::getName).collect(toList()));
+
+        priorityPicker.getItems()
+                .addAll(Stream.of(Priority.values()).map(Priority::getName).collect(toList()));
+    }
+
+    /**
+     * Заполнения списка предстоящих событий
+     * Отсортирован по началу события (ASC) (сверху - ближайшие)
+     *
+     * @param calendarUpcomingEventsListView Список который необходимо заполнить
+     */
+    @Override
+    public void fillUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView) {
+        calendarUpcomingEventsListView.getItems().clear();
+
+        calendarUpcomingEventsListView.getItems()
+                .addAll(findUpcomingEvents()
+                        .stream()
+                        .map(event -> {
+                            Label label = new Label(event.toPrettyString());
+                            label.setId(String.valueOf(event.getUuid()));
+                            return label;
+                        })
+                        .collect(toList()));
+    }
+
+    /**
+     * Добавляем контекстное меню для взаимодействия с отдельными событиями, после их создания
+     *
+     * @param calendarUpcomingEventsListView список с предстоящими событиями
+     */
+    @Override
+    @Transactional
+    public void addContextMenuToUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView) {
+        final ContextMenu calendarUpcomingEventsContextMenu = new ContextMenu();
+
+        MenuItem delete = new MenuItem("Удалить");
+        MenuItem change = new MenuItem("Редактировать");
+
+        calendarUpcomingEventsContextMenu.getItems().addAll(delete/*, change*/);
+
+        delete.setOnAction(event -> {
+            Label item = calendarUpcomingEventsListView.getSelectionModel().getSelectedItem();
+
+            // Если кликнули по пустому месту
+            if (item == null) return;
+
+            boolean isOk = raiseMessageBox(CONFIRMATION, "Внимание", "Удалить элемент?", "Вы действительно хотите удалить данное событие: \"" + item.getText() + "\"?");
+
+            // Если отказался удалять выбранный элемент
+            if (!isOk) return;
+
+            // Если он все же подтвердил удаление - удаляем элемент
+            Optional.ofNullable(findUpcomingEvents())
+                    .ifPresent(l -> l.stream()
+                            .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
+                            .forEach(this::delete));
+
+            // Обновляем список, иначе для пользователя останется виден удаленный элемент
+            fillUpcomingEventsList(calendarUpcomingEventsListView);
+        });
+        change.setOnAction(event -> {
+            System.out.println("change...");
+        });
+
+        calendarUpcomingEventsListView.setContextMenu(calendarUpcomingEventsContextMenu);
+    }
+
+    /**
+     * Создаем большой календарь и вешаем обработчик по нажатию на определенные даты
+     *
+     * @param calendarRightPaneBottomBlock   Вся панель в которую будет всунут календарь
+     * @param calendarUpcomingEventsLabel    Заголовок списка предстоящих событий
+     * @param calendarUpcomingEventsListView Список предстоящих событий
+     */
+    @Override
+    public void createBigCalendar(Pane calendarRightPaneBottomBlock, Label calendarUpcomingEventsLabel, JFXListView<Label> calendarUpcomingEventsListView) {
+        final DateChooser dateChooser = new DateChooser();
+
+        calendarRightPaneBottomBlock.getChildren().add(dateChooser);
+
+        dateChooser.setOnMouseClicked(e -> handleClickOnDay(dateChooser, calendarUpcomingEventsLabel, calendarUpcomingEventsListView));
+    }
+
+    /**
+     * По нажатию на календарь, берем выбранную дату {@link Date} и вписываем в список предстоящих событий те,
+     * которые будут ТОЛЬКО в этот выбранный день
+     *
+     * @param dateChooser            Календарь
+     * @param upcomingEventsLabel    Заголовок списка предстоящих событий
+     * @param upcomingEventsListView Список предстоящих событий
+     */
+    private void handleClickOnDay(DateChooser dateChooser, Label upcomingEventsLabel, JFXListView<Label> upcomingEventsListView) {
+        // Получаем нажатую дату
+        LocalDateTime dateTime = convertDateToLocalDateTime(dateChooser.getDate());
+
+        // Вписываем в заголовок таблицы предстоящих событий, что показывает события за определенный день
+        upcomingEventsLabel.setText("Список событий на " + dateTime.format(CALENDAR_ON_DATE_FORMATTER));
+
+        // Получаем события ТОЛЬКО за определенный период
+        List<IEventsDTO> upcomingEventsForPeriod = findUpcomingEventsForPeriod(getStartOfDay(dateTime), getEndOfDay(dateTime));
+
+        // Чистим список
+        upcomingEventsListView.getItems().clear();
+
+        // Заполняем список событиями ТОЛЬКО за определенный период
+        upcomingEventsListView.getItems()
+                .addAll(upcomingEventsForPeriod.stream()
+                        .map(e -> {
+                            Label label = new Label(e.toPrettyString());
+                            label.setId(String.valueOf(e.getUuid()));
+                            return label;
+                        })
+                        .collect(toList()));
     }
 
     /**
@@ -196,6 +443,13 @@ public class EventsServiceImpl implements IEventsService {
 
         eventsRepository.delete(entity);
     }
+
+    @Override
+    @Transactional
+    public Long deleteByUuid(UUID uuid) {
+        return eventsRepository.deleteByUuid(uuid);
+    }
+
 
     /**
      * Удаление списка событий

@@ -1,10 +1,4 @@
 -- ----------------------------
--- DATABASE
--- ----------------------------
-DROP DATABASE IF EXISTS calendar;
-CREATE DATABASE calendar;
-
--- ----------------------------
 -- SCHEMA
 -- ----------------------------
 DROP SCHEMA IF EXISTS cld CASCADE;
@@ -129,7 +123,7 @@ CREATE TABLE cld.allocation (
   id                                       BIGSERIAL PRIMARY KEY,
   uuid                                     UUID           NOT NULL,
   dt_update                                TIMESTAMPTZ(6) NOT NULL,
-  parent_uuid                              UUID,
+  parent_id                                BIGINT,
   group_id                                 BIGINT         NOT NULL,
   organisation_id                          BIGINT         NOT NULL,
   student_id                               BIGINT         NOT NULL,
@@ -145,11 +139,15 @@ CREATE TABLE cld.allocation (
   voluntary_compensation_confirmation_date TIMESTAMPTZ(6), -- Дата получения извещения о добровольном возмещение
   cort_order_date                          TIMESTAMPTZ(6), -- Возмещение через суд, Дата приказа
   cort_order_number                        VARCHAR(50), -- Возмещение через суд, Номер приказа
-  archive                                  BOOLEAN                 DEFAULT FALSE -- Пометка о том, что запись находится в архиве
+  archive                                  BOOLEAN                 DEFAULT FALSE, -- Пометка о том, что запись находится в архиве
+  issue_year                               INTEGER        NOT NULL DEFAULT 2016-- Год выпуска
 );
 
 CREATE UNIQUE INDEX allocation_uuid_idx
   ON cld.allocation USING BTREE (uuid);
+
+CREATE UNIQUE INDEX allocation_issue_year_idx
+  ON cld.allocation USING BTREE (issue_year);
 
 -- ----------------------------
 -- TABLE preferences

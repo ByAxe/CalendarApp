@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -24,5 +25,7 @@ public interface EventsRepository extends PagingAndSortingRepository<EventsEntit
 
     @Query(value = "SELECT * FROM cld.events WHERE ends >= CURRENT_TIMESTAMP(2) AND starts BETWEEN ?1 AND ?2 ORDER BY starts LIMIT 20", nativeQuery = true)
     List<EventsEntity> findUpcomingEventsForPeriod(Date starts, Date ends);
+
+    Long deleteByUuid(UUID uuid);
 
 }

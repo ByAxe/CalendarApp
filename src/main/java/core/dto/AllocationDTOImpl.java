@@ -11,13 +11,12 @@ import core.dto.api.*;
 import core.enums.Stage;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * Created by byaxe on 18.12.16.
  */
 public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
-    private UUID parentUuid;
+    private Long parentId;
 
     private boolean army;
     private boolean freeAllocation;
@@ -31,11 +30,13 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
     private LocalDateTime voluntaryCompensationConfirmationDate;
     private LocalDateTime cortOrderDate;
     private String[] confirmations;
+    private String freeAllocationReason;
 
     private IGroupsDTO group;
     private IOrganisationsDTO organisation;
     private IStudentsDTO student;
     private IOrdersDTO order;
+    private Integer issueYear;
 
     public AllocationDTOImpl() {
     }
@@ -51,7 +52,7 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.uuid = essence.getUuid();
         this.dtUpdate = essence.getDtUpdate();
 
-        this.parentUuid = essence.getParentUuid();
+        this.parentId = essence.getParentId();
 
         this.army = essence.isArmy();
         this.freeAllocation = essence.isFreeAllocation();
@@ -72,13 +73,13 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.order = essence.getOrder();
     }
 
-    public AllocationDTOImpl(Long id, UUID parentUuid, boolean army, boolean freeAllocation, boolean voluntaryCompensation,
+    public AllocationDTOImpl(Long id, Long parentUuid, boolean army, boolean freeAllocation, boolean voluntaryCompensation,
                              boolean archive, Stage stage, String cortOrderNumber, String voluntaryCompensationOrderNumber,
                              LocalDateTime voluntaryCompensationOrderDate, LocalDateTime voluntaryCompensationConfirmationDate,
                              LocalDateTime cortOrderDate, String[] confirmations, IGroupsDTO group, IOrganisationsDTO organisation,
                              IStudentsDTO student, IOrdersDTO order) {
         this.id = id;
-        this.parentUuid = parentUuid;
+        this.parentId = parentUuid;
         this.army = army;
         this.freeAllocation = freeAllocation;
         this.voluntaryCompensation = voluntaryCompensation;
@@ -96,12 +97,12 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.order = order;
     }
 
-    public UUID getParentUuid() {
-        return parentUuid;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setParentUuid(UUID parentUuid) {
-        this.parentUuid = parentUuid;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public boolean isArmy() {
@@ -224,5 +225,21 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
 
     public void setOrder(IOrdersDTO order) {
         this.order = order;
+    }
+
+    public String getFreeAllocationReason() {
+        return freeAllocationReason;
+    }
+
+    public void setFreeAllocationReason(String freeAllocationReason) {
+        this.freeAllocationReason = freeAllocationReason;
+    }
+
+    public Integer getIssueYear() {
+        return issueYear;
+    }
+
+    public void setIssueYear(Integer issueYear) {
+        this.issueYear = issueYear;
     }
 }

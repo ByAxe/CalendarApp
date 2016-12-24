@@ -44,7 +44,7 @@ public class AllocationEntityToDTOConverter implements Converter<AllocationEntit
         target.setUuid(source.getUuid());
         target.setDtUpdate(source.getDtUpdate());
 
-        target.setParentUuid(source.getParentUuid());
+        target.setParentId(source.getParentId());
 
         target.setArmy(source.isArmy());
         target.setFreeAllocation(source.isFreeAllocation());
@@ -58,6 +58,8 @@ public class AllocationEntityToDTOConverter implements Converter<AllocationEntit
         target.setVoluntaryCompensationOrderDate(convertDateToLocalDateTime(source.getVoluntaryCompensationOrderDate()));
         target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(source.getVoluntaryCompensationConfirmationDate()));
         target.setCortOrderDate(convertDateToLocalDateTime(source.getCortOrderDate()));
+        target.setFreeAllocationReason(source.getFreeAllocationReason());
+        target.setIssueYear(source.getIssueYear());
 
         target.setConfirmations(source.getConfirmations());
 
