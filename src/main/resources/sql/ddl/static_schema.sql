@@ -176,7 +176,7 @@ CREATE TABLE cld.notifications_log (
   uuid              UUID           NOT NULL,
   dt_update         TIMESTAMPTZ(6) NOT NULL,
   viewed            BOOLEAN        NOT NULL DEFAULT FALSE, -- Признак того что уведомление было прочитано
-  notification_date TIMESTAMPTZ(6) NOT NULL, -- Когда уведомление было создано
+  notification_date TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(2), -- Когда уведомление было создано
   notification_type VARCHAR        NOT NULL DEFAULT 'ALLOCATION_END',
   payload           TEXT           NOT NULL -- Непосредственно текст уведомления
 );

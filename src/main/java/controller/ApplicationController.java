@@ -7,8 +7,8 @@ package controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
-import core.dto.api.IAllocationTableDTO;
-import core.dto.api.INotificationLogTableDTO;
+import core.dto.api.*;
+import core.enums.CompensationType;
 import core.enums.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,10 +16,12 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda;
 import org.slf4j.Logger;
@@ -27,17 +29,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import service.api.IAllocationService;
-import service.api.IEventsService;
-import service.api.IGroupsService;
-import service.api.INotificationsLogService;
+import service.api.*;
 
+import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 import static core.commons.Utils.*;
+import static java.util.stream.Collectors.toList;
+import static javafx.scene.control.Alert.AlertType.ERROR;
 import static javafx.scene.control.Alert.AlertType.INFORMATION;
 
 /**
@@ -145,6 +148,88 @@ public class ApplicationController implements Initializable {
     public TableColumn notificationsTableType;
     public TableColumn notificationsTableDescription;
     public JFXButton notificationsClearButton;
+    public JFXButton allocationTableExcelButton;
+    public Pane allocationHeaderPane;
+    public Label allocationStudentLabel;
+    public JFXButton allocationEditButton;
+    public JFXTextField allocationSearchTextField;
+    public JFXComboBox allocationStudentsList;
+    public Label allocationGroupLabel;
+    public JFXComboBox allocationGroupsList;
+    public JFXCheckBox allocationArchive;
+    public Label allocationOrganisationLabel;
+    public JFXComboBox allocationOrganisationsList;
+    public JFXCheckBox allocationArmy;
+    public JFXCheckBox allocationFreeAllocation;
+    public JFXTextArea allocationFreeAllocationReason;
+    public Pane allocationConfirmationsPane;
+    public Label allocationConfirmationsLabel;
+    public JFXCheckBox allocationConfirmation_1;
+    public JFXCheckBox allocationConfirmation_2;
+    public JFXCheckBox allocationConfirmation_3;
+    public JFXCheckBox allocationConfirmation_4;
+    public JFXCheckBox allocationConfirmation_5;
+    public JFXCheckBox allocationConfirmation_6;
+    public JFXCheckBox allocationConfirmation_7;
+    public JFXCheckBox allocationConfirmation_8;
+    public JFXCheckBox allocationConfirmation_9;
+    public JFXCheckBox allocationConfirmation_10;
+    public JFXTextField allocationIssueYear;
+    public Pane allocationOrderPane;
+    public Label allocationOrderLabel;
+    public JFXTextField allocationOrderNumber;
+    public LocalDateTimeTextField allocationOrderDate;
+    public JFXTextField allocationOrderProfession;
+    public JFXTextField allocationOrderRank;
+    public JFXTextArea allocationOrderPayload;
+    public JFXCheckBox allocationReallocation;
+    public Pane allocationCompensationPane;
+    public Label allocationCompensationLabel;
+    public JFXTextField allocationCompensationNumber;
+    public LocalDateTimeTextField allocationCompensationDate;
+    public JFXComboBox allocationCompensationType;
+    public LocalDateTimeTextField allocationCompensationConfirmationDate;
+    public JFXButton allocationSaveButton;
+    public Tab managementTab;
+    public Tab managementStudentsTab;
+    public JFXTextField managementStudentLastName;
+    public JFXTextField managementStudentFirstName;
+    public JFXTextField managementStudentMiddleName;
+    public JFXTextField managementStudentTelephone;
+    public JFXTextField managementStudentAddress;
+    public JFXButton managementStudentCleanButton;
+    public JFXButton managementStudentSaveButton;
+    public JFXListView<Label> managementStudentsList;
+    public Tab managementGroupsTab;
+    public JFXTextField managementGroupTitle;
+    public JFXTextField managementGroupNumber;
+    public JFXTextField managementGroupSpecialization;
+    public JFXTextField managementGroupQualification;
+    public JFXTextField managementGroupDescription;
+    public JFXComboBox managementGroupRuler;
+    public JFXListView<Label> managementGroupsList;
+    public JFXButton managementGroupCleanButton;
+    public JFXButton managementGroupSaveButton;
+    public JFXListView<Label> managementRulersList;
+    public JFXTextField managementRulerLastName;
+    public JFXTextField managementRulerFirstName;
+    public JFXTextField managementRulerMiddleName;
+    public JFXTextField managementRulerPayload;
+    public JFXButton managementRulerCleanButton;
+    public JFXButton managementRulerSaveButton;
+    public Tab managementRulersTab;
+    public Tab managementOrganisationsTab;
+    public JFXTextField managementOrganisationTitle;
+    public JFXTextField managementOrganisationAddress;
+    public JFXTextField managementOrganisationTelephone;
+    public JFXTextField managementOrganisationContacts;
+    public JFXListView<Label> managementOrganisationsList;
+    public JFXButton managementOrganisationCleanButton;
+    public JFXButton managementOrganisationSaveButton;
+    public JFXTextField managementStudentId;
+    public JFXTextField managementGroupId;
+    public JFXTextField managementRulerId;
+    public JFXTextField managementOrganisationId;
 
     private ResourceBundle resourceBundle;
     private URL location;
@@ -153,6 +238,8 @@ public class ApplicationController implements Initializable {
     private IGroupsService groupsService;
     private IAllocationService allocationService;
     private INotificationsLogService notificationsLogService;
+    private IStudentsService studentsService;
+    private IOrganisationsService organisationsService;
 
     @Value("${calendar.upcoming.events.label.text}")
     private String upcomingEventsLabelText;
@@ -167,11 +254,15 @@ public class ApplicationController implements Initializable {
     }
 
     @Autowired
-    public ApplicationController(IEventsService eventsService, IGroupsService groupsService, IAllocationService allocationService, INotificationsLogService notificationsLogService) {
+    public ApplicationController(IEventsService eventsService, IGroupsService groupsService, IAllocationService allocationService,
+                                 INotificationsLogService notificationsLogService, IStudentsService studentsService,
+                                 IOrganisationsService organisationsService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
         this.allocationService = allocationService;
         this.notificationsLogService = notificationsLogService;
+        this.studentsService = studentsService;
+        this.organisationsService = organisationsService;
     }
 
     @Override
@@ -184,6 +275,7 @@ public class ApplicationController implements Initializable {
         initAllocationTab();
         initAllocationTableTab();
         initNotificationTab();
+        initManagementTab();
     }
 
     /**
@@ -312,12 +404,6 @@ public class ApplicationController implements Initializable {
      * Дергает и делает все, что вкладка Расписание была успешна инициализированна и заполнена
      */
     private void initScheduleTab() {
-    }
-
-    /**
-     * Дергает и делает все, что вкладка Распределение была успешна инициализированна и заполнена
-     */
-    private void initAllocationTab() {
     }
 
     /**
@@ -519,8 +605,69 @@ public class ApplicationController implements Initializable {
      */
     @FXML
     private void allocationPrintButtonClick(ActionEvent actionEvent) {
-        // TODO Add printing Job
-        System.out.println("Print it!");
+
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        raiseMessageBox(ERROR, "Ошибка", "Ошибка при поптыке печати.", "В системе не найден принтер!\nЧтобы напечатать что либо, вы должны сначала подключить принтер.");
+        if (printerJob == null) return; // нет принтера
+
+        if (!printerJob.showPrintDialog(null)) return;
+
+        Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout = printer.createPageLayout(Paper.A2, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
+        printerJob.getJobSettings().setPageLayout(pageLayout);
+
+        printerJob.printPage(allocationTable);
+    }
+
+    /**
+     * Сохраняет содержимое Таблицы Распредления в excel файл
+     *
+     * @param actionEvent
+     */
+    @FXML
+    private void allocationExcelButtonClick(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+
+        String allocationYear = allocationTableIssueYear.validate() ? allocationTableIssueYear.getText() : String.valueOf(2016);
+        fileChooser.setInitialFileName("Учет распределения (выпуск " + allocationYear + " года).xls");
+
+        fileChooser.setTitle("Сохранить таблицу");
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try {
+                allocationService.exportTableToExcel(file, allocationTable);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+
+    /**
+     * Дергает и делает все, что вкладка Распределение была успешна инициализированна и заполнена
+     */
+    private void initAllocationTab() {
+        allocationSearchTextField.setValidators(new NumberValidator());
+        allocationFillComboBox();
+
+    }
+
+
+    /**
+     * Заполнить комбобоксы на вкладке Распределение
+     */
+    private void allocationFillComboBox() {
+        List<IStudentsDTO> students = (List<IStudentsDTO>) studentsService.findAll();
+        List<IOrganisationsDTO> organisations = (List<IOrganisationsDTO>) organisationsService.findAll();
+        List<IGroupsDTO> groups = (List<IGroupsDTO>) groupsService.findAll();
+
+        students.forEach(e -> allocationStudentsList.getItems().add(e.getId()));
+        organisations.forEach(e -> allocationOrganisationsList.getItems().add(e.getId()));
+        groups.forEach(e -> allocationGroupsList.getItems().add(e.getId()));
+
+        allocationCompensationType.getItems()
+                .setAll(Stream.of(CompensationType.values()).map(CompensationType::getType).collect(toList()));
     }
 
     /**
@@ -561,6 +708,7 @@ public class ApplicationController implements Initializable {
     @FXML
     public void handleNotificationsClear(ActionEvent actionEvent) {
         notificationsLogService.deleteAll();
+        notificationsTab.setText("Уведомления");
         notificationsTable.setItems(FXCollections.observableArrayList());
     }
 
@@ -569,7 +717,143 @@ public class ApplicationController implements Initializable {
      *
      * @param event
      */
-    public void notificationsTabChoose(Event event) {
+    @FXML
+    private void notificationsTabChoose(Event event) {
         notificationsTableUpdate();
+    }
+
+    @FXML
+    private void allocationEditButtonClick(ActionEvent actionEvent) {
+
+        if (allocationSearchTextField.validate()) {
+            final long id = Long.parseLong(allocationSearchTextField.getText());
+
+            IAllocationDTO allocation = allocationService.findOne(id);
+
+            if (allocation == null) {
+                raiseMessageBox(INFORMATION, "Не найдено", "Поиск не дал результатов", "Запись о распределении с данным номером не найдена.");
+                return;
+            }
+
+            allocationCompensationType.getItems()
+                    .setAll(Stream.of(CompensationType.values()).map(CompensationType::getType).collect(toList()));
+
+            IGroupsDTO group = allocation.getGroup();
+            IStudentsDTO student = allocation.getStudent();
+            IOrganisationsDTO organisation = allocation.getOrganisation();
+
+            allocationStudentsList.getItems().setAll(student.toPrettyString());
+            allocationOrganisationsList.getItems().setAll(organisation.toPrettyString());
+            allocationGroupsList.getItems().setAll(group.toPrettyString());
+
+            // TODO разложить данные по полям
+        }
+
+    }
+
+
+    @FXML
+    private void allocationSaveButtonClick(ActionEvent actionEvent) {
+    }
+
+
+    /**
+     * Инициализируем все вкладки Управления Сущностями
+     */
+    private void initManagementTab() {
+        initManagementStudentsTab();
+        initManagementGroupsTab();
+        initManagementRulersTab();
+        initManagementOrganisationsTab();
+    }
+
+    /**
+     * Инициализируем вкладку управления выпускниками
+     */
+    private void initManagementStudentsTab() {
+        studentsService.fillStudentsList(managementStudentsList);
+
+        studentsService.addContextMenuToStudentsList(managementStudentsList, managementStudentId,
+                managementStudentFirstName, managementStudentMiddleName, managementStudentLastName,
+                managementStudentTelephone, managementStudentAddress);
+
+        managementStudentCleanForm();
+    }
+
+    /**
+     * Сохраняем текущую сущность
+     *
+     * @param actionEvent
+     */
+    @FXML
+    private void managementStudentSaveButtonClick(ActionEvent actionEvent) {
+
+        long id = Long.parseLong(managementStudentId.getText());
+        String firstName = managementStudentFirstName.getText();
+        String middleName = managementStudentMiddleName.getText();
+        String lastName = managementStudentLastName.getText();
+        String telephone = managementStudentTelephone.getText();
+        String address = managementStudentAddress.getText();
+
+        studentsService.save(id, firstName, middleName, lastName, telephone, address);
+
+        managementStudentCleanForm();
+        studentsService.fillStudentsList(managementStudentsList);
+    }
+
+    /**
+     * Обрабатываем нажатие на кнопку очистки формы сохранения студента
+     *
+     * @param actionEvent
+     */
+    @FXML
+    private void managementStudentCleanButtonClick(ActionEvent actionEvent) {
+        managementStudentCleanForm();
+    }
+
+    /**
+     * Вычищает данные из полей сохранения новой сущности
+     */
+    private void managementStudentCleanForm() {
+        managementStudentId.setText("0");
+        managementStudentFirstName.setText("");
+        managementStudentMiddleName.setText("");
+        managementStudentLastName.setText("");
+        managementStudentTelephone.setText("");
+        managementStudentAddress.setText("");
+    }
+
+    private void initManagementOrganisationsTab() {
+    }
+
+    private void initManagementRulersTab() {
+    }
+
+    private void initManagementGroupsTab() {
+    }
+
+
+    @FXML
+    private void managementGroupCleanButtonClick(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void managementGroupSaveButtonClick(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void managementRulerCleanButtonClick(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void managementRulerSaveButtonClick(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void managementOrganisationCleanButtonClick(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    private void managementOrganisationSaveButtonClick(ActionEvent actionEvent) {
     }
 }

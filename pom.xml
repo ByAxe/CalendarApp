@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calendar-app</groupId>
 	<artifactId>calendar-root</artifactId>
-	<version>0.5.1</version>
+	<version>0.5.2</version>
 
 	<name>calendar-root</name>
 	<url>http://maven.apache.org</url>
@@ -36,6 +36,7 @@
 		<jfxtras-version>8.0-r6-SNAPSHOT</jfxtras-version>
 		<quartz-version>RELEASE</quartz-version>
 		<material-design-fx-version>RELEASE</material-design-fx-version>
+		<apache-poi-version>RELEASE</apache-poi-version>
 
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 		<maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
@@ -323,6 +324,13 @@
 			<artifactId>material-design-fx</artifactId>
 			<version>${material-design-fx-version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${apache-poi-version}</version>
+		</dependency>
+
 		<!--********************************************************************-->
 		<!--end::MISCELLANEOUS DEPENDENCIES-->
 		<!--********************************************************************-->

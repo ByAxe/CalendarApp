@@ -7,6 +7,7 @@ package core.validators;
 
 import core.commons.Result;
 import core.dto.api.IEventsDTO;
+import core.validators.api.IValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,18 +21,12 @@ import static java.time.temporal.ChronoUnit.MINUTES;
  * Created by A.Litvinau on 12/10/2016.
  */
 @Component
-public class CalendarValidator {
+public class CalendarValidator implements IValidator<Result, IEventsDTO> {
 
     @Value("${minimal.event.longing.minutes}")
     private int MINIMAL_EVENT_LONGING_MINUTES;
 
-    /**
-     * Валидирует новое событие {@link IEventsDTO}
-     *
-     * @param event Новое событие {@link IEventsDTO}
-     * @return Экземпляр результата {@link Result}
-     */
-    public Result validateNewEvent(IEventsDTO event) {
+    public Result validate(IEventsDTO event) {
         List<String> errors = new ArrayList<>();
 
         if (event.getStarts().isAfter(event.getEnds())) {

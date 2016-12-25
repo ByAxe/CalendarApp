@@ -21,7 +21,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
  */
 @SqlGroup({
         @Sql(executionPhase = BEFORE_TEST_METHOD, scripts = {
-                "sql/events_data.sql"
+                "sql/test-data.sql"
         }),
         @Sql(executionPhase = AFTER_TEST_METHOD, scripts = {
                 "sql/ddl/clear.sql"

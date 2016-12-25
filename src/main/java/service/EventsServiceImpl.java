@@ -15,7 +15,7 @@ import core.enums.EventType;
 import core.enums.Frequency;
 import core.enums.NoticePeriod;
 import core.enums.Priority;
-import core.validators.CalendarValidator;
+import core.validators.api.IValidator;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
@@ -25,6 +25,7 @@ import javafx.scene.layout.Pane;
 import jfxtras.scene.control.LocalDateTimeTextField;
 import model.entity.EventsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -59,13 +60,49 @@ public class EventsServiceImpl implements IEventsService {
 
     private final EventsRepository eventsRepository;
     private final ConversionService conversionService;
-    private final CalendarValidator calendarValidator;
+    private final IValidator<Result, IEventsDTO> calendarValidator;
+
+    @Value("${validation.error.title}")
+    private String VALIDATION_ERROR_TITLE;
+
+    @Value("${validation.error.header}")
+    private String VALIDATION_ERROR_HEADER;
+
+    @Value("${validation.success.title}")
+    private String VALIDATION_SUCCESS_TITLE;
+
+    @Value("${validation.success.header}")
+    private String VALIDATION_SUCCESS_HEADER;
+
+    @Value("${validation.success.body}")
+    private String VALIDATION_SUCCESS_BODY;
+
+    @Value("${change.element.title}")
+    private String CHANGE_ELEMENT_TITLE;
+
+    @Value("${change.element.body}")
+    private String CHANGE_ELEMENT_BODY;
+
+    @Value("${change.element.header}")
+    private String CHANGE_ELEMENT_HEADER;
+
+    @Value("${delete.element.title}")
+    private String DELETE_ELEMENT_TITLE;
+
+    @Value("${delete.element.header}")
+    private String DELETE_ELEMENT_HEADER;
+
+    @Value("${delete.context.menu.item}")
+    private String DELETE_CONTEXT_MENU_ITEM;
+
+    @Value("${change.context.menu.item}")
+    private String CHANGE_CONTEXT_MENU_ITEM;
 
     @Autowired
     private JobInitializer jobInitializer;
 
     @Autowired
-    public EventsServiceImpl(EventsRepository eventsRepository, ConversionService conversionService, CalendarValidator calendarValidator) {
+    public EventsServiceImpl(EventsRepository eventsRepository, ConversionService conversionService, IValidator<Result, IEventsDTO> calendarValidator) {
         this.eventsRepository = eventsRepository;
         this.conversionService = conversionService;
         this.calendarValidator = calendarValidator;
@@ -114,22 +151,22 @@ public class EventsServiceImpl implements IEventsService {
         final String alertHeader;
         final String alertBody;
 
-        final Result result = calendarValidator.validateNewEvent(event);
+        final Result result = calendarValidator.validate(event);
 
         if (Objects.equals(result.getResult(), SUCCESS)) {
             save(event);
 
             alertType = INFORMATION;
-            alertTitle = "Информация";
-            alertHeader = "Создано событие";
-            alertBody = "Было создано новое событие";
+            alertTitle = VALIDATION_SUCCESS_TITLE;
+            alertHeader = VALIDATION_SUCCESS_HEADER;
+            alertBody = VALIDATION_SUCCESS_BODY;
 
             cleanEventForm(title, starts, ends, noticePeriod, frequency, priority, null);
         } else {
             alertType = ERROR;
 
-            alertTitle = "Ошибка";
-            alertHeader = "При заполнении данных вы допустили следущие ошибки";
+            alertTitle = VALIDATION_ERROR_TITLE;
+            alertHeader = VALIDATION_ERROR_HEADER;
             alertBody = result.errorsToString();
         }
 
@@ -188,10 +225,8 @@ public class EventsServiceImpl implements IEventsService {
      */
     @Override
     public void fillUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView) {
-        calendarUpcomingEventsListView.getItems().clear();
-
         calendarUpcomingEventsListView.getItems()
-                .addAll(findUpcomingEvents()
+                .setAll(findUpcomingEvents()
                         .stream()
                         .map(event -> {
                             Label label = new Label(event.toPrettyString());
@@ -211,8 +246,8 @@ public class EventsServiceImpl implements IEventsService {
     public void addContextMenuToUpcomingEventsList(JFXListView<Label> calendarUpcomingEventsListView) {
         final ContextMenu calendarUpcomingEventsContextMenu = new ContextMenu();
 
-        MenuItem delete = new MenuItem("Удалить");
-        MenuItem change = new MenuItem("Редактировать");
+        MenuItem delete = new MenuItem(DELETE_CONTEXT_MENU_ITEM);
+        MenuItem change = new MenuItem(CHANGE_CONTEXT_MENU_ITEM);
 
         calendarUpcomingEventsContextMenu.getItems().addAll(delete/*, change*/);
 
@@ -222,7 +257,7 @@ public class EventsServiceImpl implements IEventsService {
             // Если кликнули по пустому месту
             if (item == null) return;
 
-            boolean isOk = raiseMessageBox(CONFIRMATION, "Внимание", "Удалить элемент?", "Вы действительно хотите удалить данное событие: \"" + item.getText() + "\"?");
+            boolean isOk = raiseMessageBox(CONFIRMATION, DELETE_ELEMENT_TITLE, DELETE_ELEMENT_HEADER, "Вы действительно хотите удалить данное событие: \"" + item.getText() + "\"?");
 
             // Если отказался удалять выбранный элемент
             if (!isOk) return;

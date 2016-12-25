@@ -39,7 +39,7 @@ public class Utils {
     public static final DateTimeFormatter PRETTY_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMM HH:mm");
     public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
     public static final DateTimeFormatter CALENDAR_DATE_PICKER_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-    public static final DateTimeFormatter ALLOCATION_TABLE_FORMATTER = DateTimeFormatter.ofPattern("dd MMMMM yyyy");
+    public static final DateTimeFormatter ALLOCATION_TABLE_FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 
     /**
      * Создает сообщение с помощью {@link Alert}
@@ -206,6 +206,5 @@ public class Utils {
         column.setPrefWidth(120);
         return column;
     }
-
 
 }

@@ -9,11 +9,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <?import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda?>
-<?import jfxtras.scene.control.LocalDateTimeTextField?>
+<?import jfxtras.scene.control.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-			minWidth="-Infinity"
-			prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
+			minWidth="-Infinity" prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
 			xmlns="http://javafx.com/javafx/8.0.65" fx:controller="controller.ApplicationController">
 	<MenuBar id="menu-bar" layoutX="1.0" layoutY="2.0" prefHeight="28.0" prefWidth="1100.0"
 			 AnchorPane.bottomAnchor="707.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -67,13 +67,14 @@
 											 prefHeight="25.0" prefWidth="130.0"/>
 								<Label fx:id="calendarFrequencyLabel" layoutX="13.0" layoutY="211.0" prefHeight="31.0"
 									   prefWidth="180.0" text="Будет ли событие повторятся?" textFill="#868686"/>
-								<LocalDateTimeTextField fx:id="calendarStartDatePicker" layoutX="141.0" layoutY="17.0"
-														prefHeight="25.0" prefWidth="198.0"/>
+								<LocalDateTimeTextField fx:id="calendarStartDatePicker" allowNull="false"
+														layoutX="141.0" layoutY="17.0" prefHeight="25.0"
+														prefWidth="198.0"/>
 								<Label fx:id="calendarEndDateLabel" layoutX="14.0" layoutY="57.0" prefHeight="31.0"
 									   prefWidth="135.0" text="Конец события:" textFill="#868686">
 								</Label>
-								<LocalDateTimeTextField fx:id="calendarEndDatePicker" layoutX="141.0" layoutY="60.0"
-														prefHeight="25.0" prefWidth="198.0"/>
+								<LocalDateTimeTextField fx:id="calendarEndDatePicker" allowNull="false" layoutX="141.0"
+														layoutY="60.0" prefHeight="25.0" prefWidth="198.0"/>
 
 								<JFXButton id="calendarMainButtons" fx:id="calendarClearEventButton" buttonType="RAISED"
 										   cancelButton="true" layoutX="223.0" layoutY="260.0"
@@ -97,9 +98,9 @@
 											 prefHeight="300.0" prefWidth="362.0" AnchorPane.bottomAnchor="0.0"
 											 AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-2.0"
 											 AnchorPane.topAnchor="32.0"/>
-								<Label fx:id="calendarUpcomingEventsLabel" layoutX="10.0" layoutY="3.0"
-									   prefHeight="27.0" prefWidth="274.0" text="Список предстоящих событий"
-									   textAlignment="CENTER" id="calendarUpcomingEventsLabel"/>
+								<Label id="calendarUpcomingEventsLabel" fx:id="calendarUpcomingEventsLabel"
+									   layoutX="10.0" layoutY="3.0" prefHeight="27.0" prefWidth="274.0"
+									   text="Список предстоящих событий" textAlignment="CENTER"/>
 								<JFXButton id="calendarUpdateUpcomingEventsListButton"
 										   fx:id="calendarUpdateUpcomingEventsListButton" layoutX="278.0" layoutY="4.0"
 										   onAction="#calendarHandleUpdateUpcomingEventsList" prefHeight="23.0"
@@ -173,30 +174,161 @@
 		</Tab>
 		<Tab fx:id="allocationTab" text="Распределение">
 			<content>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<Pane id="allocationHeaderPane" fx:id="allocationHeaderPane" layoutX="386.0" layoutY="153.0"
+							  prefHeight="67.0" prefWidth="1100.0" style="-fx-background-color: #fAfAfA;"
+							  AnchorPane.bottomAnchor="610.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+							  AnchorPane.topAnchor="0.0">
+							<children>
+								<JFXTextField id="allocationSearchTextField" fx:id="allocationSearchTextField"
+											  focusColor="#5ba5d3" labelFloat="true" layoutX="14.0" layoutY="22.0"
+											  maxWidth="262.0" minWidth="249.0" prefHeight="34.0" prefWidth="262.0"
+											  promptText="Поиск записи по идентификатору" unFocusColor="#797979">
+									<font>
+										<Font size="14.0"/>
+									</font>
+								</JFXTextField>
+								<JFXButton fx:id="allocationEditButton" buttonType="RAISED" layoutX="295.0"
+										   layoutY="25.0" onAction="#allocationEditButtonClick" ripplerFill="#82c9e1"
+										   style="-fx-background-color: #47a4c5;" text="Редактировать"
+										   textFill="WHITE"/>
+							</children>
+						</Pane>
+						<Pane layoutX="14.0" layoutY="67.0" prefHeight="610.0" prefWidth="1100.0"
+							  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+							  AnchorPane.topAnchor="67.0">
+							<children>
+								<Label id="allocationStudentLabel" fx:id="allocationStudentLabel" layoutX="14.0"
+									   layoutY="29.0" text="Выпусник:"/>
+								<JFXComboBox id="allocationStudentsList" fx:id="allocationStudentsList" layoutX="98.0"
+											 layoutY="23.0" prefHeight="27.0" prefWidth="233.0"/>
+								<Label id="allocationGroupLabel" fx:id="allocationGroupLabel" layoutX="353.0"
+									   layoutY="29.0" text="Группа:"/>
+								<JFXComboBox id="allocationGroupsList" fx:id="allocationGroupsList" layoutX="421.0"
+											 layoutY="23.0" prefHeight="27.0" prefWidth="259.0"/>
+								<JFXCheckBox id="allocationArchive" fx:id="allocationArchive" layoutX="14.0"
+											 layoutY="95.0" text="Архивная запись"/>
+								<Label id="allocationOrganisationLabel" fx:id="allocationOrganisationLabel"
+									   layoutX="711.0" layoutY="30.0" text="Организация:"/>
+								<JFXComboBox id="allocationOrganisationsList" fx:id="allocationOrganisationsList"
+											 layoutX="815.0" layoutY="24.0" prefHeight="27.0" prefWidth="270.0"/>
+								<JFXCheckBox id="allocationArmy" fx:id="allocationArmy" layoutX="14.0" layoutY="143.0"
+											 text="Призыв в Вооруженные Силы"/>
+								<JFXCheckBox id="allocationFreeAllocation" fx:id="allocationFreeAllocation"
+											 layoutX="14.0" layoutY="241.0" text="Свободное распределение"/>
+								<JFXTextArea id="allocationFreeAllocationReason" fx:id="allocationFreeAllocationReason"
+											 labelFloat="true" layoutX="24.0" layoutY="285.0" maxWidth="307.0"
+											 minWidth="307.0" prefHeight="68.0" prefWidth="307.0"
+											 promptText="Причина свободного распределения"/>
+								<Pane id="allocationConfirmationsPane" fx:id="allocationConfirmationsPane"
+									  layoutX="748.0" layoutY="125.0" prefHeight="207.0" prefWidth="337.0"
+									  style="-fx-background-color: #fAfAfA;">
+									<children>
+										<Label id="allocationConfirmationsLabel" fx:id="allocationConfirmationsLabel"
+											   layoutX="14.0" layoutY="14.0" text="Подтверждение об отработке:"/>
+										<JFXCheckBox fx:id="allocationConfirmation_1" layoutX="4.0" layoutY="46.0"
+													 text="Сентябрь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_2" layoutX="4.0" layoutY="75.0"
+													 text="Декабрь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_3" layoutX="4.0" layoutY="104.0"
+													 text="Март 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_4" layoutX="4.0" layoutY="134.0"
+													 text="Июнь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_5" layoutX="4.0" layoutY="164.0"
+													 text="Сентябрь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_6" layoutX="169.0" layoutY="45.0"
+													 text="Сентябрь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_7" layoutX="169.0" layoutY="74.0"
+													 text="Декабрь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_8" layoutX="169.0" layoutY="103.0"
+													 text="Март 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_9" layoutX="169.0" layoutY="133.0"
+													 text="Июнь 2016"/>
+										<JFXCheckBox fx:id="allocationConfirmation_10" layoutX="169.0" layoutY="163.0"
+													 text="Сентябрь 2016"/>
+									</children>
+								</Pane>
+								<JFXTextField id="allocationIssueYear" fx:id="allocationIssueYear" labelFloat="true"
+											  layoutX="748.0" layoutY="83.0" promptText="Год выпуска"/>
+								<Pane id="allocationOrderPane" fx:id="allocationOrderPane" layoutX="353.0"
+									  layoutY="87.0" prefHeight="360.0" prefWidth="337.0">
+									<children>
+										<Label id="allocationOrderLabel" fx:id="allocationOrderLabel" layoutX="14.0"
+											   layoutY="14.0" text="Приказ о приеме на работу:"/>
+										<JFXTextField fx:id="allocationOrderNumber" labelFloat="true" layoutX="12.0"
+													  layoutY="62.0" maxWidth="316.0" minWidth="314.0" prefHeight="33.0"
+													  prefWidth="316.0" promptText="Номер приказа о приеме на работу"/>
+										<JFXTextField fx:id="allocationOrderProfession" labelFloat="true" layoutX="12.0"
+													  layoutY="164.0" maxWidth="316.0" minWidth="314.0"
+													  prefHeight="33.0" prefWidth="316.0" promptText="Профессия"/>
+										<JFXTextField fx:id="allocationOrderRank" labelFloat="true" layoutX="12.0"
+													  layoutY="217.0" maxWidth="316.0" minWidth="314.0"
+													  prefHeight="33.0" prefWidth="316.0" promptText="Разряд"/>
+										<JFXTextArea id="allocationFreeAllocationReason" fx:id="allocationOrderPayload"
+													 labelFloat="true" layoutX="22.0" layoutY="273.0" maxWidth="307.0"
+													 minWidth="302.0" prefHeight="68.0" prefWidth="302.0"
+													 promptText="Дополнительная информация"/>
+										<LocalDateTimeTextField id="allocationOrderDate" fx:id="allocationOrderDate"
+																layoutX="19.0" layoutY="115.0" prefHeight="27.0"
+																prefWidth="301.0"
+																promptText="Дата приказа о приеме на работу"/>
+									</children>
+								</Pane>
+								<JFXCheckBox id="allocationFreeAllocation" fx:id="allocationReallocation" layoutX="14.0"
+											 layoutY="193.0" text="Перераспределен"/>
+								<Pane id="allocationConfirmationsPane" fx:id="allocationCompensationPane"
+									  layoutX="739.0" layoutY="345.0" prefHeight="207.0" prefWidth="389.0">
+									<children>
+										<Label id="allocationConfirmationsLabel" fx:id="allocationCompensationLabel"
+											   layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="91.0"
+											   text="Возмещение:"/>
+										<JFXTextField fx:id="allocationCompensationNumber" labelFloat="true"
+													  layoutX="11.0" layoutY="66.0" maxWidth="316.0" minWidth="314.0"
+													  prefHeight="33.0" prefWidth="316.0" promptText="Номер приказа"/>
+										<LocalDateTimeTextField fx:id="allocationCompensationDate" layoutX="16.0"
+																layoutY="121.0" prefHeight="27.0" prefWidth="305.0"
+																promptText="Дата Приказа"/>
+										<JFXComboBox fx:id="allocationCompensationType" layoutX="113.0" layoutY="9.0"
+													 prefHeight="27.0" prefWidth="211.0"/>
+										<LocalDateTimeTextField fx:id="allocationCompensationConfirmationDate"
+																layoutX="17.0" layoutY="171.0" prefHeight="27.0"
+																prefWidth="305.0"
+																promptText="Дата получения извещения о добровольном возмещение"/>
+									</children>
+								</Pane>
+							</children>
+						</Pane>
+						<JFXButton id="allocationSaveButton" fx:id="allocationSaveButton" buttonType="RAISED"
+								   layoutX="24.0" layoutY="599.0" onAction="#allocationSaveButtonClick"
+								   prefHeight="35.0" prefWidth="120.0" ripplerFill="#82c9e1"
+								   style="-fx-background-color: #47a4c5;" text="Сохранить" textFill="WHITE"/>
+					</children>
+				</AnchorPane>
 			</content>
 		</Tab>
 		<Tab fx:id="allocationTableTab" text="Распределение (таблица)">
 			<AnchorPane prefHeight="200.0" prefWidth="200.0">
 				<children>
-					<Label id="allocationTableStageLabel" fx:id="allocationTableStageLabel" layoutX="365.0"
-						   layoutY="24.0" text="Ступень:"/>
-					<JFXComboBox id="allocationTableStageComboBox" fx:id="allocationTableStageComboBox" layoutX="451.0"
-								 layoutY="20.0" prefHeight="27.0" prefWidth="170.0"/>
+					<Label id="allocationTableStageLabel" fx:id="allocationTableStageLabel" layoutX="292.0"
+						   layoutY="22.0" text="Ступень:"/>
+					<JFXComboBox id="allocationTableStageComboBox" fx:id="allocationTableStageComboBox" layoutX="378.0"
+								 layoutY="18.0" prefHeight="27.0" prefWidth="170.0"/>
 					<JFXCheckBox id="allocationArchiveFlag" fx:id="allocationArchiveFlag" checkedColor="#6ac1d7"
-								 layoutX="660.0" layoutY="24.0" text="Архив"/>
-					<ButtonBar layoutX="763.0" layoutY="10.0" prefHeight="40.0" prefWidth="323.0">
+								 layoutX="587.0" layoutY="22.0" text="Архив"/>
+					<ButtonBar layoutX="680.0" layoutY="10.0" prefHeight="40.0" prefWidth="406.0">
 						<buttons>
 							<JFXButton id="allocationTableFilterApplyButton" fx:id="allocationTableFilterApplyButton"
 									   buttonType="RAISED" onAction="#allocationTableFilterApply" ripplerFill="#82c9e1"
-									   style="-fx-background-color: #36a4c0;" text="Применить фильтр" textFill="WHITE"/>
+									   style="-fx-background-color: #36a4c0;" text="Применить" textFill="WHITE"/>
 							<JFXButton id="allocationTablePrintButton" fx:id="allocationTablePrintButton"
 									   buttonType="RAISED" onAction="#allocationPrintButtonClick" ripplerFill="#82c9e1"
 									   style="-fx-background-color: #36a4c0;" text="Печать" textFill="WHITE"/>
+							<!--<JFXButton id="allocationTableExcelButton" fx:id="allocationTableExcelButton" buttonType="RAISED" onAction="#allocationExcelButtonClick" ripplerFill="#82c9e1" style="-fx-background-color: #36a4c0;" text="Экспорт в Excel" textFill="WHITE" />-->
 						</buttons>
 					</ButtonBar>
 					<JFXTextField id="allocationTableIssueYear" fx:id="allocationTableIssueYear" focusColor="#82c9e1"
-								  labelFloat="true" layoutX="151.0" layoutY="16.0" promptText="Год выпуска"/>
+								  labelFloat="true" layoutX="78.0" layoutY="14.0" promptText="Год выпуска"/>
 					<AnchorPane id="allocationTableBottomPane" fx:id="allocationTableBottomPane" layoutY="55.0"
 								minHeight="0.0" minWidth="0.0" prefHeight="622.0" prefWidth="1100.0"
 								AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -206,12 +338,11 @@
 										AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
 										AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 								<content>
-									<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="3000.0" prefWidth="4000.0">
+									<AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="1000.0">
 										<children>
-											<TableView id="allocationTable" fx:id="allocationTable" prefHeight="1500.0"
-													   prefWidth="3500.0" AnchorPane.bottomAnchor="0.0"
-													   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-													   AnchorPane.topAnchor="0.0">
+											<TableView id="allocationTable" fx:id="allocationTable"
+													   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+													   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 												<columns>
 													<TableColumn fx:id="allocationTableId" prefWidth="116.233642578125"
 																 text="Идентификатор"/>
@@ -347,14 +478,12 @@
 											 text="Идентификатор"/>
 								<TableColumn fx:id="notificationsTableDate" minWidth="0.0" prefWidth="135.17236328125"
 											 text="Дата уведомления"/>
-								<TableColumn fx:id="notificationsTableType" prefWidth="152.82763671875"
-											 text="Тип уведомления"/>
-								<TableColumn fx:id="notificationsTableDescription" prefWidth="687.03759765625"
-											 text="Описание"/>
+								<TableColumn fx:id="notificationsTableType" prefWidth="200.0" text="Тип уведомления"/>
+								<TableColumn fx:id="notificationsTableDescription" prefWidth="700" text="Описание"/>
 							</columns>
 						</TableView>
-						<Label layoutX="19.0" layoutY="16.0" text="Список новых уведомлений"
-							   id="notificationsLogLabel"/>
+						<Label id="notificationsLogLabel" layoutX="19.0" layoutY="16.0"
+							   text="Список новых уведомлений"/>
 						<ButtonBar layoutX="876.0" layoutY="4.0" prefHeight="40.0" prefWidth="200.0">
 							<buttons>
 								<JFXButton id="notificationsClearButton" fx:id="notificationsClearButton"
@@ -363,6 +492,282 @@
 										   text="Очистить уведомления" textFill="WHITE"/>
 							</buttons>
 						</ButtonBar>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+		<Tab id="managementTab" fx:id="managementTab" text="Управление сущностями">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<JFXTabPane prefHeight="677.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0"
+									AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<tabs>
+								<Tab fx:id="managementStudentsTab" text="Выпускники">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+											<children>
+												<Pane prefHeight="647.0" prefWidth="1100.0">
+													<children>
+														<JFXTextField id="managementStudentLastName"
+																	  fx:id="managementStudentLastName"
+																	  labelFloat="true" layoutX="25.0" layoutY="105.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Фамилия выпускника"/>
+														<JFXTextField id="managementStudentFirstName"
+																	  fx:id="managementStudentFirstName"
+																	  labelFloat="true" layoutX="25.0" layoutY="169.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Имя выпускника"/>
+														<JFXTextField id="managementStudentMiddleName"
+																	  fx:id="managementStudentMiddleName"
+																	  labelFloat="true" layoutX="25.0" layoutY="229.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Отчество выпускника"/>
+														<JFXTextField id="managementStudentTelephone"
+																	  fx:id="managementStudentTelephone"
+																	  labelFloat="true" layoutX="25.0" layoutY="295.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Контактный телефон"/>
+														<JFXTextField id="managementStudentAddress"
+																	  fx:id="managementStudentAddress" labelFloat="true"
+																	  layoutX="25.0" layoutY="361.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0" promptText="Адрес"/>
+														<JFXListView id="managementStudentsList"
+																	 fx:id="managementStudentsList" layoutX="353.0"
+																	 layoutY="14.0" prefHeight="400.0"
+																	 prefWidth="737.0"/>
+														<JFXButton id="managementStudentCleanButton"
+																   fx:id="managementStudentCleanButton"
+																   buttonType="RAISED" cancelButton="true"
+																   layoutX="191.0" layoutY="589.0"
+																   onAction="#managementStudentCleanButtonClick"
+																   prefHeight="35.0" prefWidth="155.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Очистить форму" textFill="WHITE"/>
+														<JFXButton id="managementStudentSaveButton"
+																   fx:id="managementStudentSaveButton"
+																   buttonType="RAISED" layoutX="14.0" layoutY="589.0"
+																   onAction="#managementStudentSaveButtonClick"
+																   prefHeight="35.0" prefWidth="120.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Сохранить" textFill="WHITE"/>
+														<JFXTextField id="managementStudentId"
+																	  fx:id="managementStudentId" editable="false"
+																	  labelFloat="true" layoutX="25.0" layoutY="50.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Идентификатор"/>
+													</children>
+												</Pane>
+											</children>
+										</AnchorPane>
+									</content>
+								</Tab>
+								<Tab fx:id="managementGroupsTab" text="Группы">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+											<children>
+												<Pane prefHeight="647.0" prefWidth="1100.0"
+													  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+													  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+													<children>
+														<JFXTextField id="managementGroupTitle"
+																	  fx:id="managementGroupTitle" labelFloat="true"
+																	  layoutX="25.0" layoutY="105.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0" promptText="Краткое название"/>
+														<JFXTextField id="managementGroupSpecialization"
+																	  fx:id="managementGroupSpecialization"
+																	  labelFloat="true" layoutX="25.0" layoutY="294.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Специализация"/>
+														<JFXTextField id="managementGroupNumber"
+																	  fx:id="managementGroupNumber" labelFloat="true"
+																	  layoutX="25.0" layoutY="229.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0" promptText="Номер группы"/>
+														<JFXTextField id="managementGroupQualification"
+																	  fx:id="managementGroupQualification"
+																	  labelFloat="true" layoutX="25.0" layoutY="169.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Квалификация (специальность)"/>
+														<JFXTextField id="managementGroupDescription"
+																	  fx:id="managementGroupDescription"
+																	  labelFloat="true" layoutX="25.0" layoutY="361.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Описание"/>
+														<JFXListView id="managementGroupsList"
+																	 fx:id="managementGroupsList" layoutX="353.0"
+																	 layoutY="14.0" prefHeight="400.0"
+																	 prefWidth="737.0"/>
+														<JFXComboBox id="managementGroupRuler"
+																	 fx:id="managementGroupRuler" layoutX="34.0"
+																	 layoutY="425.0" prefHeight="27.0"
+																	 prefWidth="262.0"/>
+														<JFXButton id="managementGroupCleanButton"
+																   fx:id="managementGroupCleanButton"
+																   buttonType="RAISED" cancelButton="true"
+																   layoutX="189.0" layoutY="589.0"
+																   onAction="#managementGroupCleanButtonClick"
+																   prefHeight="35.0" prefWidth="155.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Очистить форму" textFill="WHITE"/>
+														<JFXButton id="managementGroupSaveButton"
+																   fx:id="managementGroupSaveButton" buttonType="RAISED"
+																   layoutX="14.0" layoutY="589.0"
+																   onAction="#managementGroupSaveButtonClick"
+																   prefHeight="35.0" prefWidth="120.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Сохранить" textFill="WHITE"/>
+														<JFXTextField id="managementGroupId" fx:id="managementGroupId"
+																	  editable="false" labelFloat="true" layoutX="26.0"
+																	  layoutY="48.0" maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Идентификатор"/>
+													</children>
+												</Pane>
+											</children>
+										</AnchorPane>
+									</content>
+								</Tab>
+								<Tab fx:id="managementRulersTab" text="Мастера/Кураторы">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+											<children>
+												<Pane prefHeight="647.0" prefWidth="1100.0">
+													<children>
+														<JFXTextField id="managementRulerLastName"
+																	  fx:id="managementRulerLastName" labelFloat="true"
+																	  layoutX="25.0" layoutY="105.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0"
+																	  promptText="Фамилия управляющего"/>
+														<JFXTextField id="managementRulerFirstName"
+																	  fx:id="managementRulerFirstName" labelFloat="true"
+																	  layoutX="25.0" layoutY="169.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0" promptText="Имя управляющего"/>
+														<JFXTextField id="managementRulerMiddleName"
+																	  fx:id="managementRulerMiddleName"
+																	  labelFloat="true" layoutX="25.0" layoutY="229.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Отчество управляющего"/>
+														<JFXTextField id="managementRulerPayload"
+																	  fx:id="managementRulerPayload" labelFloat="true"
+																	  layoutX="25.0" layoutY="290.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0" promptText="Доп. информация"/>
+														<JFXListView id="managementRulersList"
+																	 fx:id="managementRulersList" layoutX="353.0"
+																	 layoutY="14.0" prefHeight="400.0"
+																	 prefWidth="737.0"/>
+														<JFXButton id="managementRulerCleanButton"
+																   fx:id="managementRulerCleanButton"
+																   buttonType="RAISED" cancelButton="true"
+																   layoutX="184.0" layoutY="589.0"
+																   onAction="#managementRulerCleanButtonClick"
+																   prefHeight="35.0" prefWidth="155.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Очистить форму" textFill="WHITE"/>
+														<JFXButton id="managementRulerSaveButton"
+																   fx:id="managementRulerSaveButton" buttonType="RAISED"
+																   layoutX="14.0" layoutY="589.0"
+																   onAction="#managementRulerSaveButtonClick"
+																   prefHeight="35.0" prefWidth="120.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Сохранить" textFill="WHITE"/>
+														<JFXTextField id="managementRulerId" fx:id="managementRulerId"
+																	  editable="false" labelFloat="true" layoutX="25.0"
+																	  layoutY="53.0" maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Идентификатор"/>
+													</children>
+												</Pane>
+											</children>
+										</AnchorPane>
+									</content>
+								</Tab>
+								<Tab fx:id="managementOrganisationsTab" text="Организации">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+											<children>
+												<Pane prefHeight="647.0" prefWidth="1100.0">
+													<children>
+														<JFXTextField id="managementOrganisationTitle"
+																	  fx:id="managementOrganisationTitle"
+																	  labelFloat="true" layoutX="25.0" layoutY="105.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Краткое название организации"/>
+														<JFXTextField id="managementOrganisationAddress"
+																	  fx:id="managementOrganisationAddress"
+																	  labelFloat="true" layoutX="25.0" layoutY="294.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Адрес организации"/>
+														<JFXTextField id="managementOrganisationTelephone"
+																	  fx:id="managementOrganisationTelephone"
+																	  labelFloat="true" layoutX="25.0" layoutY="229.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Телефон организации"/>
+														<JFXTextField id="managementOrganisationContacts"
+																	  fx:id="managementOrganisationContacts"
+																	  labelFloat="true" layoutX="25.0" layoutY="169.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Другие контакты организации"/>
+														<JFXListView id="managementOrganisationsList"
+																	 fx:id="managementOrganisationsList" layoutX="353.0"
+																	 layoutY="14.0" prefHeight="400.0"
+																	 prefWidth="737.0"/>
+														<JFXButton id="managementOrganisationCleanButton"
+																   fx:id="managementOrganisationCleanButton"
+																   buttonType="RAISED" cancelButton="true"
+																   layoutX="184.0" layoutY="589.0"
+																   onAction="#managementOrganisationCleanButtonClick"
+																   prefHeight="35.0" prefWidth="155.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Очистить форму" textFill="WHITE"/>
+														<JFXButton id="managementOrganisationSaveButton"
+																   fx:id="managementOrganisationSaveButton"
+																   buttonType="RAISED" layoutX="14.0" layoutY="589.0"
+																   onAction="#managementOrganisationSaveButtonClick"
+																   prefHeight="35.0" prefWidth="120.0"
+																   ripplerFill="#82c9e1"
+																   style="-fx-background-color: #47a4c5;"
+																   text="Сохранить" textFill="WHITE"/>
+														<JFXTextField id="managementOrganisationId"
+																	  fx:id="managementOrganisationId" editable="false"
+																	  labelFloat="true" layoutX="25.0" layoutY="52.0"
+																	  maxWidth="279.0" minWidth="279.0"
+																	  prefHeight="33.0" prefWidth="279.0"
+																	  promptText="Идентификатор"/>
+													</children>
+												</Pane>
+											</children>
+										</AnchorPane>
+									</content>
+								</Tab>
+							</tabs>
+						</JFXTabPane>
 					</children>
 				</AnchorPane>
 			</content>

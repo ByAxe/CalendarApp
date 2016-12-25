@@ -6,11 +6,12 @@
 package core.dto.api;
 
 import core.api.IEssence;
+import core.api.IVisible;
 
 /**
  * Created by byaxe on 18.12.16.
  */
-public interface IStudentsDTO extends IEssence {
+public interface IStudentsDTO extends IEssence, IVisible {
 
     String getFirstName();
 
@@ -33,4 +34,6 @@ public interface IStudentsDTO extends IEssence {
     void setAddress(String address);
 
     String getCredentials();
+
+    String toPrettyString();
 }

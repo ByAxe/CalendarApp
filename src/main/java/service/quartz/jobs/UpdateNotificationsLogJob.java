@@ -6,6 +6,7 @@
 package service.quartz.jobs;
 
 import controller.ApplicationController;
+import javafx.application.Platform;
 import javafx.scene.control.Tab;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -32,11 +33,11 @@ public class UpdateNotificationsLogJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        long count = notificationsLogService.count();
+        final long count = notificationsLogService.count();
 
         if (count == 0) return;
 
         Tab notificationsTab = applicationController.notificationsTab;
-        notificationsTab.setText(notificationsTab.getText() + " (" + count + ")");
+        Platform.runLater(() -> notificationsTab.setText("Уведомления (" + count + ")"));
     }
 }

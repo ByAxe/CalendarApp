@@ -6,6 +6,7 @@
 package core.dto.api;
 
 import core.api.IEssence;
+import core.api.IVisible;
 import core.enums.Frequency;
 import core.enums.NoticePeriod;
 import core.enums.Priority;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 /**
  * Created by byaxe on 26.11.16.
  */
-public interface IEventsDTO extends IEssence {
+public interface IEventsDTO extends IEssence, IVisible {
 
     LocalDateTime getStarts();
 

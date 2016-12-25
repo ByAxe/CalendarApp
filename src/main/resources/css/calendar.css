@@ -73,8 +73,6 @@
 
 .calendar-cell-today {
     -fx-background-color: transparent;
-    -fx-border-color: #f5f5f5;
-    -fx-border-radius: 30%;
     -fx-background-insets: 15 15 15 15;
     -fx-text-fill: #313131 !important;
     -fx-font-style: italic !important;

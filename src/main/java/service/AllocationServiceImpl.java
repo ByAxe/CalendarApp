@@ -10,7 +10,11 @@ import core.dto.api.IAllocationDTO;
 import core.dto.api.IAllocationTableDTO;
 import core.enums.EventType;
 import core.enums.Stage;
+import javafx.scene.control.TableView;
 import model.entity.AllocationEntity;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,9 @@ import repository.AllocationRepository;
 import service.api.*;
 import service.quartz.JobInitializer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -80,6 +87,35 @@ public class AllocationServiceImpl implements IAllocationService {
     @Override
     public void setDefaultValues(JFXComboBox allocationTableStageComboBox) {
         allocationTableStageComboBox.setValue(Stage.FIRST.getTitle());
+    }
+
+    /**
+     * Экспортируем данные из таблицы распределения в эксель
+     *
+     * @param file            Файл в который будет сохранена таблица
+     * @param allocationTable Таблица которая будет сохранена в файл
+     */
+    @Override
+    public void exportTableToExcel(File file, TableView<IAllocationTableDTO> allocationTable) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet spreadsheet = workbook.createSheet("Учет распределения");
+        HSSFRow row;
+
+        row = spreadsheet.createRow(0);
+        for (int j = 0; j < allocationTable.getColumns().size(); j++) {
+            row.createCell(j).setCellValue(allocationTable.getColumns().get(j).getText());
+        }
+
+        for (int i = 1; i < allocationTable.getItems().size(); i++) {
+            row = spreadsheet.createRow(i);
+            for (int j = 0; j < allocationTable.getColumns().size(); j++) {
+                row.createCell(j).setCellValue(String.valueOf(allocationTable.getColumns().get(j).getCellData(i - 1)));
+            }
+        }
+
+        FileOutputStream out = new FileOutputStream(file);
+        workbook.write(out);
+        out.close();
     }
 
     @Override

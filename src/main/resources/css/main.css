@@ -43,6 +43,10 @@
     -fx-font-weight: bold;
 }
 
+.jfx-button {
+    /*-fx-background-color: #47a4c5;*/
+}
+
 /*
 .table-view {
     -fx-background-color: white;

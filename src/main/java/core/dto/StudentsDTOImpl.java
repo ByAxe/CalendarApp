@@ -54,6 +54,16 @@ public class StudentsDTOImpl extends AEssence implements IStudentsDTO {
         this.address = essence.getAddress();
     }
 
+    @Override
+    public String toPrettyString() {
+        return lastName
+                + " "
+                + firstName
+                + " "
+                + middleName
+                + " (" + id + ")";
+    }
+
     public String getFirstName() {
         return firstName;
     }

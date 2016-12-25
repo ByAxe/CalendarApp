@@ -6,11 +6,12 @@
 package core.dto.api;
 
 import core.api.IEssence;
+import core.api.IVisible;
 
 /**
  * Created by byaxe on 18.12.16.
  */
-public interface IOrganisationsDTO extends IEssence {
+public interface IOrganisationsDTO extends IEssence, IVisible {
 
     String getTitle();
 
