@@ -511,7 +511,7 @@
 													<children>
 														<JFXTextField id="managementStudentLastName"
 																	  fx:id="managementStudentLastName"
-																	  labelFloat="true" layoutX="25.0" layoutY="105.0"
+																	  labelFloat="true" layoutX="25.0" layoutY="106.0"
 																	  maxWidth="279.0" minWidth="279.0"
 																	  prefHeight="33.0" prefWidth="279.0"
 																	  promptText="Фамилия выпускника"/>
@@ -586,7 +586,7 @@
 																	  prefWidth="279.0" promptText="Краткое название"/>
 														<JFXTextField id="managementGroupSpecialization"
 																	  fx:id="managementGroupSpecialization"
-																	  labelFloat="true" layoutX="25.0" layoutY="294.0"
+																	  labelFloat="true" layoutX="26.0" layoutY="169.0"
 																	  maxWidth="279.0" minWidth="279.0"
 																	  prefHeight="33.0" prefWidth="279.0"
 																	  promptText="Специализация"/>
@@ -597,7 +597,7 @@
 																	  prefWidth="279.0" promptText="Номер группы"/>
 														<JFXTextField id="managementGroupQualification"
 																	  fx:id="managementGroupQualification"
-																	  labelFloat="true" layoutX="25.0" layoutY="169.0"
+																	  labelFloat="true" layoutX="25.0" layoutY="299.0"
 																	  maxWidth="279.0" minWidth="279.0"
 																	  prefHeight="33.0" prefWidth="279.0"
 																	  promptText="Квалификация (специальность)"/>
@@ -717,7 +717,7 @@
 																	  promptText="Краткое название организации"/>
 														<JFXTextField id="managementOrganisationAddress"
 																	  fx:id="managementOrganisationAddress"
-																	  labelFloat="true" layoutX="25.0" layoutY="294.0"
+																	  labelFloat="true" layoutX="25.0" layoutY="169.0"
 																	  maxWidth="279.0" minWidth="279.0"
 																	  prefHeight="33.0" prefWidth="279.0"
 																	  promptText="Адрес организации"/>
@@ -729,7 +729,7 @@
 																	  promptText="Телефон организации"/>
 														<JFXTextField id="managementOrganisationContacts"
 																	  fx:id="managementOrganisationContacts"
-																	  labelFloat="true" layoutX="25.0" layoutY="169.0"
+																	  labelFloat="true" layoutX="25.0" layoutY="291.0"
 																	  maxWidth="279.0" minWidth="279.0"
 																	  prefHeight="33.0" prefWidth="279.0"
 																	  promptText="Другие контакты организации"/>

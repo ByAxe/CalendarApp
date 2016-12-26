@@ -5,11 +5,24 @@
 
 package service.api;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import core.dto.api.IGroupsDTO;
+import javafx.scene.control.Label;
 import model.entity.GroupsEntity;
+
+import java.util.UUID;
 
 /**
  * Created by byaxe on 26.11.16.
  */
 public interface IGroupsService extends IEssenceService<IGroupsDTO, Long>, IConversionService<IGroupsDTO, GroupsEntity> {
+    void fillGroupsList(JFXListView<Label> managementGroupsList);
+
+    void addContextMenuToGroupsList(JFXListView<Label> managementGroupsList, JFXTextField managementGroupId, JFXTextField managementGroupTitle, JFXTextField managementGroupQualification, JFXTextField managementGroupNumber, JFXTextField managementGroupSpecialization, JFXTextField managementGroupDescription, JFXComboBox managementGroupRuler);
+
+    IGroupsDTO findByUuid(UUID uuid);
+
+    void save(Long id, String s, String title, String qualification, String number, String specialisation, String description);
 }

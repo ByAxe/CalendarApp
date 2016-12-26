@@ -159,8 +159,8 @@ public class StudentsServiceImpl implements IStudentsService {
                                              JFXTextField address) {
         final ContextMenu managementStudentsListContextMenu = new ContextMenu();
 
-        MenuItem delete = new MenuItem("Удалить");
-        MenuItem change = new MenuItem("Редактировать");
+        MenuItem delete = new MenuItem(DELETE_CONTEXT_MENU_ITEM);
+        MenuItem change = new MenuItem(CHANGE_CONTEXT_MENU_ITEM);
 
         managementStudentsListContextMenu.getItems().addAll(delete, change);
 

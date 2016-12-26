@@ -9,9 +9,14 @@ import model.entity.GroupsEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 /**
  * Created by byaxe on 26.11.16.
  */
 @Repository
 public interface GroupsRepository extends PagingAndSortingRepository<GroupsEntity, Long> {
+
+    GroupsEntity findByUuid(UUID uuid);
+
 }

@@ -781,6 +781,31 @@ public class ApplicationController implements Initializable {
     }
 
     /**
+     * Инициализируем вкладку управления группами
+     */
+    private void initManagementGroupsTab() {
+
+        groupsService.fillGroupsList(managementGroupsList);
+
+        groupsService.addContextMenuToGroupsList(managementGroupsList, managementGroupId, managementGroupTitle,
+                managementGroupQualification, managementGroupNumber, managementGroupSpecialization,
+                managementGroupDescription, managementGroupRuler);
+
+        managementGroupCleanForm();
+
+    }
+
+    private void managementGroupCleanForm() {
+        managementGroupId.setText("0");
+        managementGroupTitle.setText("");
+        managementGroupQualification.setText("");
+        managementGroupNumber.setText("");
+        managementGroupSpecialization.setText("");
+        managementGroupDescription.setText("");
+    }
+
+
+    /**
      * Сохраняем текущую сущность
      *
      * @param actionEvent
@@ -829,16 +854,37 @@ public class ApplicationController implements Initializable {
     private void initManagementRulersTab() {
     }
 
-    private void initManagementGroupsTab() {
-    }
-
-
+    /**
+     * Нажатие на кнопку очистить форму сохранения группы
+     *
+     * @param actionEvent
+     */
     @FXML
     private void managementGroupCleanButtonClick(ActionEvent actionEvent) {
+        managementGroupCleanForm();
     }
 
+    /**
+     * Нажатие на кнопку сохранить группу
+     *
+     * @param actionEvent
+     */
     @FXML
     private void managementGroupSaveButtonClick(ActionEvent actionEvent) {
+
+        Long id = Long.valueOf(managementGroupId.getText());
+        String title = managementGroupTitle.getText();
+        String qualification = managementGroupQualification.getText();
+        String number = managementGroupNumber.getText();
+        String specialisation = managementGroupSpecialization.getText();
+        String description = managementGroupDescription.getText();
+        String ruler = String.valueOf(managementGroupRuler.getSelectionModel().getSelectedItem());
+
+        groupsService.save(id, title, qualification, number, specialisation, description, ruler);
+
+        managementGroupCleanForm();
+
+        groupsService.fillGroupsList(managementGroupsList);
     }
 
     @FXML

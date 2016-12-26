@@ -10,6 +10,11 @@ import core.dto.api.IGroupsDTO;
 import core.validators.api.IValidator;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static core.commons.Utils.wrapResult;
+
 /**
  * Created by byaxe on 25.12.16.
  */
@@ -17,7 +22,15 @@ import org.springframework.stereotype.Component;
 public class GroupValidator implements IValidator<Result, IGroupsDTO> {
 
     @Override
-    public Result validate(IGroupsDTO iGroupsDTO) {
-        return null;
+    public Result validate(IGroupsDTO group) {
+        List<String> errors = new ArrayList<>();
+
+        if (group.getTitle().isEmpty()) errors.add("Краткое название должно быть заполнено.");
+        if (group.getQualification().isEmpty()) errors.add("Поле квалификация должно быть заполнено.");
+        if (group.getNumber().isEmpty()) errors.add("Номер группы не может отсутствовать.");
+        if (group.getSpecialization().isEmpty()) errors.add("Специализация обязательна к указанию.");
+        if (group.getRuler() == null) errors.add("Группа не может быть без руководителя (мастера, или куратора).");
+
+        return wrapResult(errors);
     }
 }

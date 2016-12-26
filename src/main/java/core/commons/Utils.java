@@ -9,6 +9,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -26,20 +28,18 @@ import static javafx.scene.control.ButtonType.OK;
  * Created by byaxe on 26.11.16.
  */
 public class Utils {
-
     public static final String TODAY = "СЕГОДНЯ";
     public static final String TOMORROW = "ЗАВТРА";
-
     public static final String CONFIRMATION_PERIOD_1 = "Сентябрь";
     public static final String CONFIRMATION_PERIOD_2 = "Декабрь";
     public static final String CONFIRMATION_PERIOD_3 = "Март";
     public static final String CONFIRMATION_PERIOD_4 = "Июнь";
     public static final String CONFIRMATION_PERIOD_5 = CONFIRMATION_PERIOD_1;
-
     public static final DateTimeFormatter PRETTY_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMM HH:mm");
     public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
     public static final DateTimeFormatter CALENDAR_DATE_PICKER_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public static final DateTimeFormatter ALLOCATION_TABLE_FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+    private static final Logger logger = LoggerFactory.getLogger(Utils.class);
 
     /**
      * Создает сообщение с помощью {@link Alert}
@@ -207,4 +207,20 @@ public class Utils {
         return column;
     }
 
+    /**
+     * Получаем id записи из строки в комбобоксе
+     *
+     * @param ruler
+     * @return
+     */
+    public static Long getIdFromComboBox(String ruler) {
+        if (ruler == null || ruler.equalsIgnoreCase("null") || ruler.isEmpty()) return 0L;
+
+        try {
+            return Long.valueOf(ruler.split("\\(")[2]);
+        } catch (NumberFormatException e) {
+            logger.error("Ошибка разбора строки \"" + ruler + "\", для получения id записи", e);
+            return 0L;
+        }
+    }
 }
