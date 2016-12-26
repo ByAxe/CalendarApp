@@ -88,6 +88,15 @@ public class GroupsServiceImpl implements IGroupsService {
     @Value("${validation.success.body}")
     private String VALIDATION_SUCCESS_BODY;
 
+    @Value("${delete.constraint.violation.title}")
+    private String DELETE_CONSTRAINT_VIOLATION_TITLE;
+
+    @Value("${delete.constraint.violation.header}")
+    private String DELETE_CONSTRAINT_VIOLATION_HEADER;
+
+    @Value("${delete.constraint.violation.body}")
+    private String DELETE_CONSTRAINT_VIOLATION_BODY;
+
     @Autowired
     public GroupsServiceImpl(GroupsRepository groupsRepository, IRulersService rulersService, ConversionService conversionService, IValidator<Result, IGroupsDTO> validator) {
         this.groupsRepository = groupsRepository;
@@ -133,8 +142,21 @@ public class GroupsServiceImpl implements IGroupsService {
             if (!isOk) return;
 
             // Если он все же подтвердил удаление - удаляем элемент
-            IGroupsDTO group = findByUuid(UUID.fromString(item.getId()));
-            delete(group);
+            IGroupsDTO dto = findByUuid(UUID.fromString(item.getId()));
+            try {
+                delete(dto);
+            } catch (Exception e) {
+                raiseMessageBox(ERROR, DELETE_CONSTRAINT_VIOLATION_TITLE, DELETE_CONSTRAINT_VIOLATION_HEADER, DELETE_CONSTRAINT_VIOLATION_BODY);
+                return;
+            }
+
+            id.setText("0");
+            title.setText("");
+            qualification.setText("");
+            number.setText("");
+            specialisation.setText("");
+            description.setText("");
+            hours.setText("");
 
             // Обновляем список, иначе для пользователя останется виден удаленный элемент
             fillGroupsList(groupsList);
@@ -142,7 +164,6 @@ public class GroupsServiceImpl implements IGroupsService {
         });
 
         change.setOnAction(event -> {
-
             Label item = groupsList.getSelectionModel().getSelectedItem();
 
             // Если кликнули по пустому месту
@@ -170,6 +191,8 @@ public class GroupsServiceImpl implements IGroupsService {
                     .ifPresent(l -> l.forEach(r -> {
                         rulers.getItems().add(r.toPrettyString());
                     }));
+
+            rulers.setValue(group.getRuler().toPrettyString());
         });
 
         groupsList.setContextMenu(managementGroupsListContextMenu);

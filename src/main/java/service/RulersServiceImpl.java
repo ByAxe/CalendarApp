@@ -28,7 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.RulersRepository;
 import service.api.IRulersService;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static core.commons.Utils.raiseMessageBox;
 import static core.enums.ResultEnum.SUCCESS;
@@ -83,6 +86,15 @@ public class RulersServiceImpl implements IRulersService {
     @Value("${validation.success.body}")
     private String VALIDATION_SUCCESS_BODY;
 
+    @Value("${delete.constraint.violation.title}")
+    private String DELETE_CONSTRAINT_VIOLATION_TITLE;
+
+    @Value("${delete.constraint.violation.header}")
+    private String DELETE_CONSTRAINT_VIOLATION_HEADER;
+
+    @Value("${delete.constraint.violation.body}")
+    private String DELETE_CONSTRAINT_VIOLATION_BODY;
+
     @Autowired
     public RulersServiceImpl(RulersRepository rulersRepository, ConversionService conversionService, IValidator<Result, IRulersDTO> validator) {
         this.rulersRepository = rulersRepository;
@@ -124,11 +136,20 @@ public class RulersServiceImpl implements IRulersService {
             // Если отказался удалять выбранный элемент
             if (!isOk) return;
 
-            // Если он все же подтвердил удаление - удаляем элемент
-            Optional.ofNullable(((List<IRulersDTO>) findAll()))
-                    .ifPresent(l -> l.stream()
-                            .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
-                            .forEach(this::delete));
+            IRulersDTO dto = findByUuid(UUID.fromString(item.getId()));
+
+            try {
+                delete(dto);
+            } catch (Exception e) {
+                raiseMessageBox(ERROR, DELETE_CONSTRAINT_VIOLATION_TITLE, DELETE_CONSTRAINT_VIOLATION_HEADER, DELETE_CONSTRAINT_VIOLATION_BODY);
+                return;
+            }
+
+            id.setText("0");
+            firstName.setText("");
+            middleName.setText("");
+            lastName.setText("");
+            payload.setText("");
 
             // Обновляем список, иначе для пользователя останется виден удаленный элемент
             fillRulersList(rulersList);

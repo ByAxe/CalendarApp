@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calendar-app</groupId>
 	<artifactId>calendar-root</artifactId>
-	<version>0.5.4</version>
+	<version>0.5.5</version>
 
 	<name>calendar-root</name>
 	<url>http://maven.apache.org</url>

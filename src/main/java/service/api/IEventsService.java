@@ -46,4 +46,6 @@ public interface IEventsService extends IEssenceService<IEventsDTO, Long>, IConv
 
     void createBigCalendar(Pane calendarRightPaneBottomBlock, Label calendarUpcomingEventsLabel, JFXListView<Label> calendarUpcomingEventsListView);
 
+    IEventsDTO findByUuid(UUID uuid);
+
 }

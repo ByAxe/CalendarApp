@@ -10,6 +10,11 @@ import core.dto.api.IOrganisationsDTO;
 import core.validators.api.IValidator;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static core.commons.Utils.wrapResult;
+
 /**
  * Created by byaxe on 25.12.16.
  */
@@ -17,7 +22,9 @@ import org.springframework.stereotype.Component;
 public class OrganisationValidator implements IValidator<Result, IOrganisationsDTO> {
 
     @Override
-    public Result validate(IOrganisationsDTO iOrganisationsDTO) {
-        return null;
+    public Result validate(IOrganisationsDTO organisation) {
+        List<String> errors = new ArrayList<>();
+
+        return wrapResult(errors);
     }
 }

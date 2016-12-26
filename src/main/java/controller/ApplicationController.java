@@ -800,7 +800,6 @@ public class ApplicationController implements Initializable {
 
         managementGroupCleanForm();
 
-        refresh();
     }
 
     /**
@@ -819,7 +818,12 @@ public class ApplicationController implements Initializable {
      * Инициализируем вкладку управления организациями
      */
     private void initManagementOrganisationsTab() {
+        organisationsService.fillOrganisationList(managementOrganisationsList);
 
+        organisationsService.addContextMenuToOrganisationsList(managementOrganisationsList, managementOrganisationId, managementOrganisationTitle,
+                managementOrganisationAddress, managementOrganisationTelephone, managementOrganisationContacts);
+
+        managementOrganisationsCleanForm();
     }
 
     private void managementGroupCleanForm() {
@@ -911,6 +915,7 @@ public class ApplicationController implements Initializable {
 
         groupsService.fillGroupsList(managementGroupsList);
 
+        refresh();
     }
 
     /**
@@ -953,10 +958,33 @@ public class ApplicationController implements Initializable {
 
     @FXML
     private void managementOrganisationCleanButtonClick(ActionEvent actionEvent) {
+        managementOrganisationsCleanForm();
     }
+
+    private void managementOrganisationsCleanForm() {
+        managementOrganisationId.setText("0");
+        managementOrganisationTitle.setText("");
+        managementOrganisationAddress.setText("");
+        managementOrganisationTelephone.setText("");
+        managementOrganisationContacts.setText("");
+    }
+
 
     @FXML
     private void managementOrganisationSaveButtonClick(ActionEvent actionEvent) {
+        Long id = Long.valueOf(managementOrganisationId.getText());
+        String title = managementOrganisationTitle.getText();
+        String address = managementOrganisationAddress.getText();
+        String telephone = managementOrganisationTelephone.getText();
+        String contacts = managementOrganisationContacts.getText();
+
+        organisationsService.save(id, title, address, telephone, contacts);
+
+        managementOrganisationsCleanForm();
+
+        organisationsService.fillOrganisationList(managementOrganisationsList);
+
+        refresh();
     }
 
     /**

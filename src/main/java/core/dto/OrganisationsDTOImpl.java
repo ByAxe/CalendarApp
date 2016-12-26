@@ -46,6 +46,11 @@ public class OrganisationsDTOImpl extends AEssence implements IOrganisationsDTO 
         this.contacts = essence.getContacts();
     }
 
+    @Override
+    public String toPrettyString() {
+        return title + "(" + id + ")";
+    }
+
     public String getTitle() {
         return title;
     }

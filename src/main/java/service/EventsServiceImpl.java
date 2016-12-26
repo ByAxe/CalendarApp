@@ -40,7 +40,10 @@ import service.quartz.JobInitializer;
 import view.controlls.DateChooser;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static core.commons.Utils.*;
@@ -97,6 +100,15 @@ public class EventsServiceImpl implements IEventsService {
 
     @Value("${change.context.menu.item}")
     private String CHANGE_CONTEXT_MENU_ITEM;
+
+    @Value("${delete.constraint.violation.title}")
+    private String DELETE_CONSTRAINT_VIOLATION_TITLE;
+
+    @Value("${delete.constraint.violation.header}")
+    private String DELETE_CONSTRAINT_VIOLATION_HEADER;
+
+    @Value("${delete.constraint.violation.body}")
+    private String DELETE_CONSTRAINT_VIOLATION_BODY;
 
     @Autowired
     private JobInitializer jobInitializer;
@@ -262,16 +274,24 @@ public class EventsServiceImpl implements IEventsService {
             // Если отказался удалять выбранный элемент
             if (!isOk) return;
 
-            // Если он все же подтвердил удаление - удаляем элемент
-            Optional.ofNullable(findUpcomingEvents())
-                    .ifPresent(l -> l.stream()
-                            .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
-                            .forEach(this::delete));
+            IEventsDTO eventDto = findByUuid(UUID.fromString(item.getId()));
+            delete(eventDto);
 
             // Обновляем список, иначе для пользователя останется виден удаленный элемент
             fillUpcomingEventsList(calendarUpcomingEventsListView);
         });
         change.setOnAction(event -> {
+            Label item = calendarUpcomingEventsListView.getSelectionModel().getSelectedItem();
+
+            // Если кликнули по пустому месту
+            if (item == null) return;
+
+            boolean isOk = raiseMessageBox(CONFIRMATION, CHANGE_ELEMENT_TITLE, CHANGE_ELEMENT_HEADER, CHANGE_ELEMENT_BODY);
+
+            // Если отказался редактировать выбранный элемент
+            if (!isOk) return;
+
+
             System.out.println("change...");
         });
 
@@ -364,6 +384,12 @@ public class EventsServiceImpl implements IEventsService {
         newEvents.forEach(e -> jobInitializer.synchronizeJobWithCalendarEvents(e, EventType.SAVE));
 
         return newEvents;
+    }
+
+    @Override
+    public IEventsDTO findByUuid(UUID uuid) {
+        EventsEntity entity = eventsRepository.findByUuid(uuid);
+        return convertEntityToDto(entity);
     }
 
     /**

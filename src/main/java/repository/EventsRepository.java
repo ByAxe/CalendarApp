@@ -28,4 +28,5 @@ public interface EventsRepository extends PagingAndSortingRepository<EventsEntit
 
     Long deleteByUuid(UUID uuid);
 
+    EventsEntity findByUuid(UUID uuid);
 }

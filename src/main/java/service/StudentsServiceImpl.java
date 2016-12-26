@@ -30,7 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.StudentsRepository;
 import service.api.IStudentsService;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static core.commons.Utils.raiseMessageBox;
 import static core.enums.ResultEnum.SUCCESS;
@@ -85,6 +88,15 @@ public class StudentsServiceImpl implements IStudentsService {
 
     @Value("${change.context.menu.item}")
     private String CHANGE_CONTEXT_MENU_ITEM;
+
+    @Value("${delete.constraint.violation.title}")
+    private String DELETE_CONSTRAINT_VIOLATION_TITLE;
+
+    @Value("${delete.constraint.violation.header}")
+    private String DELETE_CONSTRAINT_VIOLATION_HEADER;
+
+    @Value("${delete.constraint.violation.body}")
+    private String DELETE_CONSTRAINT_VIOLATION_BODY;
 
     @Autowired
     public StudentsServiceImpl(StudentsRepository studentsRepository, ConversionService conversionService, IValidator<Result, IStudentsDTO> validator) {
@@ -175,11 +187,20 @@ public class StudentsServiceImpl implements IStudentsService {
             // Если отказался удалять выбранный элемент
             if (!isOk) return;
 
-            // Если он все же подтвердил удаление - удаляем элемент
-            Optional.ofNullable(((List<IStudentsDTO>) findAll()))
-                    .ifPresent(l -> l.stream()
-                            .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
-                            .forEach(this::delete));
+            IStudentsDTO dto = findByUuid(UUID.fromString(item.getId()));
+            try {
+                delete(dto);
+            } catch (Exception e) {
+                raiseMessageBox(ERROR, DELETE_CONSTRAINT_VIOLATION_TITLE, DELETE_CONSTRAINT_VIOLATION_HEADER, DELETE_CONSTRAINT_VIOLATION_BODY);
+                return;
+            }
+
+            id.setText("0");
+            firstName.setText("");
+            middleName.setText("");
+            lastName.setText("");
+            telephone.setText("");
+            address.setText("");
 
             // Обновляем список, иначе для пользователя останется виден удаленный элемент
             fillStudentsList(studentsList);
