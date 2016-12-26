@@ -184,11 +184,7 @@
 								<JFXTextField id="allocationSearchTextField" fx:id="allocationSearchTextField"
 											  focusColor="#5ba5d3" labelFloat="true" layoutX="14.0" layoutY="22.0"
 											  maxWidth="262.0" minWidth="249.0" prefHeight="34.0" prefWidth="262.0"
-											  promptText="Поиск записи по идентификатору" unFocusColor="#797979">
-									<font>
-										<Font size="14.0"/>
-									</font>
-								</JFXTextField>
+											  promptText="Поиск записи по идентификатору" unFocusColor="#797979"/>
 								<JFXButton fx:id="allocationEditButton" buttonType="RAISED" layoutX="295.0"
 										   layoutY="25.0" onAction="#allocationEditButtonClick" ripplerFill="#82c9e1"
 										   style="-fx-background-color: #47a4c5;" text="Редактировать"
@@ -208,17 +204,17 @@
 								<JFXComboBox id="allocationGroupsList" fx:id="allocationGroupsList" layoutX="421.0"
 											 layoutY="23.0" prefHeight="27.0" prefWidth="259.0"/>
 								<JFXCheckBox id="allocationArchive" fx:id="allocationArchive" layoutX="14.0"
-											 layoutY="95.0" text="Архивная запись"/>
+											 layoutY="165.0" text="Архивная запись"/>
 								<Label id="allocationOrganisationLabel" fx:id="allocationOrganisationLabel"
 									   layoutX="711.0" layoutY="30.0" text="Организация:"/>
 								<JFXComboBox id="allocationOrganisationsList" fx:id="allocationOrganisationsList"
 											 layoutX="815.0" layoutY="24.0" prefHeight="27.0" prefWidth="270.0"/>
-								<JFXCheckBox id="allocationArmy" fx:id="allocationArmy" layoutX="14.0" layoutY="143.0"
+								<JFXCheckBox id="allocationArmy" fx:id="allocationArmy" layoutX="14.0" layoutY="213.0"
 											 text="Призыв в Вооруженные Силы"/>
 								<JFXCheckBox id="allocationFreeAllocation" fx:id="allocationFreeAllocation"
-											 layoutX="14.0" layoutY="241.0" text="Свободное распределение"/>
+											 layoutX="14.0" layoutY="311.0" text="Свободное распределение"/>
 								<JFXTextArea id="allocationFreeAllocationReason" fx:id="allocationFreeAllocationReason"
-											 labelFloat="true" layoutX="24.0" layoutY="285.0" maxWidth="307.0"
+											 labelFloat="true" layoutX="24.0" layoutY="355.0" maxWidth="307.0"
 											 minWidth="307.0" prefHeight="68.0" prefWidth="307.0"
 											 promptText="Причина свободного распределения"/>
 								<Pane id="allocationConfirmationsPane" fx:id="allocationConfirmationsPane"
@@ -269,16 +265,16 @@
 													 labelFloat="true" layoutX="22.0" layoutY="273.0" maxWidth="307.0"
 													 minWidth="302.0" prefHeight="68.0" prefWidth="302.0"
 													 promptText="Дополнительная информация"/>
-										<LocalDateTimeTextField id="allocationOrderDate" fx:id="allocationOrderDate"
-																layoutX="19.0" layoutY="115.0" prefHeight="27.0"
-																prefWidth="301.0"
-																promptText="Дата приказа о приеме на работу"/>
+										<LocalDateTextField id="allocationOrderDate" fx:id="allocationOrderDate"
+															layoutX="18.0" layoutY="117.0" prefHeight="27.0"
+															prefWidth="304.0"
+															promptText="Дата приказа о приеме на работу"/>
 									</children>
 								</Pane>
 								<JFXCheckBox id="allocationFreeAllocation" fx:id="allocationReallocation" layoutX="14.0"
-											 layoutY="193.0" text="Перераспределен"/>
+											 layoutY="263.0" text="Перераспределен"/>
 								<Pane id="allocationConfirmationsPane" fx:id="allocationCompensationPane"
-									  layoutX="739.0" layoutY="345.0" prefHeight="207.0" prefWidth="389.0">
+									  layoutX="739.0" layoutY="345.0" prefHeight="244.0" prefWidth="336.0">
 									<children>
 										<Label id="allocationConfirmationsLabel" fx:id="allocationCompensationLabel"
 											   layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="91.0"
@@ -286,23 +282,45 @@
 										<JFXTextField fx:id="allocationCompensationNumber" labelFloat="true"
 													  layoutX="11.0" layoutY="66.0" maxWidth="316.0" minWidth="314.0"
 													  prefHeight="33.0" prefWidth="316.0" promptText="Номер приказа"/>
-										<LocalDateTimeTextField fx:id="allocationCompensationDate" layoutX="16.0"
-																layoutY="121.0" prefHeight="27.0" prefWidth="305.0"
-																promptText="Дата Приказа"/>
+										<LocalDateTextField fx:id="allocationCompensationDate" layoutX="16.0"
+															layoutY="121.0" prefHeight="27.0" prefWidth="305.0"
+															promptText="Дата Приказа"/>
 										<JFXComboBox fx:id="allocationCompensationType" layoutX="113.0" layoutY="9.0"
 													 prefHeight="27.0" prefWidth="211.0"/>
-										<LocalDateTimeTextField fx:id="allocationCompensationConfirmationDate"
-																layoutX="17.0" layoutY="171.0" prefHeight="27.0"
-																prefWidth="305.0"
-																promptText="Дата получения извещения о добровольном возмещение"/>
+										<LocalDateTextField fx:id="allocationCompensationConfirmationDate"
+															layoutX="17.0" layoutY="181.0" prefHeight="27.0"
+															prefWidth="305.0"
+															promptText="Дата получения извещения о добровольном возмещение"/>
+										<Label fx:id="allocationCompensationConfirmationDateLabel" layoutX="17.0"
+											   layoutY="165.0"
+											   text="Дата получения извещения о добровольном возмещении">
+											<font>
+												<Font size="10.0"/>
+											</font>
+										</Label>
+										<Label fx:id="allocationCompensationDateLabel" layoutX="17.0" layoutY="106.0"
+											   text="Дата приказа">
+											<font>
+												<Font size="10.0"/>
+											</font>
+										</Label>
 									</children>
 								</Pane>
+								<Label id="allocationStageLabel" fx:id="allocationStageLabel" layoutX="14.0"
+									   layoutY="102.0" prefHeight="17.0" prefWidth="91.0" text="Ступень:"/>
+								<JFXComboBox id="allocationStage" fx:id="allocationStage" layoutX="114.0" layoutY="97.0"
+											 prefHeight="27.0" prefWidth="218.0"/>
 							</children>
 						</Pane>
 						<JFXButton id="allocationSaveButton" fx:id="allocationSaveButton" buttonType="RAISED"
 								   layoutX="24.0" layoutY="599.0" onAction="#allocationSaveButtonClick"
 								   prefHeight="35.0" prefWidth="120.0" ripplerFill="#82c9e1"
 								   style="-fx-background-color: #47a4c5;" text="Сохранить" textFill="WHITE"/>
+						<JFXButton id="managementStudentCleanButton" fx:id="allocationCleanButton" buttonType="RAISED"
+								   cancelButton="true" layoutX="201.0" layoutY="599.0"
+								   onAction="#allocationCleanButtonClick" prefHeight="35.0" prefWidth="155.0"
+								   ripplerFill="#82c9e1" style="-fx-background-color: #47a4c5;" text="Очистить форму"
+								   textFill="WHITE"/>
 					</children>
 				</AnchorPane>
 			</content>
@@ -612,8 +630,8 @@
 																	 layoutY="14.0" prefHeight="400.0"
 																	 prefWidth="737.0"/>
 														<JFXComboBox id="managementGroupRuler"
-																	 fx:id="managementGroupRulers"
-																	 layoutX="34.0" layoutY="485.0" prefHeight="27.0"
+																	 fx:id="managementGroupRulers" layoutX="34.0"
+																	 layoutY="485.0" prefHeight="27.0"
 																	 prefWidth="262.0"/>
 														<JFXButton id="managementGroupCleanButton"
 																   fx:id="managementGroupCleanButton"

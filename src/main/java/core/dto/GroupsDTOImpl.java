@@ -57,7 +57,7 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
 
     @Override
     public String toPrettyString() {
-        return number + " " + title + "(" + id + ")" + " часов: " + hours;
+        return number + " " + title + " (" + id + ") " + "часов: " + hours;
     }
 
     public String getTitle() {

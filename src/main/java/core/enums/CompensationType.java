@@ -10,11 +10,11 @@ package core.enums;
  */
 public enum CompensationType {
 
+    NONE("Не возмещает"),
     VOLUNTARY("Добровольное"),
     CORT("Судебное");
 
     private final String type;
-
 
     CompensationType(String type) {
         this.type = type;
