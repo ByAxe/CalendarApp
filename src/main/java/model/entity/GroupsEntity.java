@@ -11,7 +11,6 @@ import javax.persistence.*;
 
 import static core.api.IEssence.ID_COLUMN_NAME;
 import static core.api.IEssence.UUID_COLUMN_NAME;
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
@@ -102,7 +101,7 @@ public class GroupsEntity extends APersistentEntity {
         this.hours = hours;
     }
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     public RulersEntity getRuler() {
         return ruler;
     }

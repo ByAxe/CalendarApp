@@ -6,11 +6,12 @@
 package core.dto.api;
 
 import core.api.IEssence;
+import core.api.IVisible;
 
 /**
  * Created by byaxe on 17.12.16.
  */
-public interface IRulersDTO extends IEssence {
+public interface IRulersDTO extends IEssence, IVisible {
 
     String getFirstName();
 

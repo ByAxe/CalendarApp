@@ -209,6 +209,7 @@ public class Utils {
 
     /**
      * Получаем id записи из строки в комбобоксе
+     * id попадает в строку, благодаря {@link core.api.IVisible} методу
      *
      * @param ruler
      * @return
@@ -217,7 +218,7 @@ public class Utils {
         if (ruler == null || ruler.equalsIgnoreCase("null") || ruler.isEmpty()) return 0L;
 
         try {
-            return Long.valueOf(ruler.split("\\(")[2]);
+            return Long.valueOf(ruler.split("[()]")[1]);
         } catch (NumberFormatException e) {
             logger.error("Ошибка разбора строки \"" + ruler + "\", для получения id записи", e);
             return 0L;

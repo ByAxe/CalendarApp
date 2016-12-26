@@ -138,3 +138,25 @@ java.lang.ClassCastException: java.lang.String cannot be cast to core.enums.Stag
 	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:416)
 	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
 	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+2016-12-26 09:50:25,447 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 25006
+2016-12-26 09:50:25,448 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: cannot execute nextval() in a read-only transaction
+2016-12-26 10:21:35,192 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23502
+2016-12-26 10:21:35,192 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: null value in column "hours" violates not-null constraint
+  Подробности: Failing row contains (1, de2217f4-3ea4-4a74-ae6e-b397892d4eee, 2016-12-26 10:21:31.233+03, asdf, asdf, asdf, asdf, asdf, null, 3).
+2016-12-26 10:21:35,195 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2016-12-26 10:55:46,649 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23503
+2016-12-26 10:55:46,649 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: update or delete on table "rulers" violates foreign key constraint "groups_ruler_id_fkey" on table "groups"
+  Подробности: Key (id)=(3) is still referenced from table "groups".
+2016-12-26 10:55:46,651 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2016-12-26 10:58:42,935 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23503
+2016-12-26 10:58:42,935 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: update or delete on table "rulers" violates foreign key constraint "groups_ruler_id_fkey" on table "groups"
+  Подробности: Key (id)=(3) is still referenced from table "groups".
+2016-12-26 10:58:42,935 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2016-12-26 10:59:41,360 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23503
+2016-12-26 10:59:41,361 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: update or delete on table "rulers" violates foreign key constraint "groups_ruler_id_fkey" on table "groups"
+  Подробности: Key (id)=(3) is still referenced from table "groups".
+2016-12-26 10:59:41,367 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2016-12-26 11:05:52,394 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23503
+2016-12-26 11:05:52,394 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: update or delete on table "rulers" violates foreign key constraint "groups_ruler_id_fkey" on table "groups"
+  Подробности: Key (id)=(2) is still referenced from table "groups".
+2016-12-26 11:05:52,396 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]

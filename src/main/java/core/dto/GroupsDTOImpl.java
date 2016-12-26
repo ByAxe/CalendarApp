@@ -55,6 +55,11 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
         this.ruler = ruler;
     }
 
+    @Override
+    public String toPrettyString() {
+        return number + " " + title + "(" + id + ")" + " часов: " + hours;
+    }
+
     public String getTitle() {
         return title;
     }

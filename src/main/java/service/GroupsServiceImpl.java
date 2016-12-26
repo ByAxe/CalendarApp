@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXTextField;
 import core.commons.Result;
 import core.dto.GroupsDTOImpl;
 import core.dto.api.IGroupsDTO;
+import core.dto.api.IRulersDTO;
 import core.validators.api.IValidator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
@@ -100,18 +101,19 @@ public class GroupsServiceImpl implements IGroupsService {
         groupsList.getItems()
                 .setAll(((List<IGroupsDTO>) findAll())
                         .stream()
-                        .map(student -> {
-                            Label label = new Label(student.toPrettyString());
-                            label.setId(String.valueOf(student.getUuid()));
+                        .map(group -> {
+                            Label label = new Label(group.toPrettyString());
+                            label.setId(String.valueOf(group.getUuid()));
                             return label;
                         })
                         .collect(toList()));
     }
 
     @Override
+    @Transactional
     public void addContextMenuToGroupsList(JFXListView<Label> groupsList, JFXTextField id, JFXTextField title,
                                            JFXTextField qualification, JFXTextField number, JFXTextField specialisation,
-                                           JFXTextField description, JFXComboBox rulers) {
+                                           JFXTextField description, JFXTextField hours, JFXComboBox rulers) {
         final ContextMenu managementGroupsListContextMenu = new ContextMenu();
 
         MenuItem delete = new MenuItem(DELETE_CONTEXT_MENU_ITEM);
@@ -131,10 +133,8 @@ public class GroupsServiceImpl implements IGroupsService {
             if (!isOk) return;
 
             // Если он все же подтвердил удаление - удаляем элемент
-            Optional.ofNullable(((List<IGroupsDTO>) findAll()))
-                    .ifPresent(l -> l.stream()
-                            .filter(e -> Objects.equals(String.valueOf(e.getUuid()), item.getId()))
-                            .forEach(this::delete));
+            IGroupsDTO group = findByUuid(UUID.fromString(item.getId()));
+            delete(group);
 
             // Обновляем список, иначе для пользователя останется виден удаленный элемент
             fillGroupsList(groupsList);
@@ -163,8 +163,13 @@ public class GroupsServiceImpl implements IGroupsService {
             number.setText(group.getNumber());
             specialisation.setText(group.getSpecialization());
             description.setText(group.getDescription());
+            hours.setText(String.valueOf(group.getHours()));
 
-            rulers.getItems().setAll(rulersService.findAll());
+            rulers.getItems().clear();
+            Optional.ofNullable(((List<IRulersDTO>) rulersService.findAll()))
+                    .ifPresent(l -> l.forEach(r -> {
+                        rulers.getItems().add(r.toPrettyString());
+                    }));
         });
 
         groupsList.setContextMenu(managementGroupsListContextMenu);
@@ -179,8 +184,9 @@ public class GroupsServiceImpl implements IGroupsService {
     }
 
     @Override
+    @Transactional
     public void save(Long id, String title, String qualification, String number,
-                     String specialisation, String description, String ruler) {
+                     String specialisation, String description, String hours, String ruler) {
         IGroupsDTO group;
 
         // Новичок
@@ -192,21 +198,35 @@ public class GroupsServiceImpl implements IGroupsService {
             group = findOne(id);
         }
 
+        Alert.AlertType alertType;
+        String alertTitle;
+        String alertHeader;
+        String alertBody;
+
         group.setId(id);
         group.setTitle(title);
         group.setQualification(qualification);
         group.setNumber(number);
         group.setSpecialization(specialisation);
         group.setDescription(description);
+        try {
+            group.setHours(Integer.valueOf(hours));
+        } catch (NumberFormatException e) {
+
+            alertType = ERROR;
+
+            alertTitle = VALIDATION_ERROR_TITLE;
+            alertHeader = VALIDATION_ERROR_HEADER;
+            alertBody = "Количество часов должно быть числом.";
+
+            raiseMessageBox(alertType, alertTitle, alertHeader, alertBody);
+            return;
+        }
 
         group.setRuler(rulersService.findOne(getIdFromComboBox(ruler)));
 
         Result result = validator.validate(group);
 
-        Alert.AlertType alertType;
-        String alertTitle;
-        String alertHeader;
-        String alertBody;
 
         if (Objects.equals(result.getResult(), SUCCESS)) {
             save(group);

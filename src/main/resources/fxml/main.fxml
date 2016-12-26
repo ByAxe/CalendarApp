@@ -612,8 +612,8 @@
 																	 layoutY="14.0" prefHeight="400.0"
 																	 prefWidth="737.0"/>
 														<JFXComboBox id="managementGroupRuler"
-																	 fx:id="managementGroupRuler" layoutX="34.0"
-																	 layoutY="425.0" prefHeight="27.0"
+																	 fx:id="managementGroupRulers"
+																	 layoutX="34.0" layoutY="485.0" prefHeight="27.0"
 																	 prefWidth="262.0"/>
 														<JFXButton id="managementGroupCleanButton"
 																   fx:id="managementGroupCleanButton"
@@ -637,6 +637,12 @@
 																	  layoutY="48.0" maxWidth="279.0" minWidth="279.0"
 																	  prefHeight="33.0" prefWidth="279.0"
 																	  promptText="Идентификатор"/>
+														<JFXTextField id="managementGroupHours"
+																	  fx:id="managementGroupHours" labelFloat="true"
+																	  layoutX="26.0" layoutY="428.0" maxWidth="279.0"
+																	  minWidth="279.0" prefHeight="33.0"
+																	  prefWidth="279.0"
+																	  promptText="Количество часов по практике"/>
 													</children>
 												</Pane>
 											</children>

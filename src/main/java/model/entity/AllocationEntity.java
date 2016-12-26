@@ -16,7 +16,6 @@ import java.util.Date;
 
 import static core.api.IEssence.ID_COLUMN_NAME;
 import static core.api.IEssence.UUID_COLUMN_NAME;
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
@@ -179,7 +178,7 @@ public class AllocationEntity extends APersistentEntity {
         this.confirmations = confirmations;
     }
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     public GroupsEntity getGroup() {
         return group;
     }
@@ -188,7 +187,7 @@ public class AllocationEntity extends APersistentEntity {
         this.group = group;
     }
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     public OrganisationsEntity getOrganisation() {
         return organisation;
     }
@@ -197,7 +196,7 @@ public class AllocationEntity extends APersistentEntity {
         this.organisation = organisation;
     }
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     public StudentsEntity getStudent() {
         return student;
     }
@@ -206,7 +205,7 @@ public class AllocationEntity extends APersistentEntity {
         this.student = student;
     }
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     public OrdersEntity getOrder() {
         return order;
     }

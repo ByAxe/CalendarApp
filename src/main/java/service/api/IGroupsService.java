@@ -20,9 +20,9 @@ import java.util.UUID;
 public interface IGroupsService extends IEssenceService<IGroupsDTO, Long>, IConversionService<IGroupsDTO, GroupsEntity> {
     void fillGroupsList(JFXListView<Label> managementGroupsList);
 
-    void addContextMenuToGroupsList(JFXListView<Label> managementGroupsList, JFXTextField managementGroupId, JFXTextField managementGroupTitle, JFXTextField managementGroupQualification, JFXTextField managementGroupNumber, JFXTextField managementGroupSpecialization, JFXTextField managementGroupDescription, JFXComboBox managementGroupRuler);
+    void addContextMenuToGroupsList(JFXListView<Label> managementGroupsList, JFXTextField managementGroupId, JFXTextField managementGroupTitle, JFXTextField managementGroupQualification, JFXTextField managementGroupNumber, JFXTextField managementGroupSpecialization, JFXTextField managementGroupDescription, JFXTextField hours, JFXComboBox managementGroupRuler);
 
     IGroupsDTO findByUuid(UUID uuid);
 
-    void save(Long id, String s, String title, String qualification, String number, String specialisation, String description);
+    void save(Long id, String s, String title, String qualification, String number, String specialisation, String description, String ruler);
 }

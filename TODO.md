@@ -9,6 +9,7 @@
 
 
 ##Additional improvements
+- *How to say to the User that parent entity still has a children?*
 - *Solve problem with Quartz*
 - *Add Preferences*
 - *Add modifying button for events (update)*

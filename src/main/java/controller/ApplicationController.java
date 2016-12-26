@@ -35,6 +35,7 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -206,7 +207,7 @@ public class ApplicationController implements Initializable {
     public JFXTextField managementGroupSpecialization;
     public JFXTextField managementGroupQualification;
     public JFXTextField managementGroupDescription;
-    public JFXComboBox managementGroupRuler;
+    public JFXComboBox managementGroupRulers;
     public JFXListView<Label> managementGroupsList;
     public JFXButton managementGroupCleanButton;
     public JFXButton managementGroupSaveButton;
@@ -230,6 +231,7 @@ public class ApplicationController implements Initializable {
     public JFXTextField managementGroupId;
     public JFXTextField managementRulerId;
     public JFXTextField managementOrganisationId;
+    public JFXTextField managementGroupHours;
 
     private ResourceBundle resourceBundle;
     private URL location;
@@ -240,6 +242,7 @@ public class ApplicationController implements Initializable {
     private INotificationsLogService notificationsLogService;
     private IStudentsService studentsService;
     private IOrganisationsService organisationsService;
+    private IRulersService rulersService;
 
     @Value("${calendar.upcoming.events.label.text}")
     private String upcomingEventsLabelText;
@@ -256,13 +259,14 @@ public class ApplicationController implements Initializable {
     @Autowired
     public ApplicationController(IEventsService eventsService, IGroupsService groupsService, IAllocationService allocationService,
                                  INotificationsLogService notificationsLogService, IStudentsService studentsService,
-                                 IOrganisationsService organisationsService) {
+                                 IOrganisationsService organisationsService, IRulersService rulersService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
         this.allocationService = allocationService;
         this.notificationsLogService = notificationsLogService;
         this.studentsService = studentsService;
         this.organisationsService = organisationsService;
+        this.rulersService = rulersService;
     }
 
     @Override
@@ -276,6 +280,8 @@ public class ApplicationController implements Initializable {
         initAllocationTableTab();
         initNotificationTab();
         initManagementTab();
+
+        refresh();
     }
 
     /**
@@ -784,14 +790,35 @@ public class ApplicationController implements Initializable {
      * Инициализируем вкладку управления группами
      */
     private void initManagementGroupsTab() {
-
         groupsService.fillGroupsList(managementGroupsList);
+
+        managementGroupHours.setValidators(new NumberValidator());
 
         groupsService.addContextMenuToGroupsList(managementGroupsList, managementGroupId, managementGroupTitle,
                 managementGroupQualification, managementGroupNumber, managementGroupSpecialization,
-                managementGroupDescription, managementGroupRuler);
+                managementGroupDescription, managementGroupHours, managementGroupRulers);
 
         managementGroupCleanForm();
+
+        refresh();
+    }
+
+    /**
+     * Инициализируем вкладку управления руководителями
+     */
+    private void initManagementRulersTab() {
+        rulersService.fillRulersList(managementRulersList);
+
+        rulersService.addContextMenuToRulersList(managementRulersList, managementRulerId, managementRulerFirstName,
+                managementRulerMiddleName, managementRulerLastName, managementRulerPayload);
+
+        managementRulersCleanForm();
+    }
+
+    /**
+     * Инициализируем вкладку управления организациями
+     */
+    private void initManagementOrganisationsTab() {
 
     }
 
@@ -802,6 +829,7 @@ public class ApplicationController implements Initializable {
         managementGroupNumber.setText("");
         managementGroupSpecialization.setText("");
         managementGroupDescription.setText("");
+        managementGroupHours.setText("");
     }
 
 
@@ -824,6 +852,8 @@ public class ApplicationController implements Initializable {
 
         managementStudentCleanForm();
         studentsService.fillStudentsList(managementStudentsList);
+
+        refresh();
     }
 
     /**
@@ -837,7 +867,7 @@ public class ApplicationController implements Initializable {
     }
 
     /**
-     * Вычищает данные из полей сохранения новой сущности
+     * Вычищает данные из полей сохранения сущности выпускника
      */
     private void managementStudentCleanForm() {
         managementStudentId.setText("0");
@@ -846,12 +876,6 @@ public class ApplicationController implements Initializable {
         managementStudentLastName.setText("");
         managementStudentTelephone.setText("");
         managementStudentAddress.setText("");
-    }
-
-    private void initManagementOrganisationsTab() {
-    }
-
-    private void initManagementRulersTab() {
     }
 
     /**
@@ -878,21 +902,53 @@ public class ApplicationController implements Initializable {
         String number = managementGroupNumber.getText();
         String specialisation = managementGroupSpecialization.getText();
         String description = managementGroupDescription.getText();
-        String ruler = String.valueOf(managementGroupRuler.getSelectionModel().getSelectedItem());
+        String hours = managementGroupHours.getText();
+        String ruler = String.valueOf(managementGroupRulers.getSelectionModel().getSelectedItem());
 
-        groupsService.save(id, title, qualification, number, specialisation, description, ruler);
+        groupsService.save(id, title, qualification, number, specialisation, description, hours, ruler);
 
         managementGroupCleanForm();
 
         groupsService.fillGroupsList(managementGroupsList);
+
     }
 
+    /**
+     * Нажатие на кнопку очистить форму создания управляющего
+     *
+     * @param actionEvent
+     */
     @FXML
     private void managementRulerCleanButtonClick(ActionEvent actionEvent) {
+        managementRulersCleanForm();
+    }
+
+    /**
+     * Вычищает данные из полей сохранения сущности управляющего
+     */
+    private void managementRulersCleanForm() {
+        managementRulerId.setText("0");
+        managementRulerFirstName.setText("");
+        managementRulerMiddleName.setText("");
+        managementRulerLastName.setText("");
+        managementRulerPayload.setText("");
     }
 
     @FXML
     private void managementRulerSaveButtonClick(ActionEvent actionEvent) {
+        Long id = Long.valueOf(managementRulerId.getText());
+        String firstName = managementRulerFirstName.getText();
+        String middleName = managementRulerMiddleName.getText();
+        String lastName = managementRulerLastName.getText();
+        String payload = managementRulerPayload.getText();
+
+        rulersService.save(id, firstName, middleName, lastName, payload);
+
+        managementRulersCleanForm();
+
+        rulersService.fillRulersList(managementRulersList);
+
+        refresh();
     }
 
     @FXML
@@ -901,5 +957,18 @@ public class ApplicationController implements Initializable {
 
     @FXML
     private void managementOrganisationSaveButtonClick(ActionEvent actionEvent) {
+    }
+
+    /**
+     * Обновляем данные во всех комбобоксах где участвуют изменяемые сущности
+     */
+    public void refresh() {
+        managementGroupRulers.getItems().clear();
+        Optional.ofNullable(((List<IRulersDTO>) rulersService.findAll()))
+                .ifPresent(l -> l.forEach(r -> {
+                    managementGroupRulers.getItems().add(r.toPrettyString());
+                }));
+
+
     }
 }

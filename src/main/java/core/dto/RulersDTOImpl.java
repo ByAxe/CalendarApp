@@ -45,6 +45,16 @@ public class RulersDTOImpl extends AEssence implements IRulersDTO {
         }
     }
 
+    @Override
+    public String toPrettyString() {
+        return lastName
+                + " "
+                + firstName
+                + " "
+                + middleName
+                + " (" + id + ")";
+    }
+
     public String getFirstName() {
         return firstName;
     }
