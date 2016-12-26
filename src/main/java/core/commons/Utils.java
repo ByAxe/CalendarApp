@@ -12,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -99,6 +100,7 @@ public class Utils {
      * @return Результативная дата в {@link LocalDateTime}
      */
     public static LocalDateTime convertDateToLocalDateTime(Date source) {
+        if (source == null) return null;
         return LocalDateTime.ofInstant(source.toInstant(), ZoneId.systemDefault());
     }
 
@@ -110,7 +112,17 @@ public class Utils {
      * @return Результативная дата в {@link Date}
      */
     public static Date convertLocalDateTimeToDate(LocalDateTime source) {
+        if (source == null) return null;
         return Date.from(source.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * @param source
+     * @return
+     */
+    public static LocalDateTime convertLocalDateToLocalDateTime(LocalDate source) {
+        if (source == null) return null;
+        return Timestamp.valueOf(source.atStartOfDay()).toLocalDateTime();
     }
 
     /**

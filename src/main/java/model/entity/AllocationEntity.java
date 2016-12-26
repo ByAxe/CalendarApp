@@ -68,7 +68,7 @@ public class AllocationEntity extends APersistentEntity {
         this.id = id;
     }
 
-    @Column(name = "parent_id", nullable = false)
+    @Column(name = "parent_id")
     public Long getParentId() {
         return parentId;
     }
@@ -205,7 +205,7 @@ public class AllocationEntity extends APersistentEntity {
         this.student = student;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     public OrdersEntity getOrder() {
         return order;
     }

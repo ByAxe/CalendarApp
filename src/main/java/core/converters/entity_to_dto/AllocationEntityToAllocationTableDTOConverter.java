@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static core.commons.Utils.ALLOCATION_TABLE_FORMATTER;
 import static core.commons.Utils.convertDateToLocalDateTime;
 
@@ -92,12 +94,24 @@ public class AllocationEntityToAllocationTableDTOConverter implements Converter<
             target.setFreeAllocationFlag(source.isFreeAllocation() ? "Да" : "Нет");
             target.setFreeAllocationReason(source.getFreeAllocationReason());
 
-            target.setVoluntaryCompensationOrderDate(convertDateToLocalDateTime(source.getVoluntaryCompensationOrderDate()).format(ALLOCATION_TABLE_FORMATTER));
+            Optional.ofNullable(source.getVoluntaryCompensationOrderDate()).ifPresent(vCOD -> {
+                target.setVoluntaryCompensationOrderDate(convertDateToLocalDateTime(vCOD)
+                        .format(ALLOCATION_TABLE_FORMATTER));
+            });
+
             target.setVoluntaryCompensationOrderNumber(source.getVoluntaryCompensationOrderNumber());
-            target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(source.getVoluntaryCompensationConfirmationDate()).format(ALLOCATION_TABLE_FORMATTER));
+
+            Optional.ofNullable(source.getVoluntaryCompensationConfirmationDate()).ifPresent(e -> {
+                target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(e)
+                        .format(ALLOCATION_TABLE_FORMATTER));
+            });
+
 
             target.setCortCompensationOrderNumber(source.getCortOrderNumber());
-            target.setCortCompensationOrderDate(convertDateToLocalDateTime(source.getCortOrderDate()).format(ALLOCATION_TABLE_FORMATTER));
+            Optional.ofNullable(source.getCortOrderDate()).ifPresent(e -> {
+                target.setCortCompensationOrderDate(convertDateToLocalDateTime(e)
+                        .format(ALLOCATION_TABLE_FORMATTER));
+            });
 
             target.setIssueYear(String.valueOf(source.getIssueYear()));
             target.setStage(source.getStage());

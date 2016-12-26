@@ -7,6 +7,8 @@ package controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
+import core.dto.AllocationDTOImpl;
+import core.dto.OrdersDTOImpl;
 import core.dto.api.*;
 import core.enums.CompensationType;
 import core.enums.Stage;
@@ -36,11 +38,14 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static core.commons.Utils.*;
+import static core.enums.CompensationType.*;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static javafx.scene.control.Alert.AlertType.ERROR;
@@ -239,6 +244,8 @@ public class ApplicationController implements Initializable {
     public JFXComboBox allocationStage;
     public Label allocationCompensationConfirmationDateLabel;
     public Label allocationCompensationDateLabel;
+    public JFXTextField allocationReallocationId;
+    public JFXTextField allocationId;
 
     private ResourceBundle resourceBundle;
     private URL location;
@@ -259,6 +266,9 @@ public class ApplicationController implements Initializable {
 
     @Value("${about.body}")
     private String ABOUT_BODY;
+
+    @Value("${confirmation.message}")
+    private String CONFIRMED;
 
     public ApplicationController() {
     }
@@ -663,10 +673,12 @@ public class ApplicationController implements Initializable {
     private void initAllocationTab() {
         allocationSearchTextField.setValidators(new NumberValidator());
         allocationIssueYear.setValidators(new NumberValidator());
+        allocationReallocationId.setValidators(new NumberValidator());
+        allocationOrderRank.setValidators(new NumberValidator());
 
         // Загружаем данные в выпадающие списки
         allocationCompensationType.getItems()
-                .setAll(Stream.of(CompensationType.values()).map(CompensationType::getType).collect(toList()));
+                .setAll(Stream.of(values()).map(CompensationType::getType).collect(toList()));
 
         allocationStage.getItems()
                 .setAll(Stream.of(Stage.values()).map(Stage::getAcronym).collect(toList()));
@@ -678,12 +690,13 @@ public class ApplicationController implements Initializable {
 
         // Убираем поля из видимости
         allocationCompensationConfirmationDate.setVisible(false);
-        allocationFreeAllocationReason.setVisible(false);
 
         // Устанавливаем в выпадающие списки значения по умолчанию
         allocationStage.setValue(allocationStage.getItems().get(1));
         allocationCompensationType.setValue(allocationCompensationType.getItems().get(0));
 
+        // Активируем вписывание в поле перераспределения идентификатора
+        allocationReallocation.setOnAction(e -> allocationReallocationId.setDisable(!allocationReallocation.isSelected()));
 
         // По выбору ступени меняется количество флажков подтверждения
         allocationStage.setOnAction(e -> Stream.of(Stage.values()).forEach(f -> {
@@ -705,19 +718,19 @@ public class ApplicationController implements Initializable {
         }));
 
         // Играем с полями Компенсации
-        allocationCompensationType.setOnAction(e -> Stream.of(CompensationType.values()).forEach(t -> {
+        allocationCompensationType.setOnAction(e -> Stream.of(values()).forEach(t -> {
             if (t.getType().equals(String.valueOf(allocationCompensationType.getValue()))) {
-                if (t == CompensationType.NONE) {
+                if (t == NONE) {
                     allocationCompensationNumber.setDisable(true);
                     allocationCompensationDate.setDisable(true);
                     allocationCompensationConfirmationDateLabel.setVisible(false);
                     allocationCompensationConfirmationDate.setVisible(false);
-                } else if (t == CompensationType.VOLUNTARY) {
+                } else if (t == VOLUNTARY) {
                     allocationCompensationNumber.setDisable(false);
                     allocationCompensationDate.setDisable(false);
                     allocationCompensationConfirmationDateLabel.setVisible(true);
                     allocationCompensationConfirmationDate.setVisible(true);
-                } else if (t == CompensationType.CORT) {
+                } else if (t == CORT) {
                     allocationCompensationNumber.setDisable(false);
                     allocationCompensationDate.setDisable(false);
                     allocationCompensationConfirmationDateLabel.setVisible(false);
@@ -739,6 +752,7 @@ public class ApplicationController implements Initializable {
             allocationConfirmation_3.setText(CONFIRMATION_PERIOD_3 + " " + nextYear);
             allocationConfirmation_4.setText(CONFIRMATION_PERIOD_4 + " " + nextYear);
             allocationConfirmation_5.setText(CONFIRMATION_PERIOD_5 + " " + nextYear);
+
             allocationConfirmation_6.setText(CONFIRMATION_PERIOD_1 + " " + nextYear);
             allocationConfirmation_7.setText(CONFIRMATION_PERIOD_2 + " " + nextYear);
             allocationConfirmation_8.setText(CONFIRMATION_PERIOD_3 + " " + nextNextYear);
@@ -751,9 +765,12 @@ public class ApplicationController implements Initializable {
         allocationConfirmation_6.setOnAction(e -> allocationConfirmation_5.setSelected(allocationConfirmation_6.isSelected()));
 
         // Если указано, что выпускник имеет свободное распределение - то обязываем указать причину
-        allocationFreeAllocation.setOnAction(e -> allocationFreeAllocationReason.setVisible(allocationFreeAllocation.isSelected()));
+        allocationFreeAllocation.setOnAction(e -> allocationFreeAllocationReason.setDisable(!allocationFreeAllocation.isSelected()));
 
-        allocationCleanForm();
+        allocationReallocationId.setDisable(true);
+        allocationCompensationType.setValue(allocationCompensationType.getItems().get(1));
+
+        allocationCleanButton.fire();
     }
 
     /**
@@ -814,32 +831,151 @@ public class ApplicationController implements Initializable {
         if (allocationSearchTextField.validate()) {
             final long id = Long.parseLong(allocationSearchTextField.getText());
 
+
             IAllocationDTO allocation = allocationService.findOne(id);
 
             if (allocation == null) {
                 raiseMessageBox(INFORMATION, "Не найдено", "Поиск не дал результатов", "Запись о распределении с данным номером не найдена.");
                 return;
             }
+            allocationId.setText(String.valueOf(id));
 
             allocationCompensationType.getItems()
-                    .setAll(Stream.of(CompensationType.values()).map(CompensationType::getType).collect(toList()));
+                    .setAll(Stream.of(values()).map(CompensationType::getType).collect(toList()));
 
             IGroupsDTO group = allocation.getGroup();
             IStudentsDTO student = allocation.getStudent();
             IOrganisationsDTO organisation = allocation.getOrganisation();
+            IOrdersDTO order = allocation.getOrder();
 
+            // TODO разложить данные по полям
             allocationStudentsList.setValue(student.toPrettyString());
             allocationOrganisationsList.setValue(organisation.toPrettyString());
             allocationGroupsList.setValue(group.toPrettyString());
 
-            // TODO разложить данные по полям
-        }
+            allocationArchive.setSelected(allocation.isArchive());
+            allocationArmy.setSelected(allocation.isArmy());
 
+            if (allocation.getParentId() != null) {
+                allocationReallocation.setSelected(true);
+                allocationReallocationId.setText(String.valueOf(allocation.getParentId()));
+            }
+
+            if (allocation.isFreeAllocation()) {
+                allocationFreeAllocation.setSelected(true);
+                allocationFreeAllocationReason.setText(allocation.getFreeAllocationReason());
+            }
+
+            allocationOrderNumber.setText(order.getNumber());
+            allocationOrderDate.setLocalDate(LocalDate.from(order.getStarts()));
+            allocationOrderProfession.setText(order.getProfession());
+            allocationOrderRank.setText(String.valueOf(order.getRank()));
+            allocationOrderPayload.setText(order.getPayload());
+            allocationIssueYear.setText(String.valueOf(allocation.getIssueYear()));
+
+            String[] c = allocation.getConfirmations();
+
+            allocationConfirmation_1.setSelected(c[0] != null);
+            allocationConfirmation_2.setSelected(c[1] != null);
+            allocationConfirmation_3.setSelected(c[2] != null);
+            allocationConfirmation_4.setSelected(c[3] != null);
+            allocationConfirmation_5.setSelected(c[4] != null);
+
+            if (allocation.getStage() == Stage.SECOND) {
+                allocationConfirmation_6.setSelected(c[5] != null);
+                allocationConfirmation_7.setSelected(c[6] != null);
+                allocationConfirmation_8.setSelected(c[7] != null);
+                allocationConfirmation_9.setSelected(c[8] != null);
+                allocationConfirmation_10.setSelected(c[9] != null);
+            }
+
+            if (allocation.getVoluntaryCompensationOrderDate() != null) {
+                allocationCompensationType.setValue(VOLUNTARY.getType());
+                allocationCompensationNumber.setText(allocation.getVoluntaryCompensationOrderNumber());
+                allocationCompensationDate.setLocalDate(LocalDate.from(allocation.getVoluntaryCompensationOrderDate()));
+                allocationCompensationConfirmationDate.setLocalDate(LocalDate.from(allocation.getVoluntaryCompensationConfirmationDate()));
+            } else if (allocation.getCortOrderDate() != null) {
+                allocationCompensationType.setValue(CORT.getType());
+                allocationCompensationNumber.setText(allocation.getCortOrderNumber());
+                allocationCompensationDate.setLocalDate(LocalDate.from(allocation.getCortOrderDate()));
+            } else {
+                allocationCompensationType.setValue(NONE.getType());
+            }
+
+            allocationStage.setValue(allocation.getStage().getAcronym());
+        }
     }
 
 
     @FXML
     private void allocationSaveButtonClick(ActionEvent actionEvent) {
+        IAllocationDTO row = new AllocationDTOImpl();
+
+        IStudentsDTO student = studentsService.findOne(getIdFromComboBox(String.valueOf(allocationStudentsList.getValue())));
+        IOrganisationsDTO organisation = organisationsService.findOne(getIdFromComboBox(String.valueOf(allocationOrganisationsList.getValue())));
+        IGroupsDTO group = groupsService.findOne(getIdFromComboBox(String.valueOf(allocationGroupsList.getValue())));
+
+        IOrdersDTO order = new OrdersDTOImpl();
+        order.setUuid(UUID.randomUUID());
+        order.setDtUpdate(new Date());
+        order.setNumber(allocationOrderNumber.getText());
+        order.setStarts(convertLocalDateToLocalDateTime(allocationOrderDate.getLocalDate()));
+        order.setProfession(allocationOrderProfession.getText());
+        order.setRank(allocationOrderRank.validate() ? Integer.valueOf(allocationOrderRank.getText()) : null);
+        order.setPayload(allocationOrderPayload.getText());
+
+        row.setStudent(student);
+        row.setOrganisation(organisation);
+        row.setGroup(group);
+        row.setOrder(order);
+
+        row.setId(Long.valueOf(allocationId.getText()));
+
+        row.setArchive(allocationArchive.isSelected());
+        row.setArmy(allocationArmy.isSelected());
+
+        if (allocationReallocation.isSelected() && allocationReallocationId.validate()) {
+            row.setParentId(Long.valueOf(allocationReallocationId.getText()));
+        }
+
+        row.setFreeAllocation(allocationFreeAllocation.isSelected());
+        row.setFreeAllocationReason(allocationFreeAllocation.isSelected() ? allocationFreeAllocationReason.getText() : null);
+
+        row.setIssueYear(allocationIssueYear.validate() ? Integer.valueOf(allocationIssueYear.getText()) : null);
+
+        Stream.of(Stage.values()).forEach(e -> {
+            if (e.getAcronym().equals(allocationStage.getValue())) row.setStage(e);
+        });
+
+        final String[] confirmations = new String[10];
+
+        confirmations[0] = allocationConfirmation_1.isSelected() ? CONFIRMED : null;
+        confirmations[1] = allocationConfirmation_2.isSelected() ? CONFIRMED : null;
+        confirmations[2] = allocationConfirmation_3.isSelected() ? CONFIRMED : null;
+        confirmations[3] = allocationConfirmation_4.isSelected() ? CONFIRMED : null;
+        confirmations[4] = allocationConfirmation_5.isSelected() ? CONFIRMED : null;
+
+        if (row.getStage() == Stage.SECOND) {
+            confirmations[5] = allocationConfirmation_6.isSelected() ? CONFIRMED : null;
+            confirmations[6] = allocationConfirmation_7.isSelected() ? CONFIRMED : null;
+            confirmations[7] = allocationConfirmation_8.isSelected() ? CONFIRMED : null;
+            confirmations[8] = allocationConfirmation_9.isSelected() ? CONFIRMED : null;
+            confirmations[9] = allocationConfirmation_10.isSelected() ? CONFIRMED : null;
+        }
+
+        row.setConfirmations(confirmations);
+
+        if (VOLUNTARY.getType().equals(allocationCompensationType.getValue())) {
+            row.setVoluntaryCompensation(true);
+            row.setVoluntaryCompensationOrderNumber(allocationCompensationNumber.getText());
+            row.setVoluntaryCompensationOrderDate(convertLocalDateToLocalDateTime(allocationCompensationDate.getLocalDate()));
+        } else if (CORT.getType().equals(allocationCompensationType.getValue())) {
+            row.setCortOrderNumber(allocationCompensationNumber.getText());
+            row.setCortOrderDate(convertLocalDateToLocalDateTime(allocationCompensationDate.getLocalDate()));
+        }
+
+        allocationService.save(row);
+
         allocationCleanForm();
     }
 
@@ -852,6 +988,8 @@ public class ApplicationController implements Initializable {
      * Очищает форму сохранения записей по распределению
      */
     private void allocationCleanForm() {
+        allocationId.setText("0");
+
         allocationStudentsList.setValue(null);
         allocationOrganisationsList.setValue(null);
         allocationGroupsList.setValue(null);
@@ -859,11 +997,11 @@ public class ApplicationController implements Initializable {
         allocationArchive.setSelected(false);
         allocationArmy.setSelected(false);
         allocationReallocation.setSelected(false);
+
         allocationFreeAllocation.setSelected(false);
-
         allocationFreeAllocationReason.setText("");
-        allocationOrderNumber.setText("");
 
+        allocationOrderNumber.setText("");
         allocationOrderDate.setLocalDate(LocalDate.now());
         allocationOrderProfession.setText("");
         allocationOrderRank.setText("");
@@ -883,13 +1021,17 @@ public class ApplicationController implements Initializable {
         allocationConfirmation_10.setSelected(false);
 
         allocationCompensationType.setValue(allocationCompensationType.getItems().get(0));
+        allocationCompensationNumber.setDisable(true);
+        allocationCompensationDate.setDisable(true);
+        allocationCompensationConfirmationDateLabel.setVisible(false);
+        allocationCompensationConfirmationDate.setVisible(false);
 
         allocationCompensationNumber.setText("");
         allocationCompensationDate.setLocalDate(LocalDate.now());
         allocationCompensationConfirmationDate.setLocalDate(LocalDate.now());
 
-        allocationStage.setValue(allocationStage.getItems().get(0));
-
+        allocationStage.setValue(allocationStage.getItems().get(1));
+        allocationReallocationId.setText("");
     }
 
 

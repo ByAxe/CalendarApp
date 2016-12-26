@@ -6,10 +6,14 @@
 package service;
 
 import com.jfoenix.controls.JFXComboBox;
+import core.commons.Result;
 import core.dto.api.IAllocationDTO;
 import core.dto.api.IAllocationTableDTO;
+import core.dto.api.IOrdersDTO;
 import core.enums.EventType;
 import core.enums.Stage;
+import core.validators.api.IValidator;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import model.entity.AllocationEntity;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -18,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,10 +37,14 @@ import service.quartz.JobInitializer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
+import static core.commons.Utils.raiseMessageBox;
+import static core.enums.ResultEnum.SUCCESS;
 import static java.util.stream.Collectors.toList;
+import static javafx.scene.control.Alert.AlertType.ERROR;
+import static javafx.scene.control.Alert.AlertType.INFORMATION;
 
 /**
  * Created by byaxe on 18.12.16.
@@ -52,6 +61,22 @@ public class AllocationServiceImpl implements IAllocationService {
     private final IOrganisationsService organisationsService;
     private final IStudentsService studentsService;
     private final IOrdersService ordersService;
+    private final IValidator<Result, IAllocationDTO> validator;
+
+    @Value("${validation.error.title}")
+    private String VALIDATION_ERROR_TITLE;
+
+    @Value("${validation.error.header}")
+    private String VALIDATION_ERROR_HEADER;
+
+    @Value("${validation.success.title}")
+    private String VALIDATION_SUCCESS_TITLE;
+
+    @Value("${validation.success.header}")
+    private String VALIDATION_SUCCESS_HEADER;
+
+    @Value("${validation.success.body}")
+    private String VALIDATION_SUCCESS_BODY;
 
     @Autowired
     private JobInitializer jobInitializer;
@@ -59,13 +84,15 @@ public class AllocationServiceImpl implements IAllocationService {
     @Autowired
     public AllocationServiceImpl(AllocationRepository allocationRepository, ConversionService conversionService,
                                  IGroupsService groupsService, IOrganisationsService organisationsService,
-                                 IStudentsService studentsService, IOrdersService ordersService) {
+                                 IStudentsService studentsService, IOrdersService ordersService,
+                                 IValidator<Result, IAllocationDTO> validator) {
         this.allocationRepository = allocationRepository;
         this.conversionService = conversionService;
         this.groupsService = groupsService;
         this.organisationsService = organisationsService;
         this.studentsService = studentsService;
         this.ordersService = ordersService;
+        this.validator = validator;
     }
 
     /**
@@ -123,15 +150,61 @@ public class AllocationServiceImpl implements IAllocationService {
     public IAllocationDTO save(IAllocationDTO dto) {
         if (dto == null) throw new IllegalArgumentException();
 
-        AllocationEntity entity = convertDtoToEntity(dto);
+        if (dto.getId() == 0) {
+            dto.setUuid(UUID.randomUUID());
+        } else {
+            IAllocationDTO old = findOne(dto.getId());
+            dto.setUuid(old.getUuid());
+        }
 
-        AllocationEntity savedEntity = allocationRepository.save(entity);
+        dto.setDtUpdate(new Date());
 
-        IAllocationDTO allocation = convertEntityToDto(savedEntity);
+        Alert.AlertType alertType;
+        String alertTitle;
+        String alertHeader;
+        String alertBody;
 
-        jobInitializer.synchronizeJobWithAllocation(allocation, EventType.SAVE);
+        Optional.ofNullable(dto.getParentId()).ifPresent(parentId -> {
+            IAllocationDTO one = findOne(dto.getParentId());
+            if (one == null) {
+                String body = "Записи по указанному вами в поле \"Идентификатор записи перераспределения\" идентификатору, не найдено.\n\t*Возможно, вы должны для начала создать ее, а затем уже указать как \"Идентификатор записи перераспределения\".";
 
-        return allocation;
+                raiseMessageBox(ERROR, VALIDATION_ERROR_TITLE, VALIDATION_ERROR_HEADER, body);
+            }
+        });
+
+        Result result = validator.validate(dto);
+
+        if (Objects.equals(result.getResult(), SUCCESS)) {
+
+            IOrdersDTO savedOrder = ordersService.save(dto.getOrder());
+
+            dto.setOrder(savedOrder);
+
+            AllocationEntity entity = convertDtoToEntity(dto);
+
+            AllocationEntity savedEntity = allocationRepository.save(entity);
+
+            IAllocationDTO allocation = convertEntityToDto(savedEntity);
+
+            jobInitializer.synchronizeJobWithAllocation(allocation, EventType.SAVE);
+
+            alertType = INFORMATION;
+
+            alertTitle = VALIDATION_SUCCESS_TITLE;
+            alertHeader = VALIDATION_SUCCESS_HEADER;
+            alertBody = VALIDATION_SUCCESS_BODY;
+
+        } else {
+            alertType = ERROR;
+
+            alertTitle = VALIDATION_ERROR_TITLE;
+            alertHeader = VALIDATION_ERROR_HEADER;
+            alertBody = result.errorsToString();
+        }
+
+        raiseMessageBox(alertType, alertTitle, alertHeader, alertBody);
+        return null;
     }
 
     @Override

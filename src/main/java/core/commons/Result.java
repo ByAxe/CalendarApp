@@ -7,6 +7,7 @@ package core.commons;
 
 import core.enums.ResultEnum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -19,7 +20,7 @@ import static java.util.stream.Collectors.joining;
 public class Result {
 
     private ResultEnum result;
-    private List<String> payload;
+    private List<String> payload = new ArrayList<>();
 
     /**
      * Success constructor
