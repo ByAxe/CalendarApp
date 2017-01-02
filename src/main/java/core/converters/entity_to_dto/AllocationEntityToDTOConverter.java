@@ -20,15 +20,13 @@ import static core.commons.Utils.convertDateToLocalDateTime;
 @Component
 public class AllocationEntityToDTOConverter implements Converter<AllocationEntity, IAllocationDTO> {
 
-    private final GroupsEntityToDTOConverter groupsEntityToDTOConverter;
     private final OrganisationsEntityToDTOConverter organisationsEntityToDTOConverter;
     private final StudentsEntityToDTOConverter studentsEntityToDTOConverter;
     private final OrdersEntityToDTOConverter ordersEntityToDTOConverter;
 
     @Autowired
-    public AllocationEntityToDTOConverter(GroupsEntityToDTOConverter groupsEntityToDTOConverter, OrganisationsEntityToDTOConverter organisationsEntityToDTOConverter,
+    public AllocationEntityToDTOConverter(OrganisationsEntityToDTOConverter organisationsEntityToDTOConverter,
                                           StudentsEntityToDTOConverter studentsEntityToDTOConverter, OrdersEntityToDTOConverter ordersEntityToDTOConverter) {
-        this.groupsEntityToDTOConverter = groupsEntityToDTOConverter;
         this.organisationsEntityToDTOConverter = organisationsEntityToDTOConverter;
         this.studentsEntityToDTOConverter = studentsEntityToDTOConverter;
         this.ordersEntityToDTOConverter = ordersEntityToDTOConverter;
@@ -48,22 +46,16 @@ public class AllocationEntityToDTOConverter implements Converter<AllocationEntit
 
         target.setArmy(source.isArmy());
         target.setFreeAllocation(source.isFreeAllocation());
-        target.setVoluntaryCompensation(source.isVoluntaryCompensation());
         target.setArchive(source.isArchive());
 
-        target.setStage(source.getStage());
-        target.setCortOrderNumber(source.getCortOrderNumber());
-        target.setVoluntaryCompensationOrderNumber(source.getVoluntaryCompensationOrderNumber());
+        target.setCompensationOrderNumber(source.getCompensationOrderNumber());
 
-        target.setVoluntaryCompensationOrderDate(convertDateToLocalDateTime(source.getVoluntaryCompensationOrderDate()));
+        target.setCompensationOrderDate(convertDateToLocalDateTime(source.getCompensationOrderDate()));
         target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(source.getVoluntaryCompensationConfirmationDate()));
-        target.setCortOrderDate(convertDateToLocalDateTime(source.getCortOrderDate()));
         target.setFreeAllocationReason(source.getFreeAllocationReason());
-        target.setIssueYear(source.getIssueYear());
 
         target.setConfirmations(source.getConfirmations());
 
-        target.setGroup(groupsEntityToDTOConverter.convert(source.getGroup()));
         target.setOrganisation(organisationsEntityToDTOConverter.convert(source.getOrganisation()));
         target.setStudent(studentsEntityToDTOConverter.convert(source.getStudent()));
         target.setOrder(ordersEntityToDTOConverter.convert(source.getOrder()));

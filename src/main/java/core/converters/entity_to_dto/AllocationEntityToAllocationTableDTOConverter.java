@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static core.commons.Utils.ALLOCATION_TABLE_FORMATTER;
-import static core.commons.Utils.convertDateToLocalDateTime;
+import static core.commons.Utils.*;
 
 /**
  * Created by byaxe on 24.12.16.
@@ -32,7 +32,7 @@ public class AllocationEntityToAllocationTableDTOConverter implements Converter<
         if (source == null) return null;
 
         StudentsEntity student = source.getStudent();
-        GroupsEntity group = source.getGroup();
+        GroupsEntity group = student.getGroup();
         OrganisationsEntity organisation = source.getOrganisation();
         OrdersEntity order = source.getOrder();
 
@@ -77,7 +77,7 @@ public class AllocationEntityToAllocationTableDTOConverter implements Converter<
             target.setConfirmations_4(c[3]);
             target.setConfirmations_5(c[4]);
 
-            if (source.getStage() == Stage.SECOND) {
+            if (group.getStage() == Stage.SECOND) {
                 target.setConfirmations_6(c[5]);
                 target.setConfirmations_7(c[6]);
                 target.setConfirmations_8(c[7]);
@@ -94,27 +94,20 @@ public class AllocationEntityToAllocationTableDTOConverter implements Converter<
             target.setFreeAllocationFlag(source.isFreeAllocation() ? "Да" : "Нет");
             target.setFreeAllocationReason(source.getFreeAllocationReason());
 
-            Optional.ofNullable(source.getVoluntaryCompensationOrderDate()).ifPresent(vCOD -> {
-                target.setVoluntaryCompensationOrderDate(convertDateToLocalDateTime(vCOD)
-                        .format(ALLOCATION_TABLE_FORMATTER));
-            });
+            target.setCompensationType(source.getCompensationType().name());
 
-            target.setVoluntaryCompensationOrderNumber(source.getVoluntaryCompensationOrderNumber());
+            Optional.ofNullable(source.getCompensationOrderDate()).ifPresent(vCOD ->
+                    target.setCompensationOrderDate(convertDateToLocalDateTime(vCOD)
+                            .format(ALLOCATION_TABLE_FORMATTER)));
 
-            Optional.ofNullable(source.getVoluntaryCompensationConfirmationDate()).ifPresent(e -> {
-                target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(e)
-                        .format(ALLOCATION_TABLE_FORMATTER));
-            });
+            target.setCompensationOrderNumber(source.getCompensationOrderNumber());
 
+            Optional.ofNullable(source.getVoluntaryCompensationConfirmationDate()).ifPresent(e ->
+                    target.setVoluntaryCompensationConfirmationDate(convertDateToLocalDateTime(e)
+                            .format(ALLOCATION_TABLE_FORMATTER)));
 
-            target.setCortCompensationOrderNumber(source.getCortOrderNumber());
-            Optional.ofNullable(source.getCortOrderDate()).ifPresent(e -> {
-                target.setCortCompensationOrderDate(convertDateToLocalDateTime(e)
-                        .format(ALLOCATION_TABLE_FORMATTER));
-            });
-
-            target.setIssueYear(String.valueOf(source.getIssueYear()));
-            target.setStage(source.getStage());
+            target.setIssueDate(LocalDateTime.of(group.getIssueYear(), group.getIssueMonth(), 1, 0, 0).format(ISSUE_DATE_FORMATTER));
+            target.setStage(group.getStage());
         }
 
         return target;

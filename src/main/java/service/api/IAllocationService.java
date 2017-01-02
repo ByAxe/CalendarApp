@@ -26,7 +26,7 @@ public interface IAllocationService extends IEssenceService<IAllocationDTO, Long
 
     <T> List<T> findByArchiveFalse();
 
-    <T> List<T> find(Stage stage, Boolean archive, Integer issueYear);
+    <T> List<T> find(Stage stage, Boolean archive, Integer issueYear, Integer issueMonth);
 
     void moveToArchive(Long id);
 

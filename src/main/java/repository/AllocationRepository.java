@@ -24,6 +24,14 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
 
     List<AllocationEntity> findByArchiveFalse();
 
-    @Query(value = "SELECT a FROM AllocationEntity a WHERE a.stage = :stage AND a.archive = :archive AND a.issueYear = :issueYear ORDER BY a.id")
-    List<AllocationEntity> find(@Param("stage") Stage stage, @Param("archive") boolean archive, @Param("issueYear") Integer issueYear);
+    @Query(value = "SELECT a FROM AllocationEntity a JOIN StudentsEntity s JOIN GroupsEntity g" +
+            " WHERE g.stage = :stage" +
+            " AND a.archive = :archive" +
+            " AND g.issueYear = :issueYear" +
+            " AND g.issueMonth = :issueMonth" +
+            " ORDER BY a.id")
+    List<AllocationEntity> find(@Param("stage") Stage stage,
+                                @Param("archive") boolean archive,
+                                @Param("issueYear") Integer issueYear,
+                                @Param("issueMonth") Integer issueMonth);
 }

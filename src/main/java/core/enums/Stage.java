@@ -7,6 +7,8 @@ package core.enums;
 
 /**
  * Created by byaxe on 17.12.16.
+ * <p>
+ * Ступень образования
  */
 public enum Stage {
     FIRST("Первая ступень", "ПТО", "Профессиональное техническое образование", 1),

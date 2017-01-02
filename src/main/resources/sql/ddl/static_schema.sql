@@ -26,26 +26,6 @@ CREATE UNIQUE INDEX events_uuid_idx
   ON cld.events USING BTREE (uuid);
 
 -- ----------------------------
--- TABLE groups
--- ----------------------------
-DROP TABLE IF EXISTS cld.groups;
-CREATE TABLE cld.groups (
-  id             BIGSERIAL PRIMARY KEY,
-  uuid           UUID           NOT NULL,
-  dt_update      TIMESTAMPTZ(6) NOT NULL,
-  title          VARCHAR(100)   NOT NULL,
-  specialization VARCHAR,
-  qualification  VARCHAR        NOT NULL,
-  description    TEXT,
-  number         VARCHAR(10)    NOT NULL,
-  hours          INTEGER        NOT NULL,
-  ruler_id       BIGINT         NOT NULL
-);
-
-CREATE UNIQUE INDEX groups_uuid_idx
-  ON cld.groups USING BTREE (uuid);
-
--- ----------------------------
 -- TABLE rulers
 -- ----------------------------
 DROP TABLE IF EXISTS cld.rulers;
@@ -63,6 +43,32 @@ CREATE UNIQUE INDEX rulers_uuid_idx
   ON cld.rulers USING BTREE (uuid);
 
 -- ----------------------------
+-- TABLE groups
+-- ----------------------------
+DROP TABLE IF EXISTS cld.groups;
+CREATE TABLE cld.groups (
+  id             BIGSERIAL PRIMARY KEY,
+  uuid           UUID           NOT NULL,
+  dt_update      TIMESTAMPTZ(6) NOT NULL,
+  title          VARCHAR(100)   NOT NULL,
+  specialization VARCHAR,
+  qualification  VARCHAR        NOT NULL,
+  description    TEXT,
+  number         VARCHAR(10)    NOT NULL,
+  hours          INTEGER        NOT NULL,
+  issue_year     INTEGER        NOT NULL DEFAULT 2016, -- Год выпуска
+  issue_month    INTEGER        NOT NULL DEFAULT 1,
+  stage          VARCHAR        NOT NULL DEFAULT 'FIRST', -- Ступень образования
+  ruler_id       BIGINT         NOT NULL
+);
+
+CREATE UNIQUE INDEX groups_uuid_idx
+  ON cld.groups USING BTREE (uuid);
+
+CREATE INDEX groups_issue_idx
+  ON cld.groups USING BTREE (issue_year, issue_month);
+
+-- ----------------------------
 -- TABLE students
 -- ----------------------------
 DROP TABLE IF EXISTS cld.students;
@@ -74,6 +80,7 @@ CREATE TABLE cld.students (
   middle_name VARCHAR(100)   NOT NULL,
   last_name   VARCHAR(100)   NOT NULL,
   telephone   VARCHAR(100),
+  group_id    BIGINT         NOT NULL,
   address     VARCHAR(150)   NOT NULL
 );
 
@@ -124,30 +131,22 @@ CREATE TABLE cld.allocation (
   uuid                                     UUID           NOT NULL,
   dt_update                                TIMESTAMPTZ(6) NOT NULL,
   parent_id                                BIGINT,
-  group_id                                 BIGINT         NOT NULL,
-  organisation_id                          BIGINT         NOT NULL,
-  student_id                               BIGINT         NOT NULL,
+  organisation_id                          BIGINT  NOT NULL,
+  student_id                               BIGINT  NOT NULL,
   order_id                                 BIGINT,
   confirmations                            VARCHAR ARRAY, -- Подтверждения об отработке
-  army                                     BOOLEAN        NOT NULL DEFAULT FALSE,
-  stage                                    VARCHAR        NOT NULL DEFAULT 'FIRST', -- Ступень образования
-  free_allocation                          BOOLEAN        NOT NULL DEFAULT FALSE, -- Свободное распределение
+  army                                     BOOLEAN NOT NULL DEFAULT FALSE,
+  free_allocation                          BOOLEAN NOT NULL DEFAULT FALSE, -- Свободное распределение
   free_allocation_reason                   TEXT, -- Причина свободного распределения
-  voluntary_compensation                   BOOLEAN        NOT NULL DEFAULT TRUE, -- Добровольное возмещение
-  voluntary_compensation_order_date        TIMESTAMPTZ(6), -- Дата приказа по добровольному возмещению
-  voluntary_compensation_order_number      VARCHAR(50), -- Номер приказа по добровольному возмещению
-  voluntary_compensation_confirmation_date TIMESTAMPTZ(6), -- Дата получения извещения о добровольном возмещение
-  cort_order_date                          TIMESTAMPTZ(6), -- Возмещение через суд, Дата приказа
-  cort_order_number                        VARCHAR(50), -- Возмещение через суд, Номер приказа
-  archive                                  BOOLEAN                 DEFAULT FALSE, -- Пометка о том, что запись находится в архиве
-  issue_year                               INTEGER        NOT NULL DEFAULT 2016-- Год выпуска
+  compensation_type                        VARCHAR NOT NULL DEFAULT 'NONE', -- Тип возмещения
+  compensation_order_date                  TIMESTAMPTZ(6), -- Дата приказа по добровольному возмещению
+  compensation_order_number                VARCHAR(50), -- Номер приказа по добровольному возмещению
+  voluntary_compensation_confirmation_date TIMESTAMPTZ(6), -- Дата получения извещения о добровольном возмещении
+  archive                                  BOOLEAN          DEFAULT FALSE -- Пометка о том, что запись находится в архиве
 );
 
 CREATE UNIQUE INDEX allocation_uuid_idx
   ON cld.allocation USING BTREE (uuid);
-
-CREATE UNIQUE INDEX allocation_issue_year_idx
-  ON cld.allocation USING BTREE (issue_year);
 
 -- ----------------------------
 -- TABLE preferences
@@ -161,7 +160,7 @@ CREATE TABLE cld.preferences (
   archive_enabled            BOOLEAN        NOT NULL DEFAULT TRUE, -- Включен/Выключен архив
   archive_term               INT            NOT NULL DEFAULT 30, -- Архивный период записей по отработки. После этого числа дней запись будет перемещена в архив
   confirmation_notice_term   INT            NOT NULL DEFAULT 3, -- За какое количество дней будет выдано уведомление о том, что у конкретного человека истекает подтверждение об отработке
-  allocation_end_notice_term INT            NOT NULL DEFAULT 1 -- За какое количество дней до окончания срока отработки будет выданно данное сообщение
+  allocation_end_notice_term INT            NOT NULL DEFAULT 1 -- За какое количество дней до окончания срока отработки будет выдано данное сообщение
 );
 
 CREATE UNIQUE INDEX preferences_uuid_idx
@@ -185,6 +184,12 @@ CREATE UNIQUE INDEX notifications_log_uuid_idx
   ON cld.notifications_log USING BTREE (uuid);
 
 -- ----------------------------
+-- Foreign Key structure for table cld.students
+-- ----------------------------
+ALTER TABLE cld.students
+  ADD FOREIGN KEY (group_id) REFERENCES cld.groups;
+
+-- ----------------------------
 -- Foreign Key structure for table cld.groups
 -- ----------------------------
 ALTER TABLE cld.groups
@@ -193,8 +198,6 @@ ALTER TABLE cld.groups
 -- ----------------------------
 -- Foreign Key structure for table cld.allocation
 -- ----------------------------
-ALTER TABLE cld.allocation
-  ADD FOREIGN KEY (group_id) REFERENCES cld.groups;
 
 ALTER TABLE cld.allocation
   ADD FOREIGN KEY (organisation_id) REFERENCES cld.organisations;

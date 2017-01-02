@@ -19,15 +19,13 @@ import static core.commons.Utils.convertLocalDateTimeToDate;
 @Component
 public class AllocationDTOToEntityConverter implements Converter<IAllocationDTO, AllocationEntity> {
 
-    private final GroupsDTOToEntityConverter groupsDTOToEntityConverter;
     private final OrganisationsDTOToEntityConverter organisationsDTOToEntityConverter;
     private final StudentsDTOToEntityConverter studentsDTOToEntityConverter;
     private final OrdersDTOToEntityConverter ordersDTOToEntityConverter;
 
     @Autowired
-    public AllocationDTOToEntityConverter(GroupsDTOToEntityConverter groupsDTOToEntityConverter, OrganisationsDTOToEntityConverter organisationsDTOToEntityConverter,
+    public AllocationDTOToEntityConverter(OrganisationsDTOToEntityConverter organisationsDTOToEntityConverter,
                                           StudentsDTOToEntityConverter studentsDTOToEntityConverter, OrdersDTOToEntityConverter ordersDTOToEntityConverter) {
-        this.groupsDTOToEntityConverter = groupsDTOToEntityConverter;
         this.organisationsDTOToEntityConverter = organisationsDTOToEntityConverter;
         this.studentsDTOToEntityConverter = studentsDTOToEntityConverter;
         this.ordersDTOToEntityConverter = ordersDTOToEntityConverter;
@@ -47,23 +45,16 @@ public class AllocationDTOToEntityConverter implements Converter<IAllocationDTO,
 
         target.setArmy(source.isArmy());
         target.setFreeAllocation(source.isFreeAllocation());
-        target.setVoluntaryCompensation(source.isVoluntaryCompensation());
         target.setArchive(source.isArchive());
 
-        target.setStage(source.getStage());
-        target.setCortOrderNumber(source.getCortOrderNumber());
-        target.setVoluntaryCompensationOrderNumber(source.getVoluntaryCompensationOrderNumber());
+        target.setCompensationOrderNumber(source.getCompensationOrderNumber());
         target.setFreeAllocationReason(source.getFreeAllocationReason());
 
-        target.setVoluntaryCompensationOrderDate(convertLocalDateTimeToDate(source.getVoluntaryCompensationOrderDate()));
+        target.setCompensationOrderDate(convertLocalDateTimeToDate(source.getCompensationOrderDate()));
         target.setVoluntaryCompensationConfirmationDate(convertLocalDateTimeToDate(source.getVoluntaryCompensationConfirmationDate()));
-        target.setCortOrderDate(convertLocalDateTimeToDate(source.getCortOrderDate()));
 
         target.setConfirmations(source.getConfirmations());
 
-        target.setIssueYear(source.getIssueYear());
-
-        target.setGroup(groupsDTOToEntityConverter.convert(source.getGroup()));
         target.setOrganisation(organisationsDTOToEntityConverter.convert(source.getOrganisation()));
         target.setStudent(studentsDTOToEntityConverter.convert(source.getStudent()));
         target.setOrder(ordersDTOToEntityConverter.convert(source.getOrder()));

@@ -40,6 +40,7 @@ public class Utils {
     public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
     public static final DateTimeFormatter CALENDAR_DATE_PICKER_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public static final DateTimeFormatter ALLOCATION_TABLE_FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+    public static final DateTimeFormatter ISSUE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy");
     private static final Logger logger = LoggerFactory.getLogger(Utils.class);
 
     /**

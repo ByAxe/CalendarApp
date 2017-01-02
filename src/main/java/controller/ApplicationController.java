@@ -8,7 +8,6 @@ package controller;
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
 import core.dto.AllocationDTOImpl;
-import core.dto.OrdersDTOImpl;
 import core.dto.api.*;
 import core.enums.CompensationType;
 import core.enums.Stage;
@@ -38,10 +37,8 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static core.commons.Utils.*;
@@ -521,11 +518,11 @@ public class ApplicationController implements Initializable {
     /**
      * Загружает записи в таблицу Распределение
      */
-    private void allocationTableLoadContent(Stage stage, Boolean archive, Integer issueYear) {
+    private void allocationTableLoadContent(Stage stage, Boolean archive, Integer issueYear, Integer issueMonth) {
         allocationTableModifyColumns(stage, issueYear);
 
         ObservableList<IAllocationTableDTO> content = FXCollections.observableArrayList();
-        content.addAll(allocationService.find(stage, archive, issueYear));
+        content.addAll(allocationService.find(stage, archive, issueYear, issueMonth));
 
         allocationTable.setItems(content);
 
@@ -536,7 +533,9 @@ public class ApplicationController implements Initializable {
      * Загружает данные по умолчанию в таблицу Распределение
      */
     private void allocationTableLoadContentDefault() {
-        allocationTableLoadContent(Stage.FIRST, false, LocalDateTime.now().getYear());
+        LocalDateTime now = LocalDateTime.now();
+
+        allocationTableLoadContent(Stage.FIRST, false, now.getYear(), now.getMonthValue());
     }
 
     /**
@@ -602,15 +601,27 @@ public class ApplicationController implements Initializable {
     @FXML
     private void allocationTableFilterApply(ActionEvent actionEvent) {
         try {
-            boolean archive = allocationArchiveFlag.isSelected();
+            final boolean archive = allocationArchiveFlag.isSelected();
+            final LocalDateTime now = LocalDateTime.now();
 
-            int issueYear = allocationTableIssueYear.validate()
-                    ? Integer.valueOf(allocationTableIssueYear.getText())
-                    : LocalDateTime.now().getYear();
+            final int issueYear;
+            final int issueMonth;
+
+            if (allocationTableIssueYear.validate()) {
+                issueYear = Integer.valueOf(allocationTableIssueYear.getText());
+            } else {
+                issueYear = now.getYear();
+            }
+
+            if (allocationTableIssueMonth.validate()) {
+                issueMonth = Integer.valueOf(allocationTableIssueMonth.getText());
+            } else {
+                issueMonth = now.getMonthValue();
+            }
 
             Stream.of(Stage.values()).forEach(s -> {
                 if (s.getTitle().equals(String.valueOf(allocationTableStageComboBox.getValue()))) {
-                    allocationTableLoadContent(s, archive, issueYear);
+                    allocationTableLoadContent(s, archive, issueYear, issueMonth);
                 }
             });
 
@@ -843,8 +854,8 @@ public class ApplicationController implements Initializable {
             allocationCompensationType.getItems()
                     .setAll(Stream.of(values()).map(CompensationType::getType).collect(toList()));
 
-            IGroupsDTO group = allocation.getGroup();
             IStudentsDTO student = allocation.getStudent();
+            IGroupsDTO group = student.getGroup();
             IOrganisationsDTO organisation = allocation.getOrganisation();
             IOrdersDTO order = allocation.getOrder();
 
@@ -871,7 +882,8 @@ public class ApplicationController implements Initializable {
             allocationOrderProfession.setText(order.getProfession());
             allocationOrderRank.setText(String.valueOf(order.getRank()));
             allocationOrderPayload.setText(order.getPayload());
-            allocationIssueYear.setText(String.valueOf(allocation.getIssueYear()));
+            allocationIssueYear.setText(String.valueOf(group.getIssueYear()));
+            allocationIssueMonth.setText(String.valueOf(group.getIssueMonth()));
 
             String[] c = allocation.getConfirmations();
 
@@ -881,7 +893,7 @@ public class ApplicationController implements Initializable {
             allocationConfirmation_4.setSelected(c[3] != null);
             allocationConfirmation_5.setSelected(c[4] != null);
 
-            if (allocation.getStage() == Stage.SECOND) {
+            if (group.getStage() == Stage.SECOND) {
                 allocationConfirmation_6.setSelected(c[5] != null);
                 allocationConfirmation_7.setSelected(c[6] != null);
                 allocationConfirmation_8.setSelected(c[7] != null);
@@ -889,20 +901,19 @@ public class ApplicationController implements Initializable {
                 allocationConfirmation_10.setSelected(c[9] != null);
             }
 
-            if (allocation.getVoluntaryCompensationOrderDate() != null) {
-                allocationCompensationType.setValue(VOLUNTARY.getType());
-                allocationCompensationNumber.setText(allocation.getVoluntaryCompensationOrderNumber());
-                allocationCompensationDate.setLocalDate(LocalDate.from(allocation.getVoluntaryCompensationOrderDate()));
-                allocationCompensationConfirmationDate.setLocalDate(LocalDate.from(allocation.getVoluntaryCompensationConfirmationDate()));
-            } else if (allocation.getCortOrderDate() != null) {
-                allocationCompensationType.setValue(CORT.getType());
-                allocationCompensationNumber.setText(allocation.getCortOrderNumber());
-                allocationCompensationDate.setLocalDate(LocalDate.from(allocation.getCortOrderDate()));
-            } else {
-                allocationCompensationType.setValue(NONE.getType());
+            CompensationType compensationType = allocation.getCompensationType();
+
+            if (compensationType != NONE) {
+                allocationCompensationType.setValue(compensationType.getType());
+                allocationCompensationNumber.setText(allocation.getCompensationOrderNumber());
+                allocationCompensationDate.setLocalDate(LocalDate.from(allocation.getCompensationOrderDate()));
+
+                if (compensationType == VOLUNTARY) {
+                    allocationCompensationConfirmationDate.setLocalDate(LocalDate.from(allocation.getVoluntaryCompensationConfirmationDate()));
+                }
             }
 
-            allocationStage.setValue(allocation.getStage().getAcronym());
+            allocationStage.setValue(group.getStage().getAcronym());
         }
     }
 
@@ -913,20 +924,19 @@ public class ApplicationController implements Initializable {
 
         IStudentsDTO student = studentsService.findOne(getIdFromComboBox(String.valueOf(allocationStudentsList.getValue())));
         IOrganisationsDTO organisation = organisationsService.findOne(getIdFromComboBox(String.valueOf(allocationOrganisationsList.getValue())));
-        IGroupsDTO group = groupsService.findOne(getIdFromComboBox(String.valueOf(allocationGroupsList.getValue())));
+        IOrdersDTO order = groupsService.findOne(getIdFromComboBox(String.valueOf(allocationOrdersList.getValue())));
 
-        IOrdersDTO order = new OrdersDTOImpl();
-        order.setUuid(UUID.randomUUID());
-        order.setDtUpdate(new Date());
-        order.setNumber(allocationOrderNumber.getText());
-        order.setStarts(convertLocalDateToLocalDateTime(allocationOrderDate.getLocalDate()));
-        order.setProfession(allocationOrderProfession.getText());
-        order.setRank(allocationOrderRank.validate() ? Integer.valueOf(allocationOrderRank.getText()) : null);
-        order.setPayload(allocationOrderPayload.getText());
+//        IOrdersDTO order = new OrdersDTOImpl();
+//        order.setUuid(UUID.randomUUID());
+//        order.setDtUpdate(new Date());
+//        order.setNumber(allocationOrderNumber.getText());
+//        order.setStarts(convertLocalDateToLocalDateTime(allocationOrderDate.getLocalDate()));
+//        order.setProfession(allocationOrderProfession.getText());
+//        order.setRank(allocationOrderRank.validate() ? Integer.valueOf(allocationOrderRank.getText()) : null);
+//        order.setPayload(allocationOrderPayload.getText());
 
         row.setStudent(student);
         row.setOrganisation(organisation);
-        row.setGroup(group);
         row.setOrder(order);
 
         row.setId(Long.valueOf(allocationId.getText()));
@@ -941,12 +951,6 @@ public class ApplicationController implements Initializable {
         row.setFreeAllocation(allocationFreeAllocation.isSelected());
         row.setFreeAllocationReason(allocationFreeAllocation.isSelected() ? allocationFreeAllocationReason.getText() : null);
 
-        row.setIssueYear(allocationIssueYear.validate() ? Integer.valueOf(allocationIssueYear.getText()) : null);
-
-        Stream.of(Stage.values()).forEach(e -> {
-            if (e.getAcronym().equals(allocationStage.getValue())) row.setStage(e);
-        });
-
         final String[] confirmations = new String[10];
 
         confirmations[0] = allocationConfirmation_1.isSelected() ? CONFIRMED : null;
@@ -955,24 +959,21 @@ public class ApplicationController implements Initializable {
         confirmations[3] = allocationConfirmation_4.isSelected() ? CONFIRMED : null;
         confirmations[4] = allocationConfirmation_5.isSelected() ? CONFIRMED : null;
 
-        if (row.getStage() == Stage.SECOND) {
+        if (student.getGroup().getStage() == Stage.SECOND) {
             confirmations[5] = allocationConfirmation_6.isSelected() ? CONFIRMED : null;
             confirmations[6] = allocationConfirmation_7.isSelected() ? CONFIRMED : null;
             confirmations[7] = allocationConfirmation_8.isSelected() ? CONFIRMED : null;
             confirmations[8] = allocationConfirmation_9.isSelected() ? CONFIRMED : null;
             confirmations[9] = allocationConfirmation_10.isSelected() ? CONFIRMED : null;
         }
-
         row.setConfirmations(confirmations);
 
-        if (VOLUNTARY.getType().equals(allocationCompensationType.getValue())) {
-            row.setVoluntaryCompensation(true);
-            row.setVoluntaryCompensationOrderNumber(allocationCompensationNumber.getText());
-            row.setVoluntaryCompensationOrderDate(convertLocalDateToLocalDateTime(allocationCompensationDate.getLocalDate()));
-        } else if (CORT.getType().equals(allocationCompensationType.getValue())) {
-            row.setCortOrderNumber(allocationCompensationNumber.getText());
-            row.setCortOrderDate(convertLocalDateToLocalDateTime(allocationCompensationDate.getLocalDate()));
-        }
+        Stream.of(CompensationType.values()).forEach(c -> {
+            if (c.getType().equals(allocationCompensationType.getValue())) row.setCompensationType(c);
+        });
+        row.setCompensationOrderNumber(allocationCompensationNumber.getText());
+        row.setCompensationOrderDate(convertLocalDateToLocalDateTime(allocationCompensationDate.getLocalDate()));
+        row.setVoluntaryCompensationConfirmationDate(convertLocalDateToLocalDateTime(allocationCompensationConfirmationDate.getLocalDate()));
 
         allocationService.save(row);
 

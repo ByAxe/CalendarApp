@@ -5,6 +5,7 @@
 
 package model.entity;
 
+import core.enums.Stage;
 import model.api.APersistentEntity;
 
 import javax.persistence.*;
@@ -34,6 +35,11 @@ public class GroupsEntity extends APersistentEntity {
     private String description;
     private String number;
     private Integer hours;
+
+    private Integer issueYear;
+    private Integer issueMonth;
+    private Stage stage;
+
     private RulersEntity ruler;
 
     @Id
@@ -99,6 +105,34 @@ public class GroupsEntity extends APersistentEntity {
 
     public void setHours(Integer hours) {
         this.hours = hours;
+    }
+
+    @Column(name = "issue_year", nullable = false)
+    public Integer getIssueYear() {
+        return issueYear;
+    }
+
+    public void setIssueYear(Integer issueYear) {
+        this.issueYear = issueYear;
+    }
+
+    @Column(name = "issue_month", nullable = false)
+    public Integer getIssueMonth() {
+        return issueMonth;
+    }
+
+    public void setIssueMonth(Integer issueMonth) {
+        this.issueMonth = issueMonth;
+    }
+
+    @Column(name = "stage", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @ManyToOne

@@ -33,6 +33,7 @@ public class StudentsEntity extends APersistentEntity {
     private String lastName;
     private String telephone;
     private String address;
+    private GroupsEntity group;
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "students_id_seq")
@@ -88,5 +89,14 @@ public class StudentsEntity extends APersistentEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @ManyToOne
+    public GroupsEntity getGroup() {
+        return group;
+    }
+
+    public void setGroup(GroupsEntity group) {
+        this.group = group;
     }
 }

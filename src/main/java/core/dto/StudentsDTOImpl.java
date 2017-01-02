@@ -7,6 +7,7 @@ package core.dto;
 
 import core.api.AEssence;
 import core.api.IEssence;
+import core.dto.api.IGroupsDTO;
 import core.dto.api.IStudentsDTO;
 
 import java.util.stream.Stream;
@@ -23,6 +24,7 @@ public class StudentsDTOImpl extends AEssence implements IStudentsDTO {
     private String lastName;
     private String telephone;
     private String address;
+    private IGroupsDTO group;
 
     public StudentsDTOImpl() {
     }
@@ -107,5 +109,13 @@ public class StudentsDTOImpl extends AEssence implements IStudentsDTO {
     @Override
     public String getCredentials() {
         return Stream.of(firstName, middleName, lastName).collect(joining(" "));
+    }
+
+    public IGroupsDTO getGroup() {
+        return group;
+    }
+
+    public void setGroup(IGroupsDTO group) {
+        this.group = group;
     }
 }

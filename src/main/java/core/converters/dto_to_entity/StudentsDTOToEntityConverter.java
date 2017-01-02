@@ -7,6 +7,7 @@ package core.converters.dto_to_entity;
 
 import core.dto.api.IStudentsDTO;
 import model.entity.StudentsEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class StudentsDTOToEntityConverter implements Converter<IStudentsDTO, StudentsEntity> {
+
+    @Autowired
+    private GroupsDTOToEntityConverter groupsConverter;
 
     @Override
     public StudentsEntity convert(IStudentsDTO source) {
@@ -31,6 +35,8 @@ public class StudentsDTOToEntityConverter implements Converter<IStudentsDTO, Stu
         target.setLastName(source.getLastName());
         target.setAddress(source.getAddress());
         target.setTelephone(source.getTelephone());
+
+        target.setGroup(groupsConverter.convert(source.getGroup()));
 
         return target;
     }

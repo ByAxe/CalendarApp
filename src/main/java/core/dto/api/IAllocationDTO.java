@@ -6,7 +6,7 @@
 package core.dto.api;
 
 import core.api.IEssence;
-import core.enums.Stage;
+import core.enums.CompensationType;
 
 import java.time.LocalDateTime;
 
@@ -27,45 +27,25 @@ public interface IAllocationDTO extends IEssence {
 
     void setFreeAllocation(boolean freeAllocation);
 
-    boolean isVoluntaryCompensation();
-
-    void setVoluntaryCompensation(boolean voluntaryCompensation);
-
     boolean isArchive();
 
     void setArchive(boolean archive);
 
-    Stage getStage();
+    String getCompensationOrderNumber();
 
-    void setStage(Stage stage);
+    void setCompensationOrderNumber(String compensationOrderNumber);
 
-    String getCortOrderNumber();
+    LocalDateTime getCompensationOrderDate();
 
-    void setCortOrderNumber(String cortOrderNumber);
-
-    String getVoluntaryCompensationOrderNumber();
-
-    void setVoluntaryCompensationOrderNumber(String voluntaryCompensationOrderNumber);
-
-    LocalDateTime getVoluntaryCompensationOrderDate();
-
-    void setVoluntaryCompensationOrderDate(LocalDateTime voluntaryCompensationOrderDate);
+    void setCompensationOrderDate(LocalDateTime compensationOrderDate);
 
     LocalDateTime getVoluntaryCompensationConfirmationDate();
 
     void setVoluntaryCompensationConfirmationDate(LocalDateTime voluntaryCompensationConfirmationDate);
 
-    LocalDateTime getCortOrderDate();
-
-    void setCortOrderDate(LocalDateTime cortOrderDate);
-
     String[] getConfirmations();
 
     void setConfirmations(String[] confirmations);
-
-    IGroupsDTO getGroup();
-
-    void setGroup(IGroupsDTO group);
 
     IOrganisationsDTO getOrganisation();
 
@@ -83,7 +63,7 @@ public interface IAllocationDTO extends IEssence {
 
     void setFreeAllocationReason(String freeAllocationReason);
 
-    Integer getIssueYear();
+    CompensationType getCompensationType();
 
-    void setIssueYear(Integer issueYear);
+    void setCompensationType(CompensationType compensationType);
 }
