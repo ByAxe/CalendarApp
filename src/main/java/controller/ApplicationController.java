@@ -159,8 +159,6 @@ public class ApplicationController implements Initializable {
     public JFXButton allocationEditButton;
     public JFXTextField allocationSearchTextField;
     public JFXComboBox allocationStudentsList;
-    public Label allocationGroupLabel;
-    public JFXComboBox allocationGroupsList;
     public JFXCheckBox allocationArchive;
     public Label allocationOrganisationLabel;
     public JFXComboBox allocationOrganisationsList;
@@ -179,14 +177,7 @@ public class ApplicationController implements Initializable {
     public JFXCheckBox allocationConfirmation_8;
     public JFXCheckBox allocationConfirmation_9;
     public JFXCheckBox allocationConfirmation_10;
-    public JFXTextField allocationIssueYear;
-    public Pane allocationOrderPane;
     public Label allocationOrderLabel;
-    public JFXTextField allocationOrderNumber;
-    public LocalDateTextField allocationOrderDate;
-    public JFXTextField allocationOrderProfession;
-    public JFXTextField allocationOrderRank;
-    public JFXTextArea allocationOrderPayload;
     public JFXCheckBox allocationReallocation;
     public Pane allocationCompensationPane;
     public Label allocationCompensationLabel;
@@ -237,12 +228,25 @@ public class ApplicationController implements Initializable {
     public JFXTextField managementOrganisationId;
     public JFXTextField managementGroupHours;
     public JFXButton allocationCleanButton;
-    public Label allocationStageLabel;
-    public JFXComboBox allocationStage;
     public Label allocationCompensationConfirmationDateLabel;
     public Label allocationCompensationDateLabel;
     public JFXTextField allocationReallocationId;
     public JFXTextField allocationId;
+    public JFXComboBox managementStudentGroup;
+    public LocalDateTextField managementGroupIssueDate;
+    public JFXComboBox managementGroupStage;
+    public Label managementGroupIssueDateLabel;
+    public Label managementGroupStageLabel;
+    public Label managementGroupRulerLabel;
+    public JFXTextField managementOrderNumber;
+    public JFXTextField managementOrderStarts;
+    public JFXTextField managementOrderProfession;
+    public JFXListView managementOrdersList;
+    public JFXButton managementOrderCleanButton1;
+    public JFXButton managementOrderSaveButton1;
+    public JFXTextField managementOrderId;
+    public JFXTextArea managementOrderPayload;
+    public JFXComboBox allocationOrdersList;
 
     private ResourceBundle resourceBundle;
     private URL location;
@@ -254,6 +258,7 @@ public class ApplicationController implements Initializable {
     private IStudentsService studentsService;
     private IOrganisationsService organisationsService;
     private IRulersService rulersService;
+    private IOrdersService ordersService;
 
     @Value("${calendar.upcoming.events.label.text}")
     private String upcomingEventsLabelText;
@@ -273,7 +278,7 @@ public class ApplicationController implements Initializable {
     @Autowired
     public ApplicationController(IEventsService eventsService, IGroupsService groupsService, IAllocationService allocationService,
                                  INotificationsLogService notificationsLogService, IStudentsService studentsService,
-                                 IOrganisationsService organisationsService, IRulersService rulersService) {
+                                 IOrganisationsService organisationsService, IRulersService rulersService, IOrdersService ordersService) {
         this.eventsService = eventsService;
         this.groupsService = groupsService;
         this.allocationService = allocationService;
@@ -281,6 +286,7 @@ public class ApplicationController implements Initializable {
         this.studentsService = studentsService;
         this.organisationsService = organisationsService;
         this.rulersService = rulersService;
+        this.ordersService = ordersService;
     }
 
     @Override
@@ -1180,9 +1186,11 @@ public class ApplicationController implements Initializable {
         String specialisation = managementGroupSpecialization.getText();
         String description = managementGroupDescription.getText();
         String hours = managementGroupHours.getText();
+        LocalDate issueDate = managementGroupIssueDate.getLocalDate();
+        String stage = String.valueOf(managementGroupStage.getValue());
         String ruler = String.valueOf(managementGroupRulers.getSelectionModel().getSelectedItem());
 
-        groupsService.save(id, title, qualification, number, specialisation, description, hours, ruler);
+        groupsService.save(id, title, qualification, number, specialisation, description, hours, issueDate, stage, ruler);
 
         managementGroupCleanForm();
 
@@ -1274,14 +1282,20 @@ public class ApplicationController implements Initializable {
         ofNullable(((List<IStudentsDTO>) studentsService.findAll()))
                 .ifPresent(l -> l.forEach(e -> aSL.add(e.toPrettyString())));
 
-        ObservableList aGL = allocationGroupsList.getItems();
+        ObservableList aGL = allocationOrdersList.getItems();
         aGL.clear();
-        ofNullable(((List<IGroupsDTO>) groupsService.findAll()))
+        ofNullable(((List<IOrdersDTO>) ordersService.findAll()))
                 .ifPresent(l -> l.forEach(e -> aGL.add(e.toPrettyString())));
 
         ObservableList aOL = allocationOrganisationsList.getItems();
         aOL.clear();
         ofNullable(((List<IOrganisationsDTO>) organisationsService.findAll()))
                 .ifPresent(l -> l.forEach(e -> aOL.add(e.toPrettyString())));
+    }
+
+    public void managementOrderCleanButtonClick(ActionEvent actionEvent) {
+    }
+
+    public void managementOrderSaveButtonClick(ActionEvent actionEvent) {
     }
 }

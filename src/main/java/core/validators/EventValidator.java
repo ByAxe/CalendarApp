@@ -21,7 +21,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
  * Created by A.Litvinau on 12/10/2016.
  */
 @Component
-public class CalendarValidator implements IValidator<Result, IEventsDTO> {
+public class EventValidator implements IValidator<Result, IEventsDTO> {
 
     @Value("${minimal.event.longing.minutes}")
     private int MINIMAL_EVENT_LONGING_MINUTES;
