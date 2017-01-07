@@ -10,7 +10,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<?import jfxtras.scene.control.agenda.icalendar.ICalendarAgenda?>
 <?import jfxtras.scene.control.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 			minWidth="-Infinity"
@@ -140,39 +139,39 @@
 				</SplitPane>
 			</AnchorPane>
 		</Tab>
-		<Tab fx:id="scheduleTab" text="Расписание">
-			<AnchorPane prefHeight="200.0" prefWidth="200.0">
-				<children>
-					<SplitPane id="scheduleSplitPane" fx:id="scheduleSplitPane" dividerPositions="0.25" layoutX="109.0"
-							   layoutY="98.0" prefHeight="677.0" prefWidth="1100.0" style="-fx-background-color: white;"
-							   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-							   AnchorPane.topAnchor="0.0">
-						<items>
-							<AnchorPane id="scheduleLeftPane" fx:id="scheduleLeftPane" minHeight="0.0" minWidth="0.0"
-										prefHeight="160.0" prefWidth="100.0">
-								<children>
-									<Label id="scheduleGroupsLabel" fx:id="scheduleGroupsLabel" layoutX="112.0"
-										   layoutY="25.0" text="Группы"/>
-									<JFXListView id="scheduleGroupsList" fx:id="scheduleGroupsList" layoutX="-2.0"
-												 layoutY="61.0" prefHeight="614.0" prefWidth="275.0"
-												 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0"
-												 AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="61.0"/>
-								</children>
-							</AnchorPane>
-							<AnchorPane id="scheduleRightPane" fx:id="scheduleRightPane" minHeight="0.0" minWidth="0.0"
-										prefHeight="160.0" prefWidth="100.0">
-								<children>
-									<ICalendarAgenda id="scheduleAgenda" fx:id="scheduleAgenda" layoutX="-119.0"
-													 layoutY="-86.0" prefHeight="675.0" prefWidth="819.0"
-													 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-													 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-								</children>
-							</AnchorPane>
-						</items>
-					</SplitPane>
-				</children>
-			</AnchorPane>
-		</Tab>
+		<!--<Tab fx:id="scheduleTab" text="Расписание">-->
+		<!--<AnchorPane prefHeight="200.0" prefWidth="200.0">-->
+		<!--<children>-->
+		<!--<SplitPane id="scheduleSplitPane" fx:id="scheduleSplitPane" dividerPositions="0.25" layoutX="109.0"-->
+		<!--layoutY="98.0" prefHeight="677.0" prefWidth="1100.0" style="-fx-background-color: white;"-->
+		<!--AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"-->
+		<!--AnchorPane.topAnchor="0.0">-->
+		<!--<items>-->
+		<!--<AnchorPane id="scheduleLeftPane" fx:id="scheduleLeftPane" minHeight="0.0" minWidth="0.0"-->
+		<!--prefHeight="160.0" prefWidth="100.0">-->
+		<!--<children>-->
+		<!--<Label id="scheduleGroupsLabel" fx:id="scheduleGroupsLabel" layoutX="112.0"-->
+		<!--layoutY="25.0" text="Группы"/>-->
+		<!--<JFXListView id="scheduleGroupsList" fx:id="scheduleGroupsList" layoutX="-2.0"-->
+		<!--layoutY="61.0" prefHeight="614.0" prefWidth="275.0"-->
+		<!--AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0"-->
+		<!--AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="61.0"/>-->
+		<!--</children>-->
+		<!--</AnchorPane>-->
+		<!--<AnchorPane id="scheduleRightPane" fx:id="scheduleRightPane" minHeight="0.0" minWidth="0.0"-->
+		<!--prefHeight="160.0" prefWidth="100.0">-->
+		<!--<children>-->
+		<!--<ICalendarAgenda id="scheduleAgenda" fx:id="scheduleAgenda" layoutX="-119.0"-->
+		<!--layoutY="-86.0" prefHeight="675.0" prefWidth="819.0"-->
+		<!--AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"-->
+		<!--AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>-->
+		<!--</children>-->
+		<!--</AnchorPane>-->
+		<!--</items>-->
+		<!--</SplitPane>-->
+		<!--</children>-->
+		<!--</AnchorPane>-->
+		<!--</Tab>-->
 		<Tab fx:id="allocationTab" text="Распределение">
 			<content>
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

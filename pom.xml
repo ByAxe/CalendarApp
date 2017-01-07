@@ -59,6 +59,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>AsposeJavaAPI</id>
+			<name>Aspose Java API</name>
+			<url>http://maven.aspose.com/artifactory/simple/ext-release-local/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -330,7 +335,6 @@
 			<artifactId>poi</artifactId>
 			<version>${apache-poi-version}</version>
 		</dependency>
-
 		<!--********************************************************************-->
 		<!--end::MISCELLANEOUS DEPENDENCIES-->
 		<!--********************************************************************-->

@@ -555,3 +555,7 @@ Caused by: java.lang.NullPointerException
 	at org.springframework.core.convert.support.GenericConversionService$ConverterAdapter.convert(GenericConversionService.java:373)
 	at org.springframework.core.convert.support.ConversionUtils.invokeConverter(ConversionUtils.java:37)
 	... 89 more
+2017-01-02 14:17:20,948 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23503
+2017-01-02 14:17:20,948 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: update or delete on table "organisations" violates foreign key constraint "allocation_organisation_id_fkey" on table "allocation"
+  Подробности: Key (id)=(2) is still referenced from table "allocation".
+2017-01-02 14:17:20,950 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]

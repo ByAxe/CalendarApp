@@ -146,7 +146,7 @@ CREATE TABLE cld.allocation (
 CREATE UNIQUE INDEX allocation_uuid_idx
   ON cld.allocation USING BTREE (uuid);
 
-CREATE UNIQUE INDEX allocation_issue_year_idx
+CREATE INDEX allocation_issue_year_idx
   ON cld.allocation USING BTREE (issue_year);
 
 -- ----------------------------
