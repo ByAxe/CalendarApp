@@ -11,10 +11,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import jfxtras.scene.control.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-			minWidth="-Infinity"
-			prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
-			xmlns="http://javafx.com/javafx/8.0.60" fx:controller="controller.ApplicationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0"
+			prefWidth="1100.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.60"
+			xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ApplicationController">
 	<MenuBar id="menu-bar" layoutX="1.0" layoutY="2.0" prefHeight="28.0" prefWidth="1100.0"
 			 AnchorPane.bottomAnchor="707.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 			 AnchorPane.topAnchor="0.0">
@@ -310,12 +309,12 @@
 		<Tab fx:id="allocationTableTab" text="Распределение (таблица)">
 			<AnchorPane prefHeight="200.0" prefWidth="200.0">
 				<children>
-					<Label id="allocationTableStageLabel" fx:id="allocationTableStageLabel" layoutX="292.0"
+					<Label id="allocationTableStageLabel" fx:id="allocationTableStageLabel" layoutX="366.0"
 						   layoutY="22.0" text="Ступень:"/>
-					<JFXComboBox id="allocationTableStageComboBox" fx:id="allocationTableStageComboBox" layoutX="378.0"
+					<JFXComboBox id="allocationTableStageComboBox" fx:id="allocationTableStageComboBox" layoutX="448.0"
 								 layoutY="18.0" prefHeight="27.0" prefWidth="170.0"/>
 					<JFXCheckBox id="allocationArchiveFlag" fx:id="allocationArchiveFlag" checkedColor="#6ac1d7"
-								 layoutX="587.0" layoutY="22.0" text="Архив"/>
+								 layoutX="657.0" layoutY="22.0" text="Архив"/>
 					<ButtonBar layoutX="680.0" layoutY="10.0" prefHeight="40.0" prefWidth="406.0">
 						<buttons>
 							<JFXButton id="allocationTableFilterApplyButton" fx:id="allocationTableFilterApplyButton"
@@ -328,7 +327,8 @@
 						</buttons>
 					</ButtonBar>
 					<JFXTextField id="allocationTableIssueYear" fx:id="allocationTableIssueYear" focusColor="#82c9e1"
-								  labelFloat="true" layoutX="78.0" layoutY="17.0" promptText="Год выпуска"/>
+								  labelFloat="true" layoutX="78.0" layoutY="17.0" maxWidth="114.0" minWidth="114.0"
+								  prefHeight="31.0" prefWidth="114.0" promptText="Год выпуска"/>
 					<AnchorPane id="allocationTableBottomPane" fx:id="allocationTableBottomPane" layoutY="55.0"
 								minHeight="0.0" minWidth="0.0" prefHeight="622.0" prefWidth="1100.0"
 								AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -462,6 +462,8 @@
 					</AnchorPane>
 					<Label id="allocationTableTitle" fx:id="allocationTableTitle" layoutX="14.0" layoutY="24.0"
 						   text="Фильтр:"/>
+					<JFXComboBox fx:id="allocationTableIssueMonth" layoutX="199.0" layoutY="18.0" prefHeight="25.0"
+								 prefWidth="141.0"/>
 				</children>
 			</AnchorPane>
 		</Tab>

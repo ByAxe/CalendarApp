@@ -247,6 +247,7 @@ public class ApplicationController implements Initializable {
     public JFXTextField managementOrderId;
     public JFXTextArea managementOrderPayload;
     public JFXComboBox allocationOrdersList;
+    public JFXComboBox allocationTableIssueMonth;
 
     private ResourceBundle resourceBundle;
     private URL location;
