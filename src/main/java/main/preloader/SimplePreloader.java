@@ -3,7 +3,7 @@
  *  Licensed under the Apache License, Version 2.0
  */
 
-package main;
+package main.preloader;
 
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.animation.FadeTransition;
@@ -14,12 +14,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import static com.sun.javafx.font.PrismFontFactory.isEmbedded;
-import static javafx.application.Preloader.StateChangeNotification.Type.*;
+import static javafx.application.Preloader.StateChangeNotification.Type.BEFORE_START;
 
 /**
  * Created by A.Litvinau on 1/8/2017.
  */
-public class FirstPreloader extends Preloader {
+public class SimplePreloader extends Preloader {
     JFXProgressBar bar;
     Stage stage;
 
