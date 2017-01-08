@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
@@ -21,6 +23,8 @@ public class Main extends Application {
 
     private AbstractApplicationContext applicationContext;
 
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     private Parent rootNode;
 
     public static void main(String[] args) {
@@ -29,29 +33,37 @@ public class Main extends Application {
 
     @Override
     public void init() throws Exception {
-        applicationContext = new GenericXmlApplicationContext("application-context.xml");
+        try {
+            applicationContext = new GenericXmlApplicationContext("application-context.xml");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/main.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
 
-        fxmlLoader.setControllerFactory(applicationContext::getBean);
+            fxmlLoader.setControllerFactory(applicationContext::getBean);
 
-        rootNode = fxmlLoader.load();
+            rootNode = fxmlLoader.load();
+        } catch (Exception e) {
+            logger.error("Init method failed!", e);
+        }
     }
 
     public void start(Stage stage) throws Exception {
-        Scene scene = new Scene(rootNode);
-        scene.getStylesheets().add("css/main.css");
-        scene.getStylesheets().add("css/calendar.css");
+        try {
+            Scene scene = new Scene(rootNode);
+            scene.getStylesheets().add("css/main.css");
+            scene.getStylesheets().add("css/calendar.css");
 
-        Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Regular.ttf"), 14);
-        Font.loadFont(getClass().getResourceAsStream("/fonts/OpenSans-light.ttf"), 14);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Regular.ttf"), 14);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/OpenSans-light.ttf"), 14);
 
-        stage.setScene(scene);
+            stage.setScene(scene);
 
-        stage.setResizable(false);
-        stage.setMaximized(false);
+            stage.setResizable(false);
+//            stage.setMaximized(false);
 
-        stage.show();
+            stage.show();
+        } catch (Exception e) {
+            logger.error("start method failed!", e);
+        }
     }
 
     @Override
