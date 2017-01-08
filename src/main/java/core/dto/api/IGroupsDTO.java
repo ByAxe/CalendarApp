@@ -7,6 +7,7 @@ package core.dto.api;
 
 import core.api.IEssence;
 import core.api.IVisible;
+import core.enums.Stage;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -36,6 +37,18 @@ public interface IGroupsDTO extends IEssence, IVisible {
     Integer getHours();
 
     void setHours(Integer hours);
+
+    Integer getIssueYear();
+
+    void setIssueYear(Integer issueYear);
+
+    Integer getIssueMonth();
+
+    void setIssueMonth(Integer issueMonth);
+
+    Stage getStage();
+
+    void setStage(Stage stage);
 
     IRulersDTO getRuler();
 

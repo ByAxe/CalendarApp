@@ -35,5 +35,9 @@ public interface IStudentsDTO extends IEssence, IVisible {
 
     String getCredentials();
 
+    IGroupsDTO getGroup();
+
+    void setGroup(IGroupsDTO group);
+
     String toPrettyString();
 }

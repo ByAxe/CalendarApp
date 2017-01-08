@@ -5,7 +5,6 @@
 
 package repository;
 
-import core.enums.Stage;
 import model.entity.AllocationEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -24,6 +23,17 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
 
     List<AllocationEntity> findByArchiveFalse();
 
-    @Query(value = "SELECT a FROM AllocationEntity a WHERE a.stage = :stage AND a.archive = :archive AND a.issueYear = :issueYear ORDER BY a.id")
-    List<AllocationEntity> find(@Param("stage") Stage stage, @Param("archive") boolean archive, @Param("issueYear") Integer issueYear);
+    @Query(value = "SELECT cld.allocation.*\n" +
+            "FROM cld.allocation\n" +
+            "  JOIN cld.students ON cld.allocation.student_id = cld.students.id\n" +
+            "  JOIN cld.groups ON cld.students.group_id = cld.groups.id\n" +
+            "WHERE cld.groups.stage = :stage\n" +
+            "      AND cld.allocation.archive = :archive\n" +
+            "      AND cld.groups.issue_year = :issueYear\n" +
+            "      AND cld.groups.issue_month = :issueMonth\n" +
+            "ORDER BY cld.allocation.id", nativeQuery = true)
+    List<AllocationEntity> find(@Param("stage") String stage,
+                                @Param("archive") boolean archive,
+                                @Param("issueYear") Integer issueYear,
+                                @Param("issueMonth") Integer issueMonth);
 }

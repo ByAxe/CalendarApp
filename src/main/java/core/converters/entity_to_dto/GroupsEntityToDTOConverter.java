@@ -41,6 +41,11 @@ public class GroupsEntityToDTOConverter implements Converter<GroupsEntity, IGrou
         target.setNumber(source.getNumber());
         target.setDescription(source.getDescription());
         target.setQualification(source.getQualification());
+
+        target.setIssueYear(source.getIssueYear());
+        target.setIssueMonth(source.getIssueMonth());
+        target.setStage(source.getStage());
+
         target.setRuler(rulersEntityToDTOConverter.convert(source.getRuler()));
 
         return target;

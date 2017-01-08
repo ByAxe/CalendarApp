@@ -12,7 +12,5 @@ package core.api;
  * Следовательно, они должны обладать методом для красивого и информативного вывода информации о себе
  */
 public interface IVisible {
-    default String toPrettyString() {
-        return "";
-    }
+    String toPrettyString();
 }

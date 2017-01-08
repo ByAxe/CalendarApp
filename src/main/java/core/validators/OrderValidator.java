@@ -32,7 +32,7 @@ public class OrderValidator implements IValidator<Result, IOrdersDTO> {
             errors.add("Не указан профессия по которой выпускник идет работать в организацию.");
         }
 
-        if (order.getRank() == null) errors.add("Не указано, по какому разряду будет работать выпускник.");
+//        if (order.getRank() == null) errors.add("Не указано, по какому разряду будет работать выпускник.");
 
         return wrapResult(errors);
     }

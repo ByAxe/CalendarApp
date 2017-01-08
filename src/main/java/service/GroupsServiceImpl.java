@@ -12,6 +12,7 @@ import core.commons.Result;
 import core.dto.GroupsDTOImpl;
 import core.dto.api.IGroupsDTO;
 import core.dto.api.IRulersDTO;
+import core.enums.Stage;
 import core.validators.api.IValidator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
@@ -32,7 +33,9 @@ import repository.GroupsRepository;
 import service.api.IGroupsService;
 import service.api.IRulersService;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static core.commons.Utils.getIdFromComboBox;
 import static core.commons.Utils.raiseMessageBox;
@@ -175,16 +178,16 @@ public class GroupsServiceImpl implements IGroupsService {
             if (!isOk) return;
 
             // Получили группу из базы
-            IGroupsDTO group = findByUuid(UUID.fromString(item.getId()));
+            IGroupsDTO dto = findByUuid(UUID.fromString(item.getId()));
 
             // Поместили все данные в поля редактирования
-            id.setText(String.valueOf(group.getId()));
-            title.setText(group.getTitle());
-            qualification.setText(group.getQualification());
-            number.setText(group.getNumber());
-            specialisation.setText(group.getSpecialization());
-            description.setText(group.getDescription());
-            hours.setText(String.valueOf(group.getHours()));
+            id.setText(String.valueOf(dto.getId()));
+            title.setText(dto.getTitle());
+            qualification.setText(dto.getQualification());
+            number.setText(dto.getNumber());
+            specialisation.setText(dto.getSpecialization());
+            description.setText(dto.getDescription());
+            hours.setText(String.valueOf(dto.getHours()));
 
             rulers.getItems().clear();
             Optional.ofNullable(((List<IRulersDTO>) rulersService.findAll()))
@@ -192,7 +195,7 @@ public class GroupsServiceImpl implements IGroupsService {
                         rulers.getItems().add(r.toPrettyString());
                     }));
 
-            rulers.setValue(group.getRuler().toPrettyString());
+            rulers.setValue(dto.getRuler().toPrettyString());
         });
 
         groupsList.setContextMenu(managementGroupsListContextMenu);
@@ -208,8 +211,8 @@ public class GroupsServiceImpl implements IGroupsService {
 
     @Override
     @Transactional
-    public void save(Long id, String title, String qualification, String number,
-                     String specialisation, String description, String hours, String ruler) {
+    public void save(Long id, String title, String qualification, String number, String specialisation, String description,
+                     String hours, LocalDate issueDate, String stage, String ruler) {
         IGroupsDTO group;
 
         // Новичок
@@ -232,10 +235,19 @@ public class GroupsServiceImpl implements IGroupsService {
         group.setNumber(number);
         group.setSpecialization(specialisation);
         group.setDescription(description);
+
+        Optional.ofNullable(issueDate).ifPresent(d -> {
+            group.setIssueYear(d.getYear());
+            group.setIssueMonth(d.getMonthValue());
+        });
+
+        Stream.of(Stage.values()).forEach(s -> {
+            if (s.getAcronym().equals(stage)) group.setStage(s);
+        });
+
         try {
             group.setHours(Integer.valueOf(hours));
         } catch (NumberFormatException e) {
-
             alertType = ERROR;
 
             alertTitle = VALIDATION_ERROR_TITLE;

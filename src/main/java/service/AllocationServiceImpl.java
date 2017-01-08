@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXComboBox;
 import core.commons.Result;
 import core.dto.api.IAllocationDTO;
 import core.dto.api.IAllocationTableDTO;
-import core.dto.api.IOrdersDTO;
 import core.enums.EventType;
 import core.enums.Stage;
 import core.validators.api.IValidator;
@@ -31,7 +30,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.AllocationRepository;
-import service.api.*;
+import service.api.IAllocationService;
+import service.api.IOrdersService;
 import service.quartz.JobInitializer;
 
 import java.io.File;
@@ -57,9 +57,6 @@ public class AllocationServiceImpl implements IAllocationService {
 
     private final AllocationRepository allocationRepository;
     private final ConversionService conversionService;
-    private final IGroupsService groupsService;
-    private final IOrganisationsService organisationsService;
-    private final IStudentsService studentsService;
     private final IOrdersService ordersService;
     private final IValidator<Result, IAllocationDTO> validator;
 
@@ -83,14 +80,9 @@ public class AllocationServiceImpl implements IAllocationService {
 
     @Autowired
     public AllocationServiceImpl(AllocationRepository allocationRepository, ConversionService conversionService,
-                                 IGroupsService groupsService, IOrganisationsService organisationsService,
-                                 IStudentsService studentsService, IOrdersService ordersService,
-                                 IValidator<Result, IAllocationDTO> validator) {
+                                 IOrdersService ordersService, IValidator<Result, IAllocationDTO> validator) {
         this.allocationRepository = allocationRepository;
         this.conversionService = conversionService;
-        this.groupsService = groupsService;
-        this.organisationsService = organisationsService;
-        this.studentsService = studentsService;
         this.ordersService = ordersService;
         this.validator = validator;
     }
@@ -165,8 +157,8 @@ public class AllocationServiceImpl implements IAllocationService {
         String alertBody;
 
         Optional.ofNullable(dto.getParentId()).ifPresent(parentId -> {
-            IAllocationDTO one = findOne(dto.getParentId());
-            if (one == null) {
+            IAllocationDTO parent = findOne(dto.getParentId());
+            if (parent == null) {
                 String body = "Записи по указанному вами в поле \"Идентификатор записи перераспределения\" идентификатору, не найдено.\n\t*Возможно, вы должны для начала создать ее, а затем уже указать как \"Идентификатор записи перераспределения\".";
 
                 raiseMessageBox(ERROR, VALIDATION_ERROR_TITLE, VALIDATION_ERROR_HEADER, body);
@@ -176,10 +168,6 @@ public class AllocationServiceImpl implements IAllocationService {
         Result result = validator.validate(dto);
 
         if (Objects.equals(result.getResult(), SUCCESS)) {
-
-            IOrdersDTO savedOrder = ordersService.save(dto.getOrder());
-
-            dto.setOrder(savedOrder);
 
             AllocationEntity entity = convertDtoToEntity(dto);
 
@@ -259,8 +247,8 @@ public class AllocationServiceImpl implements IAllocationService {
     }
 
     @Override
-    public List<IAllocationTableDTO> find(Stage stage, Boolean archive, Integer issueYear) {
-        List<AllocationEntity> entities = allocationRepository.find(stage, archive, issueYear);
+    public List<IAllocationTableDTO> find(Stage stage, Boolean archive, Integer issueYear, Integer issueMonth) {
+        List<AllocationEntity> entities = allocationRepository.find(stage.name(), archive, issueYear, issueMonth);
 
         return entities.stream()
                 .map(e -> conversionService.convert(e, IAllocationTableDTO.class))

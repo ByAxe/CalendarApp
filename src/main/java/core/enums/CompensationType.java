@@ -7,6 +7,8 @@ package core.enums;
 
 /**
  * Created by byaxe on 25.12.16.
+ *
+ * Тип возмещения выпускника.
  */
 public enum CompensationType {
 

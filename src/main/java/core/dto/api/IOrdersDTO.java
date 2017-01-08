@@ -6,13 +6,14 @@
 package core.dto.api;
 
 import core.api.IEssence;
+import core.api.IVisible;
 
 import java.time.LocalDateTime;
 
 /**
  * Created by byaxe on 18.12.16.
  */
-public interface IOrdersDTO extends IEssence {
+public interface IOrdersDTO extends IEssence, IVisible {
 
     String getProfession();
 

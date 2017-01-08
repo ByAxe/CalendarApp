@@ -11,6 +11,8 @@ import core.dto.api.IOrdersDTO;
 
 import java.time.LocalDateTime;
 
+import static core.commons.Utils.ALLOCATION_TABLE_FORMATTER;
+
 /**
  * Created by byaxe on 18.12.16.
  */
@@ -51,6 +53,10 @@ public class OrdersDTOImpl extends AEssence implements IOrdersDTO {
         this.number = essence.getNumber();
         this.payload = essence.getPayload();
 
+    }
+
+    public String toPrettyString() {
+        return number + ", " + starts.format(ALLOCATION_TABLE_FORMATTER) + " (" + id + ")";
     }
 
     public String getProfession() {

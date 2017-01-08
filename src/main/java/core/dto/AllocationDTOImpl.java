@@ -7,8 +7,11 @@ package core.dto;
 
 import core.api.AEssence;
 import core.api.IEssence;
-import core.dto.api.*;
-import core.enums.Stage;
+import core.dto.api.IAllocationDTO;
+import core.dto.api.IOrdersDTO;
+import core.dto.api.IOrganisationsDTO;
+import core.dto.api.IStudentsDTO;
+import core.enums.CompensationType;
 
 import java.time.LocalDateTime;
 
@@ -20,23 +23,18 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
 
     private boolean army;
     private boolean freeAllocation;
-    private boolean voluntaryCompensation;
     private boolean archive;
 
-    private Stage stage;
-    private String cortOrderNumber;
-    private String voluntaryCompensationOrderNumber;
-    private LocalDateTime voluntaryCompensationOrderDate;
+    private CompensationType compensationType;
+    private String compensationOrderNumber;
+    private LocalDateTime compensationOrderDate;
     private LocalDateTime voluntaryCompensationConfirmationDate;
-    private LocalDateTime cortOrderDate;
     private String[] confirmations;
     private String freeAllocationReason;
 
-    private IGroupsDTO group;
     private IOrganisationsDTO organisation;
     private IStudentsDTO student;
     private IOrdersDTO order;
-    private Integer issueYear;
 
     public AllocationDTOImpl() {
     }
@@ -56,42 +54,32 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
 
         this.army = essence.isArmy();
         this.freeAllocation = essence.isFreeAllocation();
-        this.voluntaryCompensation = essence.isVoluntaryCompensation();
         this.archive = essence.isArchive();
 
-        this.stage = essence.getStage();
-        this.cortOrderNumber = essence.getCortOrderNumber();
-        this.voluntaryCompensationOrderNumber = essence.getVoluntaryCompensationOrderNumber();
-        this.voluntaryCompensationOrderDate = essence.getVoluntaryCompensationOrderDate();
+        this.compensationOrderNumber = essence.getCompensationOrderNumber();
+        this.compensationOrderDate = essence.getCompensationOrderDate();
         this.voluntaryCompensationConfirmationDate = essence.getVoluntaryCompensationConfirmationDate();
-        this.cortOrderDate = essence.getCortOrderDate();
         this.confirmations = essence.getConfirmations();
 
-        this.group = essence.getGroup();
         this.organisation = essence.getOrganisation();
         this.student = essence.getStudent();
         this.order = essence.getOrder();
     }
 
-    public AllocationDTOImpl(Long id, Long parentUuid, boolean army, boolean freeAllocation, boolean voluntaryCompensation,
-                             boolean archive, Stage stage, String cortOrderNumber, String voluntaryCompensationOrderNumber,
-                             LocalDateTime voluntaryCompensationOrderDate, LocalDateTime voluntaryCompensationConfirmationDate,
-                             LocalDateTime cortOrderDate, String[] confirmations, IGroupsDTO group, IOrganisationsDTO organisation,
+    public AllocationDTOImpl(Long id, Long parentUuid, boolean army, boolean freeAllocation,
+                             boolean archive, String compensationOrderNumber,
+                             LocalDateTime compensationOrderDate, LocalDateTime voluntaryCompensationConfirmationDate,
+                             String[] confirmations, IOrganisationsDTO organisation,
                              IStudentsDTO student, IOrdersDTO order) {
         this.id = id;
         this.parentId = parentUuid;
         this.army = army;
         this.freeAllocation = freeAllocation;
-        this.voluntaryCompensation = voluntaryCompensation;
         this.archive = archive;
-        this.stage = stage;
-        this.cortOrderNumber = cortOrderNumber;
-        this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
-        this.voluntaryCompensationOrderDate = voluntaryCompensationOrderDate;
+        this.compensationOrderNumber = compensationOrderNumber;
+        this.compensationOrderDate = compensationOrderDate;
         this.voluntaryCompensationConfirmationDate = voluntaryCompensationConfirmationDate;
-        this.cortOrderDate = cortOrderDate;
         this.confirmations = confirmations;
-        this.group = group;
         this.organisation = organisation;
         this.student = student;
         this.order = order;
@@ -121,14 +109,6 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.freeAllocation = freeAllocation;
     }
 
-    public boolean isVoluntaryCompensation() {
-        return voluntaryCompensation;
-    }
-
-    public void setVoluntaryCompensation(boolean voluntaryCompensation) {
-        this.voluntaryCompensation = voluntaryCompensation;
-    }
-
     @Override
     public boolean isArchive() {
         return archive;
@@ -139,36 +119,20 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.archive = archive;
     }
 
-    public Stage getStage() {
-        return stage;
+    public String getCompensationOrderNumber() {
+        return compensationOrderNumber;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    public void setCompensationOrderNumber(String compensationOrderNumber) {
+        this.compensationOrderNumber = compensationOrderNumber;
     }
 
-    public String getCortOrderNumber() {
-        return cortOrderNumber;
+    public LocalDateTime getCompensationOrderDate() {
+        return compensationOrderDate;
     }
 
-    public void setCortOrderNumber(String cortOrderNumber) {
-        this.cortOrderNumber = cortOrderNumber;
-    }
-
-    public String getVoluntaryCompensationOrderNumber() {
-        return voluntaryCompensationOrderNumber;
-    }
-
-    public void setVoluntaryCompensationOrderNumber(String voluntaryCompensationOrderNumber) {
-        this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
-    }
-
-    public LocalDateTime getVoluntaryCompensationOrderDate() {
-        return voluntaryCompensationOrderDate;
-    }
-
-    public void setVoluntaryCompensationOrderDate(LocalDateTime voluntaryCompensationOrderDate) {
-        this.voluntaryCompensationOrderDate = voluntaryCompensationOrderDate;
+    public void setCompensationOrderDate(LocalDateTime compensationOrderDate) {
+        this.compensationOrderDate = compensationOrderDate;
     }
 
     public LocalDateTime getVoluntaryCompensationConfirmationDate() {
@@ -179,28 +143,12 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.voluntaryCompensationConfirmationDate = voluntaryCompensationConfirmationDate;
     }
 
-    public LocalDateTime getCortOrderDate() {
-        return cortOrderDate;
-    }
-
-    public void setCortOrderDate(LocalDateTime cortOrderDate) {
-        this.cortOrderDate = cortOrderDate;
-    }
-
     public String[] getConfirmations() {
         return confirmations;
     }
 
     public void setConfirmations(String[] confirmations) {
         this.confirmations = confirmations;
-    }
-
-    public IGroupsDTO getGroup() {
-        return group;
-    }
-
-    public void setGroup(IGroupsDTO group) {
-        this.group = group;
     }
 
     public IOrganisationsDTO getOrganisation() {
@@ -235,11 +183,11 @@ public class AllocationDTOImpl extends AEssence implements IAllocationDTO {
         this.freeAllocationReason = freeAllocationReason;
     }
 
-    public Integer getIssueYear() {
-        return issueYear;
+    public CompensationType getCompensationType() {
+        return compensationType;
     }
 
-    public void setIssueYear(Integer issueYear) {
-        this.issueYear = issueYear;
+    public void setCompensationType(CompensationType compensationType) {
+        this.compensationType = compensationType;
     }
 }

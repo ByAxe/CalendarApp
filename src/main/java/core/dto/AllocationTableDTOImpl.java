@@ -52,15 +52,13 @@ public class AllocationTableDTOImpl implements IAllocationTableDTO {
     private String reallocationFlag;
     private String reallocationId;
 
-    private String voluntaryCompensationOrderDate;
-    private String voluntaryCompensationOrderNumber;
+    private String compensationType;
+    private String compensationOrderDate;
+    private String compensationOrderNumber;
     private String voluntaryCompensationConfirmationDate;
 
-    private String cortCompensationOrderNumber;
-    private String cortCompensationOrderDate;
-
     private Stage stage;
-    private String issueYear;
+    private String issueDate;
 
     public String getId() {
         return id;
@@ -302,20 +300,20 @@ public class AllocationTableDTOImpl implements IAllocationTableDTO {
         this.reallocationId = reallocationId;
     }
 
-    public String getVoluntaryCompensationOrderDate() {
-        return voluntaryCompensationOrderDate;
+    public String getCompensationOrderDate() {
+        return compensationOrderDate;
     }
 
-    public void setVoluntaryCompensationOrderDate(String voluntaryCompensationOrderDate) {
-        this.voluntaryCompensationOrderDate = voluntaryCompensationOrderDate;
+    public void setCompensationOrderDate(String compensationOrderDate) {
+        this.compensationOrderDate = compensationOrderDate;
     }
 
-    public String getVoluntaryCompensationOrderNumber() {
-        return voluntaryCompensationOrderNumber;
+    public String getCompensationOrderNumber() {
+        return compensationOrderNumber;
     }
 
-    public void setVoluntaryCompensationOrderNumber(String voluntaryCompensationOrderNumber) {
-        this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
+    public void setCompensationOrderNumber(String compensationOrderNumber) {
+        this.compensationOrderNumber = compensationOrderNumber;
     }
 
     public String getVoluntaryCompensationConfirmationDate() {
@@ -326,22 +324,6 @@ public class AllocationTableDTOImpl implements IAllocationTableDTO {
         this.voluntaryCompensationConfirmationDate = voluntaryCompensationConfirmationDate;
     }
 
-    public String getCortCompensationOrderNumber() {
-        return cortCompensationOrderNumber;
-    }
-
-    public void setCortCompensationOrderNumber(String cortCompensationOrderNumber) {
-        this.cortCompensationOrderNumber = cortCompensationOrderNumber;
-    }
-
-    public String getCortCompensationOrderDate() {
-        return cortCompensationOrderDate;
-    }
-
-    public void setCortCompensationOrderDate(String cortCompensationOrderDate) {
-        this.cortCompensationOrderDate = cortCompensationOrderDate;
-    }
-
     public Stage getStage() {
         return stage;
     }
@@ -350,11 +332,19 @@ public class AllocationTableDTOImpl implements IAllocationTableDTO {
         this.stage = stage;
     }
 
-    public String getIssueYear() {
-        return issueYear;
+    public String getIssueDate() {
+        return issueDate;
     }
 
-    public void setIssueYear(String issueYear) {
-        this.issueYear = issueYear;
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
+    }
+
+    public String getCompensationType() {
+        return compensationType;
+    }
+
+    public void setCompensationType(String compensationType) {
+        this.compensationType = compensationType;
     }
 }

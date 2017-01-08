@@ -30,6 +30,10 @@ public class GroupValidator implements IValidator<Result, IGroupsDTO> {
         if (group.getNumber().isEmpty()) errors.add("Номер группы не может отсутствовать.");
         if (group.getSpecialization().isEmpty()) errors.add("Специализация обязательна к указанию.");
         if (group.getRuler() == null) errors.add("Группа не может быть без руководителя (мастера, или куратора).");
+        if (group.getIssueYear() == null || group.getIssueMonth() == null) {
+            errors.add("Вы не указали дату выпуска группы.");
+        }
+        if (group.getStage() == null) errors.add("Не указана ступень.");
 
         return wrapResult(errors);
     }

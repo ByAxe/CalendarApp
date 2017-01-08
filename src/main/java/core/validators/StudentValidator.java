@@ -28,6 +28,7 @@ public class StudentValidator implements IValidator<Result, IStudentsDTO> {
         if (student.getMiddleName().isEmpty()) errors.add("Отчество не может быть пустым.");
         if (student.getLastName().isEmpty()) errors.add("Фамилия не может быть пустой.");
         if (student.getAddress().isEmpty()) errors.add("Поле адрес должно быть заполнено.");
+        if (student.getGroup() == null) errors.add("Студент должен быть привязан к определенной группе.");
 
         return wrapResult(errors);
     }

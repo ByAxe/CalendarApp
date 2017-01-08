@@ -55,7 +55,7 @@ public class OrdersEntity extends APersistentEntity {
         this.profession = profession;
     }
 
-    @Column(name = "rank", nullable = false)
+    @Column(name = "rank"/*, nullable = false*/)
     public Integer getRank() {
         return rank;
     }

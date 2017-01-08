@@ -16,10 +16,13 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static core.enums.ResultEnum.ERROR;
 import static core.enums.ResultEnum.SUCCESS;
@@ -40,7 +43,9 @@ public class Utils {
     public static final DateTimeFormatter CALENDAR_ON_DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMMM");
     public static final DateTimeFormatter CALENDAR_DATE_PICKER_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public static final DateTimeFormatter ALLOCATION_TABLE_FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+    public static final DateTimeFormatter ISSUE_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy");
     private static final Logger logger = LoggerFactory.getLogger(Utils.class);
+    private static final String LOCALE = "ru";
 
     /**
      * Создает сообщение с помощью {@link Alert}
@@ -223,17 +228,28 @@ public class Utils {
      * Получаем id записи из строки в комбобоксе
      * id попадает в строку, благодаря {@link core.api.IVisible} методу
      *
-     * @param ruler
+     * @param source
      * @return
      */
-    public static Long getIdFromComboBox(String ruler) {
-        if (ruler == null || ruler.equalsIgnoreCase("null") || ruler.isEmpty()) return 0L;
+    public static Long getIdFromComboBox(String source) {
+        if (source == null || source.equalsIgnoreCase("null") || source.isEmpty()) return 0L;
 
         try {
-            return Long.valueOf(ruler.split("[()]")[1]);
+            return Long.valueOf(source.split("[()]")[1]);
         } catch (NumberFormatException e) {
-            logger.error("Ошибка разбора строки \"" + ruler + "\", для получения id записи", e);
+            logger.error("Ошибка разбора строки \"" + source + "\", для получения id записи", e);
             return 0L;
         }
+    }
+
+
+    /**
+     * Локализуем название месяца
+     *
+     * @param month месяц
+     * @return русское название
+     */
+    public static String localizeNameOfMonth(Month month) {
+        return month.getDisplayName(TextStyle.FULL, new Locale(LOCALE));
     }
 }

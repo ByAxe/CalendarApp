@@ -132,31 +132,27 @@ public interface IAllocationTableDTO {
 
     void setReallocationId(String reallocationId);
 
-    String getVoluntaryCompensationOrderDate();
+    String getCompensationOrderDate();
 
-    void setVoluntaryCompensationOrderDate(String voluntaryCompensationOrderDate);
+    void setCompensationOrderDate(String compensationOrderDate);
 
-    String getVoluntaryCompensationOrderNumber();
+    String getCompensationOrderNumber();
 
-    void setVoluntaryCompensationOrderNumber(String voluntaryCompensationOrderNumber);
+    void setCompensationOrderNumber(String compensationOrderNumber);
 
     String getVoluntaryCompensationConfirmationDate();
 
     void setVoluntaryCompensationConfirmationDate(String voluntaryCompensationConfirmationDate);
 
-    String getCortCompensationOrderNumber();
-
-    void setCortCompensationOrderNumber(String cortCompensationOrderNumber);
-
-    String getCortCompensationOrderDate();
-
-    void setCortCompensationOrderDate(String cortCompensationOrderDate);
-
     Stage getStage();
 
     void setStage(Stage stage);
 
-    String getIssueYear();
+    String getIssueDate();
 
-    void setIssueYear(String issueYear);
+    void setIssueDate(String issueDate);
+
+    String getCompensationType();
+
+    void setCompensationType(String compensationType);
 }

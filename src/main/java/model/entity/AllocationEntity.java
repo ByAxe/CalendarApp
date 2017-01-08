@@ -5,7 +5,7 @@
 
 package model.entity;
 
-import core.enums.Stage;
+import core.enums.CompensationType;
 import model.api.APersistentEntity;
 import model.api.types.StringArray;
 import org.hibernate.annotations.Type;
@@ -28,8 +28,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
         @UniqueConstraint(columnNames = UUID_COLUMN_NAME)
 }, indexes = {
         @Index(name = "allocation_pkey", unique = true, columnList = ID_COLUMN_NAME),
-        @Index(name = "allocation_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME),
-        @Index(name = "allocation_issue_year_idx", unique = true, columnList = "issue_year")
+        @Index(name = "allocation_uuid_idx", unique = true, columnList = UUID_COLUMN_NAME)
 })
 @SequenceGenerator(name = "allocation_id_seq", sequenceName = "allocation_id_seq", allocationSize = 1)
 public class AllocationEntity extends APersistentEntity {
@@ -39,20 +38,15 @@ public class AllocationEntity extends APersistentEntity {
 
     private boolean army;
     private boolean freeAllocation;
-    private boolean voluntaryCompensation;
     private boolean archive;
 
-    private Stage stage;
-    private String cortOrderNumber;
-    private String voluntaryCompensationOrderNumber;
-    private Date voluntaryCompensationOrderDate;
+    private CompensationType compensationType;
+    private String compensationOrderNumber;
+    private Date compensationOrderDate;
     private Date voluntaryCompensationConfirmationDate;
-    private Date cortOrderDate;
     private String[] confirmations;
     private String freeAllocationReason;
-    private Integer issueYear;
 
-    private GroupsEntity group;
     private OrganisationsEntity organisation;
     private StudentsEntity student;
     private OrdersEntity order;
@@ -95,15 +89,6 @@ public class AllocationEntity extends APersistentEntity {
         this.freeAllocation = freeAllocation;
     }
 
-    @Column(name = "voluntary_compensation")
-    public boolean isVoluntaryCompensation() {
-        return voluntaryCompensation;
-    }
-
-    public void setVoluntaryCompensation(boolean voluntaryCompensation) {
-        this.voluntaryCompensation = voluntaryCompensation;
-    }
-
     @Column(name = "archive")
     public boolean isArchive() {
         return archive;
@@ -113,41 +98,22 @@ public class AllocationEntity extends APersistentEntity {
         this.archive = archive;
     }
 
-    @Column(name = "stage", nullable = false)
-    @Enumerated(EnumType.STRING)
-    public Stage getStage() {
-        return stage;
+    @Column(name = "compensation_order_number", length = 50)
+    public String getCompensationOrderNumber() {
+        return compensationOrderNumber;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    public void setCompensationOrderNumber(String compensationOrderNumber) {
+        this.compensationOrderNumber = compensationOrderNumber;
     }
 
-    @Column(name = "cort_order_number", length = 50)
-    public String getCortOrderNumber() {
-        return cortOrderNumber;
+    @Column(name = "compensation_order_date", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    public Date getCompensationOrderDate() {
+        return compensationOrderDate;
     }
 
-    public void setCortOrderNumber(String cortOrderNumber) {
-        this.cortOrderNumber = cortOrderNumber;
-    }
-
-    @Column(name = "voluntary_compensation_order_number", length = 50)
-    public String getVoluntaryCompensationOrderNumber() {
-        return voluntaryCompensationOrderNumber;
-    }
-
-    public void setVoluntaryCompensationOrderNumber(String voluntaryCompensationOrderNumber) {
-        this.voluntaryCompensationOrderNumber = voluntaryCompensationOrderNumber;
-    }
-
-    @Column(name = "voluntary_compensation_order_date", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    public Date getVoluntaryCompensationOrderDate() {
-        return voluntaryCompensationOrderDate;
-    }
-
-    public void setVoluntaryCompensationOrderDate(Date voluntaryCompensationOrderDate) {
-        this.voluntaryCompensationOrderDate = voluntaryCompensationOrderDate;
+    public void setCompensationOrderDate(Date compensationOrderDate) {
+        this.compensationOrderDate = compensationOrderDate;
     }
 
     @Column(name = "voluntary_compensation_confirmation_date", columnDefinition = "TIMESTAMP WITH TIME ZONE")
@@ -157,15 +123,6 @@ public class AllocationEntity extends APersistentEntity {
 
     public void setVoluntaryCompensationConfirmationDate(Date voluntaryCompensationConfirmationDate) {
         this.voluntaryCompensationConfirmationDate = voluntaryCompensationConfirmationDate;
-    }
-
-    @Column(name = "cort_order_date", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    public Date getCortOrderDate() {
-        return cortOrderDate;
-    }
-
-    public void setCortOrderDate(Date cortOrderDate) {
-        this.cortOrderDate = cortOrderDate;
     }
 
     @Type(type = "stringArray")
@@ -178,13 +135,14 @@ public class AllocationEntity extends APersistentEntity {
         this.confirmations = confirmations;
     }
 
-    @ManyToOne
-    public GroupsEntity getGroup() {
-        return group;
+    @Column(name = "compensation_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public CompensationType getCompensationType() {
+        return compensationType;
     }
 
-    public void setGroup(GroupsEntity group) {
-        this.group = group;
+    public void setCompensationType(CompensationType compensationType) {
+        this.compensationType = compensationType;
     }
 
     @ManyToOne
@@ -221,14 +179,5 @@ public class AllocationEntity extends APersistentEntity {
 
     public void setFreeAllocationReason(String freeAllocationReason) {
         this.freeAllocationReason = freeAllocationReason;
-    }
-
-    @Column(name = "issue_year", nullable = false)
-    public Integer getIssueYear() {
-        return issueYear;
-    }
-
-    public void setIssueYear(Integer issueYear) {
-        this.issueYear = issueYear;
     }
 }

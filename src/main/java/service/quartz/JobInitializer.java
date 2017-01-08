@@ -5,10 +5,7 @@
 
 package service.quartz;
 
-import core.dto.api.IAllocationDTO;
-import core.dto.api.IEventsDTO;
-import core.dto.api.IOrdersDTO;
-import core.dto.api.IPreferencesDTO;
+import core.dto.api.*;
 import core.enums.EventType;
 import core.enums.Frequency;
 import core.enums.NoticePeriod;
@@ -318,9 +315,11 @@ public class JobInitializer implements ApplicationListener<ContextRefreshedEvent
         Set<Trigger> triggerSet = new HashSet<>();
 
         IOrdersDTO order = allocation.getOrder();
+        IStudentsDTO student = allocation.getStudent();
+        IGroupsDTO group = student.getGroup();
 
         LocalDateTime date = order.getStarts()
-                .plus(allocation.getStage().getAmountYearsOfMining(), YEARS)
+                .plus(group.getStage().getAmountYearsOfMining(), YEARS)
                 .minus(preferences.getAllocationEndNoticeTerm(), DAYS);
 
         Trigger trigger = newTrigger()
@@ -363,9 +362,11 @@ public class JobInitializer implements ApplicationListener<ContextRefreshedEvent
         Set<Trigger> triggerSet = new HashSet<>();
 
         IOrdersDTO order = allocation.getOrder();
+        IStudentsDTO student = allocation.getStudent();
+        IGroupsDTO group = student.getGroup();
 
         LocalDateTime date = order.getStarts()
-                .plus(allocation.getStage().getAmountYearsOfMining(), YEARS)
+                .plus(group.getStage().getAmountYearsOfMining(), YEARS)
                 .plus(preferences.getArchiveTerm(), DAYS);
 
         Trigger trigger = newTrigger()

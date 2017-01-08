@@ -6,9 +6,9 @@
 package core.dto;
 
 import core.api.AEssence;
-import core.api.IEssence;
 import core.dto.api.IGroupsDTO;
 import core.dto.api.IRulersDTO;
+import core.enums.Stage;
 
 /**
  * Created by byaxe on 26.11.16.
@@ -21,43 +21,19 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
     private String description;
     private String number;
     private Integer hours;
+
+    private Integer issueYear;
+    private Integer issueMonth;
+    private Stage stage;
+
     private IRulersDTO ruler;
 
     public GroupsDTOImpl() {
     }
 
-    public GroupsDTOImpl(IEssence essence) {
-        super(essence);
-    }
-
-    public GroupsDTOImpl(IGroupsDTO essence) {
-        if (essence != null) {
-            this.id = essence.getId();
-            this.title = essence.getTitle();
-            this.specialization = essence.getSpecialization();
-            this.qualification = essence.getQualification();
-            this.description = essence.getDescription();
-            this.number = essence.getNumber();
-            this.hours = essence.getHours();
-            this.ruler = essence.getRuler();
-        }
-    }
-
-    public GroupsDTOImpl(Long id, String title, String specialization, String qualification,
-                         String description, String number, Integer hours, IRulersDTO ruler) {
-        this.id = id;
-        this.title = title;
-        this.specialization = specialization;
-        this.qualification = qualification;
-        this.description = description;
-        this.number = number;
-        this.hours = hours;
-        this.ruler = ruler;
-    }
-
     @Override
     public String toPrettyString() {
-        return number + " " + title + " (" + id + ") " + "часов: " + hours;
+        return number + " " + title + " (" + id + ")";
     }
 
     public String getTitle() {
@@ -106,6 +82,30 @@ public class GroupsDTOImpl extends AEssence implements IGroupsDTO {
 
     public void setHours(Integer hours) {
         this.hours = hours;
+    }
+
+    public Integer getIssueYear() {
+        return issueYear;
+    }
+
+    public void setIssueYear(Integer issueYear) {
+        this.issueYear = issueYear;
+    }
+
+    public Integer getIssueMonth() {
+        return issueMonth;
+    }
+
+    public void setIssueMonth(Integer issueMonth) {
+        this.issueMonth = issueMonth;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @Override
