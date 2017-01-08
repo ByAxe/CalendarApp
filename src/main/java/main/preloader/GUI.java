@@ -30,7 +30,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.preloader.paths.PathLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;

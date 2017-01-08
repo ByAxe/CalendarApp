@@ -7,7 +7,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.preloader.paths;
+package main.preloader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class PathLoader {
     }
 
     public String getPath(int i) throws IOException {
-        return getPath("path" + i);
+        return getPath("/paths/path" + i);
     }
 
 }
