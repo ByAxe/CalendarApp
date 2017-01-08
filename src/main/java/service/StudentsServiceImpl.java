@@ -5,10 +5,12 @@
 
 package service;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import core.commons.Result;
 import core.dto.StudentsDTOImpl;
+import core.dto.api.IGroupsDTO;
 import core.dto.api.IStudentsDTO;
 import core.validators.api.IValidator;
 import javafx.scene.control.Alert;
@@ -28,13 +30,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.StudentsRepository;
+import service.api.IGroupsService;
 import service.api.IStudentsService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
+import static core.commons.Utils.getIdFromComboBox;
 import static core.commons.Utils.raiseMessageBox;
 import static core.enums.ResultEnum.SUCCESS;
 import static java.util.stream.Collectors.toList;
@@ -51,6 +52,7 @@ public class StudentsServiceImpl implements IStudentsService {
 
     private final StudentsRepository studentsRepository;
     private final ConversionService conversionService;
+    private final IGroupsService groupsService;
     private final IValidator<Result, IStudentsDTO> validator;
 
     @Value("${validation.error.title}")
@@ -99,15 +101,18 @@ public class StudentsServiceImpl implements IStudentsService {
     private String DELETE_CONSTRAINT_VIOLATION_BODY;
 
     @Autowired
-    public StudentsServiceImpl(StudentsRepository studentsRepository, ConversionService conversionService, IValidator<Result, IStudentsDTO> validator) {
+    public StudentsServiceImpl(StudentsRepository studentsRepository, ConversionService conversionService,
+                               IGroupsService groupsService, IValidator<Result, IStudentsDTO> validator) {
         this.studentsRepository = studentsRepository;
         this.conversionService = conversionService;
+        this.groupsService = groupsService;
         this.validator = validator;
     }
 
     @Override
     @Transactional
-    public void save(long id, String firstName, String middleName, String lastName, String telephone, String address) {
+    public void save(long id, String firstName, String middleName, String lastName,
+                     String telephone, String address, String group) {
         IStudentsDTO student;
 
         // Новичок
@@ -124,6 +129,7 @@ public class StudentsServiceImpl implements IStudentsService {
         student.setLastName(lastName);
         student.setTelephone(telephone);
         student.setAddress(address);
+        student.setGroup(groupsService.findOne(getIdFromComboBox(group)));
 
         Result result = validator.validate(student);
 
@@ -168,7 +174,7 @@ public class StudentsServiceImpl implements IStudentsService {
     @Transactional
     public void addContextMenuToStudentsList(JFXListView<Label> studentsList, JFXTextField id, JFXTextField firstName,
                                              JFXTextField middleName, JFXTextField lastName, JFXTextField telephone,
-                                             JFXTextField address) {
+                                             JFXTextField address, JFXComboBox groups) {
         final ContextMenu managementStudentsListContextMenu = new ContextMenu();
 
         MenuItem delete = new MenuItem(DELETE_CONTEXT_MENU_ITEM);
@@ -219,15 +225,23 @@ public class StudentsServiceImpl implements IStudentsService {
             if (!isOk) return;
 
             // Получили выпускника из базы
-            IStudentsDTO student = findByUuid(UUID.fromString(item.getId()));
+            IStudentsDTO dto = findByUuid(UUID.fromString(item.getId()));
 
             // Поместили все данные в поля редактирования
-            id.setText(String.valueOf(student.getId()));
-            firstName.setText(student.getFirstName());
-            middleName.setText(student.getMiddleName());
-            lastName.setText(student.getLastName());
-            telephone.setText(student.getTelephone());
-            address.setText(student.getAddress());
+            id.setText(String.valueOf(dto.getId()));
+            firstName.setText(dto.getFirstName());
+            middleName.setText(dto.getMiddleName());
+            lastName.setText(dto.getLastName());
+            telephone.setText(dto.getTelephone());
+            address.setText(dto.getAddress());
+
+            groups.getItems().clear();
+            Optional.ofNullable(((List<IGroupsDTO>) groupsService.findAll()))
+                    .ifPresent(l -> l.forEach(g -> {
+                        groups.getItems().add(g.toPrettyString());
+                    }));
+
+            groups.setValue(dto.getGroup().toPrettyString());
         });
 
         studentsList.setContextMenu(managementStudentsListContextMenu);

@@ -7,6 +7,8 @@ package controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.NumberValidator;
+import core.commons.Bearer;
+import core.commons.Utils;
 import core.dto.AllocationDTOImpl;
 import core.dto.api.*;
 import core.enums.CompensationType;
@@ -37,6 +39,7 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
@@ -239,15 +242,17 @@ public class ApplicationController implements Initializable {
     public Label managementGroupStageLabel;
     public Label managementGroupRulerLabel;
     public JFXTextField managementOrderNumber;
-    public JFXTextField managementOrderStarts;
+    public LocalDateTextField managementOrderStarts;
     public JFXTextField managementOrderProfession;
     public JFXListView managementOrdersList;
-    public JFXButton managementOrderCleanButton1;
-    public JFXButton managementOrderSaveButton1;
+    public JFXButton managementOrderCleanButton;
+    public JFXButton managementOrderSaveButton;
     public JFXTextField managementOrderId;
     public JFXTextArea managementOrderPayload;
     public JFXComboBox allocationOrdersList;
     public JFXComboBox allocationTableIssueMonth;
+    public Tab managementOrdersTab;
+    public Label managementStudentGroupLabel;
 
     private ResourceBundle resourceBundle;
     private URL location;
@@ -519,17 +524,25 @@ public class ApplicationController implements Initializable {
     private void allocationTableSetDefaultValues() {
         allocationService.setDefaultValues(allocationTableStageComboBox);
         allocationTableIssueYear.setValidators(new NumberValidator());
-
+        allocationTableIssueMonth.getItems().setAll(Stream.of(Month.values()).map(Utils::localizeNameOfMonth).collect(toList()));
     }
 
     /**
      * Загружает записи в таблицу Распределение
      */
-    private void allocationTableLoadContent(Stage stage, Boolean archive, Integer issueYear, Integer issueMonth) {
+    private void allocationTableLoadContent(Stage stage, Boolean archive, Integer issueYear, String issueMonth) {
         allocationTableModifyColumns(stage, issueYear);
 
+        final Bearer bearer = new Bearer();
+
+        Stream.of(Month.values()).forEach(m -> {
+            if (localizeNameOfMonth(m).equals(issueMonth)) {
+                bearer.set(m.getValue());
+            }
+        });
+
         ObservableList<IAllocationTableDTO> content = FXCollections.observableArrayList();
-        content.addAll(allocationService.find(stage, archive, issueYear, issueMonth));
+        content.addAll(allocationService.find(stage, archive, issueYear, bearer.get()));
 
         allocationTable.setItems(content);
 
@@ -541,8 +554,7 @@ public class ApplicationController implements Initializable {
      */
     private void allocationTableLoadContentDefault() {
         LocalDateTime now = LocalDateTime.now();
-
-        allocationTableLoadContent(Stage.FIRST, false, now.getYear(), now.getMonthValue());
+        allocationTableLoadContent(Stage.FIRST, false, now.getYear(), localizeNameOfMonth(now.getMonth()));
     }
 
     /**
@@ -612,7 +624,7 @@ public class ApplicationController implements Initializable {
             final LocalDateTime now = LocalDateTime.now();
 
             final int issueYear;
-            final int issueMonth;
+            final String issueMonth;
 
             if (allocationTableIssueYear.validate()) {
                 issueYear = Integer.valueOf(allocationTableIssueYear.getText());
@@ -620,11 +632,7 @@ public class ApplicationController implements Initializable {
                 issueYear = now.getYear();
             }
 
-            if (allocationTableIssueMonth.validate()) {
-                issueMonth = Integer.valueOf(allocationTableIssueMonth.getText());
-            } else {
-                issueMonth = now.getMonthValue();
-            }
+            issueMonth = String.valueOf(allocationTableIssueMonth.getValue());
 
             Stream.of(Stage.values()).forEach(s -> {
                 if (s.getTitle().equals(String.valueOf(allocationTableStageComboBox.getValue()))) {
@@ -690,19 +698,13 @@ public class ApplicationController implements Initializable {
      */
     private void initAllocationTab() {
         allocationSearchTextField.setValidators(new NumberValidator());
-        allocationIssueYear.setValidators(new NumberValidator());
         allocationReallocationId.setValidators(new NumberValidator());
-        allocationOrderRank.setValidators(new NumberValidator());
 
         // Загружаем данные в выпадающие списки
         allocationCompensationType.getItems()
                 .setAll(Stream.of(values()).map(CompensationType::getType).collect(toList()));
 
-        allocationStage.getItems()
-                .setAll(Stream.of(Stage.values()).map(Stage::getAcronym).collect(toList()));
-
         // Устанавливаем форматы дат
-        allocationOrderDate.setDateTimeFormatter(ALLOCATION_TABLE_FORMATTER);
         allocationCompensationDate.setDateTimeFormatter(ALLOCATION_TABLE_FORMATTER);
         allocationCompensationConfirmationDate.setDateTimeFormatter(ALLOCATION_TABLE_FORMATTER);
 
@@ -710,30 +712,11 @@ public class ApplicationController implements Initializable {
         allocationCompensationConfirmationDate.setVisible(false);
 
         // Устанавливаем в выпадающие списки значения по умолчанию
-        allocationStage.setValue(allocationStage.getItems().get(1));
         allocationCompensationType.setValue(allocationCompensationType.getItems().get(0));
 
         // Активируем вписывание в поле перераспределения идентификатора
         allocationReallocation.setOnAction(e -> allocationReallocationId.setDisable(!allocationReallocation.isSelected()));
 
-        // По выбору ступени меняется количество флажков подтверждения
-        allocationStage.setOnAction(e -> Stream.of(Stage.values()).forEach(f -> {
-            if (f.getAcronym().equals(String.valueOf(allocationStage.getValue()))) {
-                if (f == Stage.FIRST) {
-                    allocationConfirmation_6.setVisible(false);
-                    allocationConfirmation_7.setVisible(false);
-                    allocationConfirmation_8.setVisible(false);
-                    allocationConfirmation_9.setVisible(false);
-                    allocationConfirmation_10.setVisible(false);
-                } else {
-                    allocationConfirmation_6.setVisible(true);
-                    allocationConfirmation_7.setVisible(true);
-                    allocationConfirmation_8.setVisible(true);
-                    allocationConfirmation_9.setVisible(true);
-                    allocationConfirmation_10.setVisible(true);
-                }
-            }
-        }));
 
         // Играем с полями Компенсации
         allocationCompensationType.setOnAction(e -> Stream.of(values()).forEach(t -> {
@@ -756,27 +739,6 @@ public class ApplicationController implements Initializable {
                 }
             }
         }));
-
-        // В зависимости от года выпуска, выставляем годы подтверждения
-        allocationIssueYear.focusedProperty().addListener((a, o, n) -> {
-            if (!allocationIssueYear.validate() || n) return;
-
-            final int year = Integer.valueOf(allocationIssueYear.getText());
-            final int nextYear = year + 1;
-            final int nextNextYear = nextYear + 1;
-
-            allocationConfirmation_1.setText(CONFIRMATION_PERIOD_1 + " " + year);
-            allocationConfirmation_2.setText(CONFIRMATION_PERIOD_2 + " " + year);
-            allocationConfirmation_3.setText(CONFIRMATION_PERIOD_3 + " " + nextYear);
-            allocationConfirmation_4.setText(CONFIRMATION_PERIOD_4 + " " + nextYear);
-            allocationConfirmation_5.setText(CONFIRMATION_PERIOD_5 + " " + nextYear);
-
-            allocationConfirmation_6.setText(CONFIRMATION_PERIOD_1 + " " + nextYear);
-            allocationConfirmation_7.setText(CONFIRMATION_PERIOD_2 + " " + nextYear);
-            allocationConfirmation_8.setText(CONFIRMATION_PERIOD_3 + " " + nextNextYear);
-            allocationConfirmation_9.setText(CONFIRMATION_PERIOD_4 + " " + nextNextYear);
-            allocationConfirmation_10.setText(CONFIRMATION_PERIOD_5 + " " + nextNextYear);
-        });
 
         // Они одинаковы по смыслу, поэтому по нажатию на одно - должно отмечаться и другое
         allocationConfirmation_5.setOnAction(e -> allocationConfirmation_6.setSelected(allocationConfirmation_5.isSelected()));
@@ -869,7 +831,7 @@ public class ApplicationController implements Initializable {
             // TODO разложить данные по полям
             allocationStudentsList.setValue(student.toPrettyString());
             allocationOrganisationsList.setValue(organisation.toPrettyString());
-            allocationGroupsList.setValue(group.toPrettyString());
+            allocationOrdersList.setValue(order.toPrettyString());
 
             allocationArchive.setSelected(allocation.isArchive());
             allocationArmy.setSelected(allocation.isArmy());
@@ -884,15 +846,11 @@ public class ApplicationController implements Initializable {
                 allocationFreeAllocationReason.setText(allocation.getFreeAllocationReason());
             }
 
-            allocationOrderNumber.setText(order.getNumber());
-            allocationOrderDate.setLocalDate(LocalDate.from(order.getStarts()));
-            allocationOrderProfession.setText(order.getProfession());
-            allocationOrderRank.setText(String.valueOf(order.getRank()));
-            allocationOrderPayload.setText(order.getPayload());
-            allocationIssueYear.setText(String.valueOf(group.getIssueYear()));
-            allocationIssueMonth.setText(String.valueOf(group.getIssueMonth()));
-
             String[] c = allocation.getConfirmations();
+
+            final int year = group.getIssueYear();
+            final int nextYear = year + 1;
+            final int nextNextYear = nextYear + 1;
 
             allocationConfirmation_1.setSelected(c[0] != null);
             allocationConfirmation_2.setSelected(c[1] != null);
@@ -900,12 +858,24 @@ public class ApplicationController implements Initializable {
             allocationConfirmation_4.setSelected(c[3] != null);
             allocationConfirmation_5.setSelected(c[4] != null);
 
+            allocationConfirmation_1.setText(CONFIRMATION_PERIOD_1 + " " + year);
+            allocationConfirmation_2.setText(CONFIRMATION_PERIOD_2 + " " + year);
+            allocationConfirmation_3.setText(CONFIRMATION_PERIOD_3 + " " + nextYear);
+            allocationConfirmation_4.setText(CONFIRMATION_PERIOD_4 + " " + nextYear);
+            allocationConfirmation_5.setText(CONFIRMATION_PERIOD_5 + " " + nextYear);
+
             if (group.getStage() == Stage.SECOND) {
                 allocationConfirmation_6.setSelected(c[5] != null);
                 allocationConfirmation_7.setSelected(c[6] != null);
                 allocationConfirmation_8.setSelected(c[7] != null);
                 allocationConfirmation_9.setSelected(c[8] != null);
                 allocationConfirmation_10.setSelected(c[9] != null);
+
+                allocationConfirmation_6.setText(CONFIRMATION_PERIOD_1 + " " + nextYear);
+                allocationConfirmation_7.setText(CONFIRMATION_PERIOD_2 + " " + nextYear);
+                allocationConfirmation_8.setText(CONFIRMATION_PERIOD_3 + " " + nextNextYear);
+                allocationConfirmation_9.setText(CONFIRMATION_PERIOD_4 + " " + nextNextYear);
+                allocationConfirmation_10.setText(CONFIRMATION_PERIOD_5 + " " + nextNextYear);
             }
 
             CompensationType compensationType = allocation.getCompensationType();
@@ -919,8 +889,6 @@ public class ApplicationController implements Initializable {
                     allocationCompensationConfirmationDate.setLocalDate(LocalDate.from(allocation.getVoluntaryCompensationConfirmationDate()));
                 }
             }
-
-            allocationStage.setValue(group.getStage().getAcronym());
         }
     }
 
@@ -931,7 +899,7 @@ public class ApplicationController implements Initializable {
 
         IStudentsDTO student = studentsService.findOne(getIdFromComboBox(String.valueOf(allocationStudentsList.getValue())));
         IOrganisationsDTO organisation = organisationsService.findOne(getIdFromComboBox(String.valueOf(allocationOrganisationsList.getValue())));
-        IOrdersDTO order = groupsService.findOne(getIdFromComboBox(String.valueOf(allocationOrdersList.getValue())));
+        IOrdersDTO order = ordersService.findOne(getIdFromComboBox(String.valueOf(allocationOrdersList.getValue())));
 
 //        IOrdersDTO order = new OrdersDTOImpl();
 //        order.setUuid(UUID.randomUUID());
@@ -966,7 +934,7 @@ public class ApplicationController implements Initializable {
         confirmations[3] = allocationConfirmation_4.isSelected() ? CONFIRMED : null;
         confirmations[4] = allocationConfirmation_5.isSelected() ? CONFIRMED : null;
 
-        if (student.getGroup().getStage() == Stage.SECOND) {
+        if (student.getGroup() == null || student.getGroup().getStage() == Stage.SECOND) {
             confirmations[5] = allocationConfirmation_6.isSelected() ? CONFIRMED : null;
             confirmations[6] = allocationConfirmation_7.isSelected() ? CONFIRMED : null;
             confirmations[7] = allocationConfirmation_8.isSelected() ? CONFIRMED : null;
@@ -1000,7 +968,7 @@ public class ApplicationController implements Initializable {
 
         allocationStudentsList.setValue(null);
         allocationOrganisationsList.setValue(null);
-        allocationGroupsList.setValue(null);
+        allocationOrdersList.setValue(null);
 
         allocationArchive.setSelected(false);
         allocationArmy.setSelected(false);
@@ -1008,14 +976,6 @@ public class ApplicationController implements Initializable {
 
         allocationFreeAllocation.setSelected(false);
         allocationFreeAllocationReason.setText("");
-
-        allocationOrderNumber.setText("");
-        allocationOrderDate.setLocalDate(LocalDate.now());
-        allocationOrderProfession.setText("");
-        allocationOrderRank.setText("");
-        allocationOrderPayload.setText("");
-
-        allocationIssueYear.setText("");
 
         allocationConfirmation_1.setSelected(false);
         allocationConfirmation_2.setSelected(false);
@@ -1038,7 +998,6 @@ public class ApplicationController implements Initializable {
         allocationCompensationDate.setLocalDate(LocalDate.now());
         allocationCompensationConfirmationDate.setLocalDate(LocalDate.now());
 
-        allocationStage.setValue(allocationStage.getItems().get(1));
         allocationReallocationId.setText("");
     }
 
@@ -1051,6 +1010,16 @@ public class ApplicationController implements Initializable {
         initManagementGroupsTab();
         initManagementRulersTab();
         initManagementOrganisationsTab();
+        initManagementOrdersTab();
+    }
+
+    private void initManagementOrdersTab() {
+        ordersService.fillOrdersList(managementOrdersList);
+
+        ordersService.addContextMenuToStudentsList(managementOrdersList, managementOrderId, managementOrderStarts,
+                managementOrderNumber, managementOrderProfession, managementOrderPayload);
+
+        managementOrderCleanForm();
     }
 
     /**
@@ -1061,7 +1030,7 @@ public class ApplicationController implements Initializable {
 
         studentsService.addContextMenuToStudentsList(managementStudentsList, managementStudentId,
                 managementStudentFirstName, managementStudentMiddleName, managementStudentLastName,
-                managementStudentTelephone, managementStudentAddress);
+                managementStudentTelephone, managementStudentAddress, managementStudentGroup);
 
         managementStudentCleanForm();
     }
@@ -1071,6 +1040,9 @@ public class ApplicationController implements Initializable {
      */
     private void initManagementGroupsTab() {
         groupsService.fillGroupsList(managementGroupsList);
+
+        managementGroupStage.getItems()
+                .setAll(Stream.of(Stage.values()).map(Stage::getAcronym).collect(toList()));
 
         managementGroupHours.setValidators(new NumberValidator());
 
@@ -1131,8 +1103,9 @@ public class ApplicationController implements Initializable {
         String lastName = managementStudentLastName.getText();
         String telephone = managementStudentTelephone.getText();
         String address = managementStudentAddress.getText();
+        String group = String.valueOf(managementStudentGroup.getValue());
 
-        studentsService.save(id, firstName, middleName, lastName, telephone, address);
+        studentsService.save(id, firstName, middleName, lastName, telephone, address, group);
 
         managementStudentCleanForm();
         studentsService.fillStudentsList(managementStudentsList);
@@ -1269,6 +1242,36 @@ public class ApplicationController implements Initializable {
         refresh();
     }
 
+    public void managementOrderSaveButtonClick(ActionEvent actionEvent) {
+        Long id = Long.valueOf(managementOrderId.getText());
+        LocalDate starts = managementOrderStarts.getLocalDate();
+        String profession = managementOrderProfession.getText();
+        String number = managementOrderNumber.getText();
+        String payload = managementOrderPayload.getText();
+
+        ordersService.save(id, starts, profession, number, payload);
+
+        managementOrderCleanForm();
+
+        ordersService.fillOrdersList(managementOrdersList);
+
+        refresh();
+    }
+
+    public void managementOrderCleanButtonClick(ActionEvent actionEvent) {
+        managementOrderCleanForm();
+    }
+
+    private void managementOrderCleanForm() {
+        managementOrderStarts.setDateTimeFormatter(ALLOCATION_TABLE_FORMATTER);
+
+        managementOrderId.setText("0");
+        managementOrderStarts.setLocalDate(LocalDate.now());
+        managementOrderProfession.setText("");
+        managementOrderNumber.setText("");
+        managementOrderPayload.setText("");
+    }
+
     /**
      * Обновляем данные во всех комбобоксах где участвуют изменяемые сущности
      */
@@ -1278,15 +1281,20 @@ public class ApplicationController implements Initializable {
         ofNullable(((List<IRulersDTO>) rulersService.findAll()))
                 .ifPresent(l -> l.forEach(r -> mGL.add(r.toPrettyString())));
 
+        ObservableList sGL = managementStudentGroup.getItems();
+        sGL.clear();
+        ofNullable(((List<IGroupsDTO>) groupsService.findAll()))
+                .ifPresent(l -> l.forEach(g -> sGL.add(g.toPrettyString())));
+
         ObservableList aSL = allocationStudentsList.getItems();
         aSL.clear();
         ofNullable(((List<IStudentsDTO>) studentsService.findAll()))
                 .ifPresent(l -> l.forEach(e -> aSL.add(e.toPrettyString())));
 
-        ObservableList aGL = allocationOrdersList.getItems();
-        aGL.clear();
+        ObservableList aOrL = allocationOrdersList.getItems();
+        aOrL.clear();
         ofNullable(((List<IOrdersDTO>) ordersService.findAll()))
-                .ifPresent(l -> l.forEach(e -> aGL.add(e.toPrettyString())));
+                .ifPresent(l -> l.forEach(e -> aOrL.add(e.toPrettyString())));
 
         ObservableList aOL = allocationOrganisationsList.getItems();
         aOL.clear();
@@ -1294,9 +1302,4 @@ public class ApplicationController implements Initializable {
                 .ifPresent(l -> l.forEach(e -> aOL.add(e.toPrettyString())));
     }
 
-    public void managementOrderCleanButtonClick(ActionEvent actionEvent) {
-    }
-
-    public void managementOrderSaveButtonClick(ActionEvent actionEvent) {
-    }
 }

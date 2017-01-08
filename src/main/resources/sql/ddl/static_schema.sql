@@ -113,7 +113,7 @@ CREATE TABLE cld.orders (
   uuid       UUID           NOT NULL,
   dt_update  TIMESTAMPTZ(6) NOT NULL,
   profession VARCHAR(100)   NOT NULL,
-  rank       INT            NOT NULL DEFAULT 1, -- Разряд
+  rank       INT DEFAULT 1, -- Разряд
   starts     TIMESTAMPTZ(6) NOT NULL, -- Дата приказа
   number     VARCHAR(50)    NOT NULL, -- Номер приказа
   payload    TEXT
@@ -131,18 +131,18 @@ CREATE TABLE cld.allocation (
   uuid                                     UUID           NOT NULL,
   dt_update                                TIMESTAMPTZ(6) NOT NULL,
   parent_id                                BIGINT,
-  organisation_id                          BIGINT  NOT NULL,
-  student_id                               BIGINT  NOT NULL,
+  organisation_id                          BIGINT         NOT NULL,
+  student_id                               BIGINT         NOT NULL,
   order_id                                 BIGINT,
   confirmations                            VARCHAR ARRAY, -- Подтверждения об отработке
-  army                                     BOOLEAN NOT NULL DEFAULT FALSE,
-  free_allocation                          BOOLEAN NOT NULL DEFAULT FALSE, -- Свободное распределение
+  army                                     BOOLEAN        NOT NULL DEFAULT FALSE,
+  free_allocation                          BOOLEAN        NOT NULL DEFAULT FALSE, -- Свободное распределение
   free_allocation_reason                   TEXT, -- Причина свободного распределения
-  compensation_type                        VARCHAR NOT NULL DEFAULT 'NONE', -- Тип возмещения
+  compensation_type                        VARCHAR        NOT NULL DEFAULT 'NONE', -- Тип возмещения
   compensation_order_date                  TIMESTAMPTZ(6), -- Дата приказа по добровольному возмещению
   compensation_order_number                VARCHAR(50), -- Номер приказа по добровольному возмещению
   voluntary_compensation_confirmation_date TIMESTAMPTZ(6), -- Дата получения извещения о добровольном возмещении
-  archive                                  BOOLEAN          DEFAULT FALSE -- Пометка о том, что запись находится в архиве
+  archive                                  BOOLEAN                 DEFAULT FALSE -- Пометка о том, что запись находится в архиве
 );
 
 CREATE UNIQUE INDEX allocation_uuid_idx

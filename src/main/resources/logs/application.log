@@ -555,3 +555,20 @@ Caused by: java.lang.NullPointerException
 	at org.springframework.core.convert.support.GenericConversionService$ConverterAdapter.convert(GenericConversionService.java:373)
 	at org.springframework.core.convert.support.ConversionUtils.invokeConverter(ConversionUtils.java:37)
 	... 89 more
+2017-01-08 09:36:33,507 [JavaFX-Launcher] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 42601
+2017-01-08 09:36:33,508 [JavaFX-Launcher] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: syntax error at or near "join"
+  Позиция: 790
+2017-01-08 09:38:50,581 [JavaFX-Launcher] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 42601
+2017-01-08 09:38:50,582 [JavaFX-Launcher] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: syntax error at or near "WHERE"
+  Позиция: 70
+2017-01-08 09:47:05,215 [JavaFX-Launcher] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 42P01
+2017-01-08 09:47:05,215 [JavaFX-Launcher] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: relation "allocation" does not exist
+  Позиция: 26
+2017-01-08 09:48:53,894 [JavaFX-Launcher] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 42883
+2017-01-08 09:48:53,895 [JavaFX-Launcher] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: operator does not exist: character varying = bytea
+  Подсказка: No operator matches the given name and argument type(s). You might need to add explicit type casts.
+  Позиция: 194
+2017-01-08 10:20:27,939 [JavaFX Application Thread] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper- SQL Error: 0, SQLState: 23502
+2017-01-08 10:20:27,939 [JavaFX Application Thread] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper- ERROR: null value in column "rank" violates not-null constraint
+  Подробности: Failing row contains (2, 5676f7e1-2b14-4e6b-b29c-e0b9c1e2d878, 2017-01-08 10:20:26.607+03, asdf, null, 2017-01-08 00:00:00+03, asdf, asdf).
+2017-01-08 10:20:27,941 [JavaFX Application Thread] ERROR org.hibernate.internal.ExceptionMapperStandardImpl- HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]

@@ -48,6 +48,7 @@ public class AllocationEntityToDTOConverter implements Converter<AllocationEntit
         target.setFreeAllocation(source.isFreeAllocation());
         target.setArchive(source.isArchive());
 
+        target.setCompensationType(source.getCompensationType());
         target.setCompensationOrderNumber(source.getCompensationOrderNumber());
 
         target.setCompensationOrderDate(convertDateToLocalDateTime(source.getCompensationOrderDate()));

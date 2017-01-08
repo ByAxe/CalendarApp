@@ -21,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import model.entity.GroupsEntity;
 import model.entity.RulersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -54,6 +55,51 @@ public class GroupsServiceImpl implements IGroupsService {
     private final ConversionService conversionService;
     private final IValidator<Result, IGroupsDTO> validator;
 
+    @Value("${delete.context.menu.item}")
+    private String DELETE_CONTEXT_MENU_ITEM;
+
+    @Value("${change.context.menu.item}")
+    private String CHANGE_CONTEXT_MENU_ITEM;
+
+    @Value("${delete.element.title}")
+    private String DELETE_ELEMENT_TITLE;
+
+    @Value("${delete.element.header}")
+    private String DELETE_ELEMENT_HEADER;
+
+    @Value("${change.element.title}")
+    private String CHANGE_ELEMENT_TITLE;
+
+    @Value("${change.element.body}")
+    private String CHANGE_ELEMENT_BODY;
+
+    @Value("${change.element.header}")
+    private String CHANGE_ELEMENT_HEADER;
+
+    @Value("${validation.error.title}")
+    private String VALIDATION_ERROR_TITLE;
+
+    @Value("${validation.error.header}")
+    private String VALIDATION_ERROR_HEADER;
+
+    @Value("${validation.success.title}")
+    private String VALIDATION_SUCCESS_TITLE;
+
+    @Value("${validation.success.header}")
+    private String VALIDATION_SUCCESS_HEADER;
+
+    @Value("${validation.success.body}")
+    private String VALIDATION_SUCCESS_BODY;
+
+    @Value("${delete.constraint.violation.title}")
+    private String DELETE_CONSTRAINT_VIOLATION_TITLE;
+
+    @Value("${delete.constraint.violation.header}")
+    private String DELETE_CONSTRAINT_VIOLATION_HEADER;
+
+    @Value("${delete.constraint.violation.body}")
+    private String DELETE_CONSTRAINT_VIOLATION_BODY;
+
     @Autowired
     public GroupsServiceImpl(GroupsRepository groupsRepository, IRulersService rulersService, ConversionService conversionService, IValidator<Result, IGroupsDTO> validator) {
         this.groupsRepository = groupsRepository;
@@ -82,8 +128,8 @@ public class GroupsServiceImpl implements IGroupsService {
                                            JFXTextField description, JFXTextField hours, JFXComboBox rulers) {
         final ContextMenu managementGroupsListContextMenu = new ContextMenu();
 
-        MenuItem delete = new MenuItem("delete.context.menu.item");
-        MenuItem change = new MenuItem("change.context.menu.item");
+        MenuItem delete = new MenuItem(DELETE_CONTEXT_MENU_ITEM);
+        MenuItem change = new MenuItem(CHANGE_CONTEXT_MENU_ITEM);
 
         managementGroupsListContextMenu.getItems().addAll(delete, change);
 
@@ -93,7 +139,7 @@ public class GroupsServiceImpl implements IGroupsService {
             // Если кликнули по пустому месту
             if (item == null) return;
 
-            boolean isOk = raiseMessageBox(CONFIRMATION, "delete.element.title", "delete.element.header", "Вы действительно хотите удалить данный элемент: \"" + item.getText() + "\"?");
+            boolean isOk = raiseMessageBox(CONFIRMATION, DELETE_ELEMENT_TITLE, DELETE_ELEMENT_HEADER, "Вы действительно хотите удалить данный элемент: \"" + item.getText() + "\"?");
 
             // Если отказался удалять выбранный элемент
             if (!isOk) return;
@@ -103,7 +149,7 @@ public class GroupsServiceImpl implements IGroupsService {
             try {
                 delete(dto);
             } catch (Exception e) {
-                raiseMessageBox(ERROR, "delete.constraint.violation.title", "delete.constraint.violation.header", "delete.constraint.violation.body");
+                raiseMessageBox(ERROR, DELETE_CONSTRAINT_VIOLATION_TITLE, DELETE_CONSTRAINT_VIOLATION_HEADER, DELETE_CONSTRAINT_VIOLATION_BODY);
                 return;
             }
 
@@ -126,22 +172,22 @@ public class GroupsServiceImpl implements IGroupsService {
             // Если кликнули по пустому месту
             if (item == null) return;
 
-            boolean isOk = raiseMessageBox(CONFIRMATION, "change.element.title", "change.element.header", "change.element.body");
+            boolean isOk = raiseMessageBox(CONFIRMATION, CHANGE_ELEMENT_TITLE, CHANGE_ELEMENT_HEADER, CHANGE_ELEMENT_BODY);
 
             // Если отказался редактировать выбранный элемент
             if (!isOk) return;
 
             // Получили группу из базы
-            IGroupsDTO group = findByUuid(UUID.fromString(item.getId()));
+            IGroupsDTO dto = findByUuid(UUID.fromString(item.getId()));
 
             // Поместили все данные в поля редактирования
-            id.setText(String.valueOf(group.getId()));
-            title.setText(group.getTitle());
-            qualification.setText(group.getQualification());
-            number.setText(group.getNumber());
-            specialisation.setText(group.getSpecialization());
-            description.setText(group.getDescription());
-            hours.setText(String.valueOf(group.getHours()));
+            id.setText(String.valueOf(dto.getId()));
+            title.setText(dto.getTitle());
+            qualification.setText(dto.getQualification());
+            number.setText(dto.getNumber());
+            specialisation.setText(dto.getSpecialization());
+            description.setText(dto.getDescription());
+            hours.setText(String.valueOf(dto.getHours()));
 
             rulers.getItems().clear();
             Optional.ofNullable(((List<IRulersDTO>) rulersService.findAll()))
@@ -149,7 +195,7 @@ public class GroupsServiceImpl implements IGroupsService {
                         rulers.getItems().add(r.toPrettyString());
                     }));
 
-            rulers.setValue(group.getRuler().toPrettyString());
+            rulers.setValue(dto.getRuler().toPrettyString());
         });
 
         groupsList.setContextMenu(managementGroupsListContextMenu);
@@ -204,8 +250,8 @@ public class GroupsServiceImpl implements IGroupsService {
         } catch (NumberFormatException e) {
             alertType = ERROR;
 
-            alertTitle = "validation.error.title";
-            alertHeader = "validation.error.header";
+            alertTitle = VALIDATION_ERROR_TITLE;
+            alertHeader = VALIDATION_ERROR_HEADER;
             alertBody = "Количество часов должно быть числом.";
 
             raiseMessageBox(alertType, alertTitle, alertHeader, alertBody);
@@ -222,14 +268,14 @@ public class GroupsServiceImpl implements IGroupsService {
 
             alertType = INFORMATION;
 
-            alertTitle = "validation.success.title";
-            alertHeader = "validation.success.header";
-            alertBody = "validation.success.body";
+            alertTitle = VALIDATION_SUCCESS_TITLE;
+            alertHeader = VALIDATION_SUCCESS_HEADER;
+            alertBody = VALIDATION_SUCCESS_BODY;
         } else {
             alertType = ERROR;
 
-            alertTitle = "validation.error.title";
-            alertHeader = "validation.error.header";
+            alertTitle = VALIDATION_ERROR_TITLE;
+            alertHeader = VALIDATION_ERROR_HEADER;
             alertBody = result.errorsToString();
         }
 

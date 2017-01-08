@@ -50,6 +50,7 @@ public class AllocationDTOToEntityConverter implements Converter<IAllocationDTO,
         target.setCompensationOrderNumber(source.getCompensationOrderNumber());
         target.setFreeAllocationReason(source.getFreeAllocationReason());
 
+        target.setCompensationType(source.getCompensationType());
         target.setCompensationOrderDate(convertLocalDateTimeToDate(source.getCompensationOrderDate()));
         target.setVoluntaryCompensationConfirmationDate(convertLocalDateTimeToDate(source.getVoluntaryCompensationConfirmationDate()));
 

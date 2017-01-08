@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXComboBox;
 import core.commons.Result;
 import core.dto.api.IAllocationDTO;
 import core.dto.api.IAllocationTableDTO;
-import core.dto.api.IOrdersDTO;
 import core.enums.EventType;
 import core.enums.Stage;
 import core.validators.api.IValidator;
@@ -170,10 +169,6 @@ public class AllocationServiceImpl implements IAllocationService {
 
         if (Objects.equals(result.getResult(), SUCCESS)) {
 
-            IOrdersDTO savedOrder = ordersService.save(dto.getOrder());
-
-            dto.setOrder(savedOrder);
-
             AllocationEntity entity = convertDtoToEntity(dto);
 
             AllocationEntity savedEntity = allocationRepository.save(entity);
@@ -253,7 +248,7 @@ public class AllocationServiceImpl implements IAllocationService {
 
     @Override
     public List<IAllocationTableDTO> find(Stage stage, Boolean archive, Integer issueYear, Integer issueMonth) {
-        List<AllocationEntity> entities = allocationRepository.find(stage, archive, issueYear, issueMonth);
+        List<AllocationEntity> entities = allocationRepository.find(stage.name(), archive, issueYear, issueMonth);
 
         return entities.stream()
                 .map(e -> conversionService.convert(e, IAllocationTableDTO.class))
