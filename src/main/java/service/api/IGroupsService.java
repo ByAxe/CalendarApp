@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import core.dto.api.IGroupsDTO;
 import javafx.scene.control.Label;
+import jfxtras.scene.control.LocalDateTextField;
 import model.entity.GroupsEntity;
 
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ public interface IGroupsService extends IEssenceService<IGroupsDTO, Long>, IConv
                                     JFXTextField managementGroupTitle, JFXTextField managementGroupQualification,
                                     JFXTextField managementGroupNumber, JFXTextField managementGroupSpecialization,
                                     JFXTextField managementGroupDescription, JFXTextField hours,
-                                    JFXComboBox managementGroupRuler);
+                                    JFXComboBox managementGroupRuler, LocalDateTextField managementGroupIssueDate, JFXComboBox managementGroupStage);
 
     IGroupsDTO findByUuid(UUID uuid);
 

@@ -25,6 +25,10 @@ public class OrganisationValidator implements IValidator<Result, IOrganisationsD
     public Result validate(IOrganisationsDTO organisation) {
         List<String> errors = new ArrayList<>();
 
+        if (organisation.getTitle().isEmpty()) errors.add("Название организации не может быть пустым.");
+        if (organisation.getAddress().isEmpty()) errors.add("Организация должна иметь адрес.");
+        if (organisation.getTelephone().isEmpty()) errors.add("Контактный телефон является обязательным полем.");
+
         return wrapResult(errors);
     }
 }

@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import jfxtras.scene.control.LocalDateTextField;
 import model.entity.GroupsEntity;
 import model.entity.RulersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +126,8 @@ public class GroupsServiceImpl implements IGroupsService {
     @Transactional
     public void addContextMenuToGroupsList(JFXListView<Label> groupsList, JFXTextField id, JFXTextField title,
                                            JFXTextField qualification, JFXTextField number, JFXTextField specialisation,
-                                           JFXTextField description, JFXTextField hours, JFXComboBox rulers) {
+                                           JFXTextField description, JFXTextField hours, JFXComboBox rulers,
+                                           LocalDateTextField issueDate, JFXComboBox stage) {
         final ContextMenu managementGroupsListContextMenu = new ContextMenu();
 
         MenuItem delete = new MenuItem(DELETE_CONTEXT_MENU_ITEM);
@@ -160,6 +162,8 @@ public class GroupsServiceImpl implements IGroupsService {
             specialisation.setText("");
             description.setText("");
             hours.setText("");
+            stage.setValue(stage.getItems().get(0));
+            issueDate.setLocalDate(LocalDate.now());
 
             // Обновляем список, иначе для пользователя останется виден удаленный элемент
             fillGroupsList(groupsList);
@@ -196,6 +200,9 @@ public class GroupsServiceImpl implements IGroupsService {
                     }));
 
             rulers.setValue(dto.getRuler().toPrettyString());
+
+            stage.setValue(dto.getStage().getAcronym());
+            issueDate.setLocalDate(LocalDate.of(dto.getIssueYear(), dto.getIssueMonth(), 1));
         });
 
         groupsList.setContextMenu(managementGroupsListContextMenu);

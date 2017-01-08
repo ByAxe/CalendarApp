@@ -719,7 +719,7 @@ public class ApplicationController implements Initializable {
 
 
         // Играем с полями Компенсации
-        allocationCompensationType.setOnAction(e -> Stream.of(values()).forEach(t -> {
+        allocationCompensationType.setOnAction(e -> Stream.of(CompensationType.values()).forEach(t -> {
             if (t.getType().equals(String.valueOf(allocationCompensationType.getValue()))) {
                 if (t == NONE) {
                     allocationCompensationNumber.setDisable(true);
@@ -739,6 +739,56 @@ public class ApplicationController implements Initializable {
                 }
             }
         }));
+
+        allocationStudentsList.setOnAction(e -> {
+            Long studentId = getIdFromComboBox(String.valueOf(allocationStudentsList.getValue()));
+            IStudentsDTO student = studentsService.findOne(studentId);
+            if (student == null) return;
+            IGroupsDTO group = student.getGroup();
+            Stage stage = group.getStage();
+            Integer issueYear = group.getIssueYear();
+
+            final int nextYear = issueYear + 1;
+            final int nextNextYear = nextYear + 1;
+
+            allocationConfirmation_1.setText(CONFIRMATION_PERIOD_1);
+            allocationConfirmation_2.setText(CONFIRMATION_PERIOD_2);
+            allocationConfirmation_3.setText(CONFIRMATION_PERIOD_3);
+            allocationConfirmation_4.setText(CONFIRMATION_PERIOD_4);
+            allocationConfirmation_5.setText(CONFIRMATION_PERIOD_5);
+            allocationConfirmation_6.setText(CONFIRMATION_PERIOD_1);
+            allocationConfirmation_7.setText(CONFIRMATION_PERIOD_2);
+            allocationConfirmation_8.setText(CONFIRMATION_PERIOD_3);
+            allocationConfirmation_9.setText(CONFIRMATION_PERIOD_4);
+            allocationConfirmation_10.setText(CONFIRMATION_PERIOD_5);
+
+
+            allocationConfirmation_1.setText(CONFIRMATION_PERIOD_1 + " " + issueYear);
+            allocationConfirmation_2.setText(CONFIRMATION_PERIOD_2 + " " + issueYear);
+            allocationConfirmation_3.setText(CONFIRMATION_PERIOD_3 + " " + nextYear);
+            allocationConfirmation_4.setText(CONFIRMATION_PERIOD_4 + " " + nextYear);
+            allocationConfirmation_5.setText(CONFIRMATION_PERIOD_5 + " " + nextYear);
+
+            allocationConfirmation_6.setVisible(false);
+            allocationConfirmation_7.setVisible(false);
+            allocationConfirmation_8.setVisible(false);
+            allocationConfirmation_9.setVisible(false);
+            allocationConfirmation_10.setVisible(false);
+
+            if (stage == Stage.SECOND) {
+                allocationConfirmation_6.setText(CONFIRMATION_PERIOD_1 + " " + nextYear);
+                allocationConfirmation_7.setText(CONFIRMATION_PERIOD_2 + " " + nextYear);
+                allocationConfirmation_8.setText(CONFIRMATION_PERIOD_3 + " " + nextNextYear);
+                allocationConfirmation_9.setText(CONFIRMATION_PERIOD_4 + " " + nextNextYear);
+                allocationConfirmation_10.setText(CONFIRMATION_PERIOD_5 + " " + nextNextYear);
+
+                allocationConfirmation_6.setVisible(true);
+                allocationConfirmation_7.setVisible(true);
+                allocationConfirmation_8.setVisible(true);
+                allocationConfirmation_9.setVisible(true);
+                allocationConfirmation_10.setVisible(true);
+            }
+        });
 
         // Они одинаковы по смыслу, поэтому по нажатию на одно - должно отмечаться и другое
         allocationConfirmation_5.setOnAction(e -> allocationConfirmation_6.setSelected(allocationConfirmation_5.isSelected()));
@@ -988,6 +1038,17 @@ public class ApplicationController implements Initializable {
         allocationConfirmation_9.setSelected(false);
         allocationConfirmation_10.setSelected(false);
 
+        allocationConfirmation_1.setText(CONFIRMATION_PERIOD_1);
+        allocationConfirmation_2.setText(CONFIRMATION_PERIOD_2);
+        allocationConfirmation_3.setText(CONFIRMATION_PERIOD_3);
+        allocationConfirmation_4.setText(CONFIRMATION_PERIOD_4);
+        allocationConfirmation_5.setText(CONFIRMATION_PERIOD_5);
+        allocationConfirmation_6.setText(CONFIRMATION_PERIOD_1);
+        allocationConfirmation_7.setText(CONFIRMATION_PERIOD_2);
+        allocationConfirmation_8.setText(CONFIRMATION_PERIOD_3);
+        allocationConfirmation_9.setText(CONFIRMATION_PERIOD_4);
+        allocationConfirmation_10.setText(CONFIRMATION_PERIOD_5);
+
         allocationCompensationType.setValue(allocationCompensationType.getItems().get(0));
         allocationCompensationNumber.setDisable(true);
         allocationCompensationDate.setDisable(true);
@@ -1048,7 +1109,8 @@ public class ApplicationController implements Initializable {
 
         groupsService.addContextMenuToGroupsList(managementGroupsList, managementGroupId, managementGroupTitle,
                 managementGroupQualification, managementGroupNumber, managementGroupSpecialization,
-                managementGroupDescription, managementGroupHours, managementGroupRulers);
+                managementGroupDescription, managementGroupHours, managementGroupRulers,
+                managementGroupIssueDate, managementGroupStage);
 
         managementGroupCleanForm();
 
@@ -1086,6 +1148,9 @@ public class ApplicationController implements Initializable {
         managementGroupSpecialization.setText("");
         managementGroupDescription.setText("");
         managementGroupHours.setText("");
+        managementGroupIssueDate.setLocalDate(null);
+        managementGroupStage.setValue(null);
+        managementGroupRulers.setValue(null);
     }
 
 
