@@ -210,14 +210,16 @@ public class JobInitializer implements ApplicationListener<ContextRefreshedEvent
         List<IAllocationDTO> allocationList;
 
         try {
-            allocationList = allocationService.findByArchiveFalse();
+            allocationList = (List<IAllocationDTO>) allocationService.findAll();
         } catch (Exception e) {
             logger.error("\nОшибка при выборке всех сущностей по распределению из базы.\n");
             e.printStackTrace();
             return;
         }
 
-        allocationList.forEach(a -> allocationToJob(scheduler, preferences, a));
+        allocationList.stream()
+                .filter(a -> !a.isArchive())
+                .forEach(a -> allocationToJob(scheduler, preferences, a));
     }
 
     /**
@@ -234,14 +236,16 @@ public class JobInitializer implements ApplicationListener<ContextRefreshedEvent
         List<IAllocationDTO> allocationList;
 
         try {
-            allocationList = allocationService.findByArchiveFalse();
+            allocationList = (List<IAllocationDTO>) allocationService.findAll();
         } catch (Exception e) {
             logger.error("\nОшибка при выборке всех сущностей по распределению из базы.\n");
             e.printStackTrace();
             return;
         }
 
-        allocationList.forEach(a -> allocationArchiveToJob(scheduler, preferences, a));
+        allocationList.stream()
+                .filter(a -> !a.isArchive())
+                .forEach(a -> allocationToJob(scheduler, preferences, a));
     }
 
     /**
