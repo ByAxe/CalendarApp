@@ -13,7 +13,7 @@
 
 	<context:property-placeholder location="properties/test-application.properties"/>
 
-	<context:component-scan base-package="tests"/>
+	<context:component-scan base-package="com.tests"/>
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${database.driver}"/>

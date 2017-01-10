@@ -9,25 +9,25 @@
 	   xmlns:util="http://www.springframework.org/schema/util" xmlns="http://www.springframework.org/schema/beans"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean id="quartzJobFactory" class="service.quartz.AutowiringSpingBeanJobFactory">
+	<bean id="quartzJobFactory" class="com.service.quartz.AutowiringSpingBeanJobFactory">
 		<property name="ignoredUnknownProperties" value="applicationContext"/>
 	</bean>
 
 	<bean id="updateNotificationsLogTask" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="service.quartz.jobs.UpdateNotificationsLogJob"/>
+		<property name="jobClass" value="com.service.quartz.jobs.UpdateNotificationsLogJob"/>
 		<property name="group" value="NOTIFICATIONS_LOG_UPDATE_JOBS_GROUP"/>
 		<property name="name" value="NOTIFICATIONS_LOG_UPDATE_JOB"/>
 		<property name="durability" value="true"/>
 	</bean>
 	<bean id="refreshDataJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="service.quartz.jobs.RefreshDataJob"/>
+		<property name="jobClass" value="com.service.quartz.jobs.RefreshDataJob"/>
 		<property name="group" value="REFRESH_DATA_JOBS_GROUP"/>
 		<property name="name" value="REFRESH_DATA_JOB"/>
 		<property name="durability" value="true"/>
 	</bean>
 
 	<util:list id="quartzTriggers">
-		<bean class="service.quartz.PersistableCronTriggerFactoryBean">
+		<bean class="com.service.quartz.PersistableCronTriggerFactoryBean">
 			<property name="jobDetail" ref="updateNotificationsLogTask"/>
 			<property name="cronExpression" value="0 0/10 * 1/1 * ? *"/>
 			<property name="group" value="NOTIFICATIONS_LOG_UPDATE_TRIGGER_GROUP"/>
@@ -35,7 +35,7 @@
 			<property name="misfireInstruction"
 					  value="#{T(org.quartz.CronTrigger).MISFIRE_INSTRUCTION_DO_NOTHING}"/>
 		</bean>
-		<bean class="service.quartz.PersistableCronTriggerFactoryBean">
+		<bean class="com.service.quartz.PersistableCronTriggerFactoryBean">
 			<property name="jobDetail" ref="refreshDataJob"/>
 			<property name="cronExpression" value="0 0/30 * 1/1 * ? *"/>
 			<property name="group" value="REFRESH_DATA_TRIGGER_GROUP"/>

@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calendar-app</groupId>
 	<artifactId>calendar-root</artifactId>
-	<version>0.6.6</version>
+	<version>0.6.7</version>
 
 	<name>calendar-root</name>
 	<url>http://maven.apache.org</url>
@@ -374,12 +374,12 @@
 				<version>8.7.0</version>
 				<configuration>
 					<vendor>Calendar</vendor>
-					<mainClass>main.Main</mainClass>
+					<mainClass>com.main.Main</mainClass>
 					<appName>CalendarApp</appName>
 					<additionalAppResources>src/main/resources</additionalAppResources>
 					<nativeReleaseVersion>1.0.0</nativeReleaseVersion>
 					<!--<nativeOutputDir>C://ProgramFiles//CalendarApp</nativeOutputDir>-->
-					<preLoader>main.preloader.FancyPreloader</preLoader>
+					<preLoader>com.main.preloader.FancyPreloader</preLoader>
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>

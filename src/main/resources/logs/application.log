@@ -1,7 +1,7 @@
 2017-01-08 20:42:40,652 [JavaFX-Launcher] WARN  org.springframework.context.support.GenericXmlApplicationContext- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15]
-2017-01-08 20:42:40,655 [JavaFX-Launcher] ERROR main.Main- Init method failed!
+2017-01-08 20:42:40,655 [JavaFX-Launcher] ERROR com.main.Main- Init method failed!
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15]
@@ -16,7 +16,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:865)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
 	at org.springframework.context.support.GenericXmlApplicationContext.<init>(GenericXmlApplicationContext.java:71)
-	at main.Main.init(Main.java:37)
+	at com.main.Main.init(Main.java:37)
 	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:841)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$155(LauncherImpl.java:182)
 	at java.lang.Thread.run(Thread.java:745)
@@ -28,7 +28,7 @@ Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИ
 	at org.quartz.impl.jdbcjobstore.JobStoreCMT.executeInLock(JobStoreCMT.java:245)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeWithoutLock(JobStoreSupport.java:3739)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1519)
-	at org.quartz.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
+	at org.quartz.com.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
 	at org.quartz.impl.StdScheduler.getTrigger(StdScheduler.java:508)
 	at org.springframework.scheduling.quartz.SchedulerAccessor.addTriggerToScheduler(SchedulerAccessor.java:291)
 	at org.springframework.scheduling.quartz.SchedulerAccessor.registerJobsAndTriggers(SchedulerAccessor.java:235)
@@ -38,9 +38,9 @@ Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИ
 	... 14 more
 Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
 	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:430)
 	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:356)
 	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:168)
@@ -49,11 +49,11 @@ Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "
 	at org.quartz.impl.jdbcjobstore.StdJDBCDelegate.selectTrigger(StdJDBCDelegate.java:1761)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1531)
 	... 25 more
-2017-01-08 20:42:40,758 [JavaFX Application Thread] ERROR main.Main- start method failed!
+2017-01-08 20:42:40,758 [JavaFX Application Thread] ERROR com.main.Main- start method failed!
 java.lang.NullPointerException: Root cannot be null
 	at javafx.scene.Scene.<init>(Scene.java:336)
 	at javafx.scene.Scene.<init>(Scene.java:194)
-	at main.Main.start(Main.java:51)
+	at com.main.Main.start(Main.java:51)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
 	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$175(PlatformImpl.java:326)
 	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
@@ -66,7 +66,7 @@ java.lang.NullPointerException: Root cannot be null
 2017-01-08 20:45:15,179 [JavaFX-Launcher] WARN  org.springframework.context.support.GenericXmlApplicationContext- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15]
-2017-01-08 20:45:15,182 [JavaFX-Launcher] ERROR main.Main- Init method failed!
+2017-01-08 20:45:15,182 [JavaFX-Launcher] ERROR com.main.Main- Init method failed!
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15]
@@ -81,7 +81,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:865)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
 	at org.springframework.context.support.GenericXmlApplicationContext.<init>(GenericXmlApplicationContext.java:71)
-	at main.Main.init(Main.java:37)
+	at com.main.Main.init(Main.java:37)
 	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:841)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$155(LauncherImpl.java:182)
 	at java.lang.Thread.run(Thread.java:745)
@@ -93,7 +93,7 @@ Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИ
 	at org.quartz.impl.jdbcjobstore.JobStoreCMT.executeInLock(JobStoreCMT.java:245)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeWithoutLock(JobStoreSupport.java:3739)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1519)
-	at org.quartz.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
+	at org.quartz.com.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
 	at org.quartz.impl.StdScheduler.getTrigger(StdScheduler.java:508)
 	at org.springframework.scheduling.quartz.SchedulerAccessor.addTriggerToScheduler(SchedulerAccessor.java:291)
 	at org.springframework.scheduling.quartz.SchedulerAccessor.registerJobsAndTriggers(SchedulerAccessor.java:235)
@@ -103,9 +103,9 @@ Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИ
 	... 14 more
 Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
 	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:430)
 	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:356)
 	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:168)
@@ -114,11 +114,11 @@ Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "
 	at org.quartz.impl.jdbcjobstore.StdJDBCDelegate.selectTrigger(StdJDBCDelegate.java:1761)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1531)
 	... 25 more
-2017-01-08 20:45:15,257 [JavaFX Application Thread] ERROR main.Main- start method failed!
+2017-01-08 20:45:15,257 [JavaFX Application Thread] ERROR com.main.Main- start method failed!
 java.lang.NullPointerException: Root cannot be null
 	at javafx.scene.Scene.<init>(Scene.java:336)
 	at javafx.scene.Scene.<init>(Scene.java:194)
-	at main.Main.start(Main.java:51)
+	at com.main.Main.start(Main.java:51)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
 	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$175(PlatformImpl.java:326)
 	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
@@ -131,7 +131,7 @@ java.lang.NullPointerException: Root cannot be null
 2017-01-08 20:52:43,562 [JavaFX-Launcher] WARN  org.springframework.context.support.GenericXmlApplicationContext- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15]
-2017-01-08 20:52:43,564 [JavaFX-Launcher] ERROR main.Main- Init method failed!
+2017-01-08 20:52:43,564 [JavaFX-Launcher] ERROR com.main.Main- Init method failed!
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15]
@@ -146,7 +146,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:865)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
 	at org.springframework.context.support.GenericXmlApplicationContext.<init>(GenericXmlApplicationContext.java:71)
-	at main.Main.init(Main.java:37)
+	at com.main.Main.init(Main.java:37)
 	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:841)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$155(LauncherImpl.java:182)
 	at java.lang.Thread.run(Thread.java:745)
@@ -158,7 +158,7 @@ Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИ
 	at org.quartz.impl.jdbcjobstore.JobStoreCMT.executeInLock(JobStoreCMT.java:245)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeWithoutLock(JobStoreSupport.java:3739)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1519)
-	at org.quartz.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
+	at org.quartz.com.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
 	at org.quartz.impl.StdScheduler.getTrigger(StdScheduler.java:508)
 	at org.springframework.scheduling.quartz.SchedulerAccessor.addTriggerToScheduler(SchedulerAccessor.java:291)
 	at org.springframework.scheduling.quartz.SchedulerAccessor.registerJobsAndTriggers(SchedulerAccessor.java:235)
@@ -168,9 +168,9 @@ Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИ
 	... 14 more
 Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
   Position: 15
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
 	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:430)
 	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:356)
 	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:168)
@@ -179,11 +179,11 @@ Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "
 	at org.quartz.impl.jdbcjobstore.StdJDBCDelegate.selectTrigger(StdJDBCDelegate.java:1761)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1531)
 	... 25 more
-2017-01-08 20:52:43,672 [JavaFX Application Thread] ERROR main.Main- start method failed!
+2017-01-08 20:52:43,672 [JavaFX Application Thread] ERROR com.main.Main- start method failed!
 java.lang.NullPointerException: Root cannot be null
 	at javafx.scene.Scene.<init>(Scene.java:336)
 	at javafx.scene.Scene.<init>(Scene.java:194)
-	at main.Main.start(Main.java:51)
+	at com.main.Main.start(Main.java:51)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
 	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$175(PlatformImpl.java:326)
 	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
@@ -194,7 +194,7 @@ java.lang.NullPointerException: Root cannot be null
 	at com.sun.glass.ui.win.WinApplication.lambda$null$148(WinApplication.java:191)
 	at java.lang.Thread.run(Thread.java:745)
 2017-01-08 20:58:16,010 [JavaFX-Launcher] WARN  org.springframework.context.support.GenericXmlApplicationContext- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'conversionService' defined in class path resource [application-context.xml]: Cannot resolve reference to bean 'eventsDTOToEntityConverter' while setting bean property 'converters' with key [0]; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'eventsDTOToEntityConverter' available
-2017-01-08 20:58:16,012 [JavaFX-Launcher] ERROR main.Main- Init method failed!
+2017-01-08 20:58:16,012 [JavaFX-Launcher] ERROR com.main.Main- Init method failed!
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'conversionService' defined in class path resource [application-context.xml]: Cannot resolve reference to bean 'eventsDTOToEntityConverter' while setting bean property 'converters' with key [0]; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'eventsDTOToEntityConverter' available
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:359)
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:108)
@@ -211,7 +211,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:837)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
 	at org.springframework.context.support.GenericXmlApplicationContext.<init>(GenericXmlApplicationContext.java:71)
-	at main.Main.init(Main.java:37)
+	at com.main.Main.init(Main.java:37)
 	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:841)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$155(LauncherImpl.java:182)
 	at java.lang.Thread.run(Thread.java:745)
@@ -222,11 +222,11 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No b
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:193)
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:351)
 	... 18 more
-2017-01-08 20:58:16,045 [JavaFX Application Thread] ERROR main.Main- start method failed!
+2017-01-08 20:58:16,045 [JavaFX Application Thread] ERROR com.main.Main- start method failed!
 java.lang.NullPointerException: Root cannot be null
 	at javafx.scene.Scene.<init>(Scene.java:336)
 	at javafx.scene.Scene.<init>(Scene.java:194)
-	at main.Main.start(Main.java:51)
+	at com.main.Main.start(Main.java:51)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
 	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$175(PlatformImpl.java:326)
 	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
@@ -234,7 +234,7 @@ java.lang.NullPointerException: Root cannot be null
 	at com.sun.javafx.application.PlatformImpl.lambda$runLater$174(PlatformImpl.java:294)
 	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
 2017-01-08 21:02:42,254 [JavaFX-Launcher] WARN  org.springframework.context.support.GenericXmlApplicationContext- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'conversionService' defined in class path resource [application-context.xml]: Cannot resolve reference to bean 'eventsDTOToEntityConverter' while setting bean property 'converters' with key [0]; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'eventsDTOToEntityConverter' available
-2017-01-08 21:02:42,256 [JavaFX-Launcher] ERROR main.Main- Init method failed!
+2017-01-08 21:02:42,256 [JavaFX-Launcher] ERROR com.main.Main- Init method failed!
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'conversionService' defined in class path resource [application-context.xml]: Cannot resolve reference to bean 'eventsDTOToEntityConverter' while setting bean property 'converters' with key [0]; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'eventsDTOToEntityConverter' available
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:359)
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:108)
@@ -251,7 +251,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:837)
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
 	at org.springframework.context.support.GenericXmlApplicationContext.<init>(GenericXmlApplicationContext.java:71)
-	at main.Main.init(Main.java:37)
+	at com.main.Main.init(Main.java:37)
 	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:841)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$155(LauncherImpl.java:182)
 	at java.lang.Thread.run(Thread.java:745)
@@ -262,11 +262,11 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No b
 	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:193)
 	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:351)
 	... 18 more
-2017-01-08 21:02:42,287 [JavaFX Application Thread] ERROR main.Main- start method failed!
+2017-01-08 21:02:42,287 [JavaFX Application Thread] ERROR com.main.Main- start method failed!
 java.lang.NullPointerException: Root cannot be null
 	at javafx.scene.Scene.<init>(Scene.java:336)
 	at javafx.scene.Scene.<init>(Scene.java:194)
-	at main.Main.start(Main.java:51)
+	at com.main.Main.start(Main.java:51)
 	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$162(LauncherImpl.java:863)
 	at com.sun.javafx.application.PlatformImpl.lambda$runAndWait$175(PlatformImpl.java:326)
 	at com.sun.javafx.application.PlatformImpl.lambda$null$173(PlatformImpl.java:295)
@@ -285,9 +285,9 @@ org.quartz.JobPersistenceException: Failure identifying failed instances when ch
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport$ClusterManager.run(JobStoreSupport.java:3911)
 Caused by: org.postgresql.util.PSQLException: ERROR: relation "cld.qrtz_scheduler_state" does not exist
   Позиция: 15
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
 	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:430)
 	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:356)
 	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:168)
@@ -296,3 +296,54 @@ Caused by: org.postgresql.util.PSQLException: ERROR: relation "cld.qrtz_schedule
 	at org.quartz.impl.jdbcjobstore.StdJDBCDelegate.selectSchedulerStateRecords(StdJDBCDelegate.java:2994)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.findFailedInstances(JobStoreSupport.java:3323)
 	... 4 more
+2017-01-08 22:48:01,370 [JavaFX-Launcher] WARN  org.springframework.context.support.GenericXmlApplicationContext- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15]
+2017-01-08 22:48:01,373 [JavaFX-Launcher] ERROR com.main.Main- Init method failed!
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' defined in class path resource [quartz-context.xml]: Invocation of init method failed; nested exception is org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1610)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:484)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:298)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:193)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:732)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:865)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
+	at org.springframework.context.support.GenericXmlApplicationContext.<init>(GenericXmlApplicationContext.java:71)
+	at com.main.Main.init(Main.java:37)
+	at com.sun.javafx.application.LauncherImpl.launchApplication1(LauncherImpl.java:841)
+	at com.sun.javafx.application.LauncherImpl.lambda$launchApplication$155(LauncherImpl.java:182)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.quartz.JobPersistenceException: Couldn't retrieve trigger: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15 [See nested exception: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15]
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1533)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport$12.execute(JobStoreSupport.java:1522)
+	at org.quartz.impl.jdbcjobstore.JobStoreCMT.executeInLock(JobStoreCMT.java:245)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeWithoutLock(JobStoreSupport.java:3739)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1519)
+	at org.quartz.com.core.QuartzScheduler.getTrigger(QuartzScheduler.java:1530)
+	at org.quartz.impl.StdScheduler.getTrigger(StdScheduler.java:508)
+	at org.springframework.scheduling.quartz.SchedulerAccessor.addTriggerToScheduler(SchedulerAccessor.java:291)
+	at org.springframework.scheduling.quartz.SchedulerAccessor.registerJobsAndTriggers(SchedulerAccessor.java:235)
+	at org.springframework.scheduling.quartz.SchedulerFactoryBean.afterPropertiesSet(SchedulerFactoryBean.java:512)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1669)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1606)
+	... 14 more
+Caused by: org.postgresql.util.PSQLException: ОШИБКА: отношение "cld.qrtz_triggers" не существует
+  Position: 15
+	at org.postgresql.com.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2455)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2155)
+	at org.postgresql.com.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:288)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:430)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:356)
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:168)
+	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:116)
+	at com.mchange.v2.c3p0.impl.NewProxyPreparedStatement.executeQuery(NewProxyPreparedStatement.java:353)
+	at org.quartz.impl.jdbcjobstore.StdJDBCDelegate.selectTrigger(StdJDBCDelegate.java:1761)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveTrigger(JobStoreSupport.java:1531)
+	... 25 more
