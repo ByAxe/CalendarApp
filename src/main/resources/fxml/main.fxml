@@ -14,7 +14,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 			minWidth="-Infinity"
 			prefHeight="735.0" prefWidth="1100.0" style="-fx-background-color: #fff;"
-			xmlns="http://javafx.com/javafx/8.0.60" fx:controller="controller.ApplicationController">
+			xmlns="http://javafx.com/javafx/8.0.60" fx:controller="com.controller.ApplicationController">
 	<MenuBar id="menu-bar" layoutX="1.0" layoutY="2.0" prefHeight="28.0" prefWidth="1100.0"
 			 AnchorPane.bottomAnchor="707.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 			 AnchorPane.topAnchor="0.0">

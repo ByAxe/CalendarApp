@@ -5,10 +5,10 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Suite" parallel="false">
-	<test name="core">
+	<test name="com.core">
 		<classes>
-			<class name="tests.EventsTest"/>
-			<class name="tests.GroupsTest"/>
+			<class name="com.tests.EventsTest"/>
+			<class name="com.tests.GroupsTest"/>
 		</classes>
 	</test>
 </suite>
