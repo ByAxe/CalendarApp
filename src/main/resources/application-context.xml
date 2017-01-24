@@ -15,7 +15,7 @@
 	<import resource="quartz-context.xml"/>
 
 	<!--Сканируем содержимое указанных пакетов на бины-->
-	<context:component-scan base-package="com.repository, com.service, com.controller, com.core.converters, com.core.validators"/>
+	<context:component-scan base-package="repository, service, controller, core.converters, core.validators"/>
 
 	<!--Указываем расположение properties файла-->
 	<context:property-placeholder location="properties/application.properties"/>
@@ -27,7 +27,7 @@
 	<tx:annotation-driven/>
 
 	<!--Репозитории (DAO) для работы с базой-->
-	<jpa:repositories base-package="com.repository" transaction-manager-ref="transactionManager"/>
+	<jpa:repositories base-package="repository" transaction-manager-ref="transactionManager"/>
 
 	<!--Устанавливаем кто будет ответственный за конверсию данных между Моделью и Сервисом-->
 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
@@ -80,7 +80,7 @@
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
-		<property name="packagesToScan" value="com.model.entity"/>
+		<property name="packagesToScan" value="model.entity"/>
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="showSql" value="${database.showSql}"/>

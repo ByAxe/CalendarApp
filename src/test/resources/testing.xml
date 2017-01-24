@@ -5,7 +5,7 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Suite" parallel="false">
-	<test name="com.core">
+	<test name="core">
 		<classes>
 			<class name="com.tests.EventsTest"/>
 			<class name="com.tests.GroupsTest"/>

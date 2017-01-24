@@ -297,7 +297,7 @@ Caused by: org.postgresql.util.PSQLException: ERROR: relation "cld.qrtz_schedule
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.findFailedInstances(JobStoreSupport.java:3323)
 	... 4 more
 2017-01-11 11:30:21,164 [quartzScheduler_QuartzSchedulerThread] ERROR org.springframework.scheduling.quartz.LocalDataSourceJobStore- Error retrieving job, setting trigger state to ERROR.
-org.quartz.JobPersistenceException: Couldn't retrieve job because a required class was not found: com.service.quartz.jobs.UpdateNotificationsLogJob [See nested exception: java.lang.ClassNotFoundException: com.service.quartz.jobs.UpdateNotificationsLogJob]
+org.quartz.JobPersistenceException: Couldn't retrieve job because a required class was not found: service.quartz.jobs.UpdateNotificationsLogJob [See nested exception: java.lang.ClassNotFoundException: service.quartz.jobs.UpdateNotificationsLogJob]
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveJob(JobStoreSupport.java:1388)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.acquireNextTrigger(JobStoreSupport.java:2818)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport$40.execute(JobStoreSupport.java:2759)
@@ -305,7 +305,7 @@ org.quartz.JobPersistenceException: Couldn't retrieve job because a required cla
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeInNonManagedTXLock(JobStoreSupport.java:3803)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.acquireNextTriggers(JobStoreSupport.java:2756)
 	at org.quartz.core.QuartzSchedulerThread.run(QuartzSchedulerThread.java:272)
-Caused by: java.lang.ClassNotFoundException: com.service.quartz.jobs.UpdateNotificationsLogJob
+Caused by: java.lang.ClassNotFoundException: service.quartz.jobs.UpdateNotificationsLogJob
 	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
 	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
@@ -316,7 +316,7 @@ Caused by: java.lang.ClassNotFoundException: com.service.quartz.jobs.UpdateNotif
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveJob(JobStoreSupport.java:1385)
 	... 6 more
 2017-01-11 11:30:21,173 [quartzScheduler_QuartzSchedulerThread] ERROR org.springframework.scheduling.quartz.LocalDataSourceJobStore- Error retrieving job, setting trigger state to ERROR.
-org.quartz.JobPersistenceException: Couldn't retrieve job because a required class was not found: com.service.quartz.jobs.RefreshDataJob [See nested exception: java.lang.ClassNotFoundException: com.service.quartz.jobs.RefreshDataJob]
+org.quartz.JobPersistenceException: Couldn't retrieve job because a required class was not found: service.quartz.jobs.RefreshDataJob [See nested exception: java.lang.ClassNotFoundException: service.quartz.jobs.RefreshDataJob]
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.retrieveJob(JobStoreSupport.java:1388)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.acquireNextTrigger(JobStoreSupport.java:2818)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport$40.execute(JobStoreSupport.java:2759)
@@ -324,7 +324,7 @@ org.quartz.JobPersistenceException: Couldn't retrieve job because a required cla
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeInNonManagedTXLock(JobStoreSupport.java:3803)
 	at org.quartz.impl.jdbcjobstore.JobStoreSupport.acquireNextTriggers(JobStoreSupport.java:2756)
 	at org.quartz.core.QuartzSchedulerThread.run(QuartzSchedulerThread.java:272)
-Caused by: java.lang.ClassNotFoundException: com.service.quartz.jobs.RefreshDataJob
+Caused by: java.lang.ClassNotFoundException: service.quartz.jobs.RefreshDataJob
 	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
 	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)

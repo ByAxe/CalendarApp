@@ -4,7 +4,7 @@
  */
 
 .date-chooser {
-    -fx-skin: "view.controlls.DateChooserSkin";
+    -fx-skin: "controlls.DateChooserSkin";
 }
 
 .date-chooser .jfx-button, .date-chooser .jfx-button:hover {
