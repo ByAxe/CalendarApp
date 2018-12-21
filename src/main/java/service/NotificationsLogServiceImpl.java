@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
@@ -60,7 +61,7 @@ public class NotificationsLogServiceImpl implements INotificationsLogService {
     public Iterable<INotificationsLogDTO> save(Iterable<INotificationsLogDTO> dtoList) {
         List<NotificationsLogEntity> entities = convertListDtoToEntity(dtoList);
 
-        Iterable<NotificationsLogEntity> savedEntities = notificationsLogRepository.save(entities);
+        Iterable<NotificationsLogEntity> savedEntities = notificationsLogRepository.saveAll(entities);
 
         return convertListEntityToDto(savedEntities);
     }
@@ -109,7 +110,7 @@ public class NotificationsLogServiceImpl implements INotificationsLogService {
 
     @Override
     public Iterable<INotificationsLogDTO> findAll(Iterable<Long> idList) {
-        Iterable<NotificationsLogEntity> entities = notificationsLogRepository.findAll(idList);
+        Iterable<NotificationsLogEntity> entities = notificationsLogRepository.findAllById(idList);
 
         return convertListEntityToDto(entities);
     }
@@ -139,9 +140,9 @@ public class NotificationsLogServiceImpl implements INotificationsLogService {
 
     @Override
     public INotificationsLogDTO findOne(Long id) {
-        NotificationsLogEntity entity = notificationsLogRepository.findOne(id);
+        Optional<NotificationsLogEntity> entity = notificationsLogRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     @Override
@@ -156,13 +157,13 @@ public class NotificationsLogServiceImpl implements INotificationsLogService {
 
     @Override
     public boolean exists(Long id) {
-        return notificationsLogRepository.exists(id);
+        return notificationsLogRepository.existsById(id);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        notificationsLogRepository.delete(id);
+        notificationsLogRepository.deleteById(id);
     }
 
     @Override
@@ -178,7 +179,7 @@ public class NotificationsLogServiceImpl implements INotificationsLogService {
     public void delete(Iterable<? extends INotificationsLogDTO> dtoList) {
         List<NotificationsLogEntity> entities = convertListDtoToEntity((Iterable<INotificationsLogDTO>) dtoList);
 
-        notificationsLogRepository.delete(entities);
+        notificationsLogRepository.deleteAll(entities);
     }
 
     @Override

@@ -317,7 +317,7 @@ public class GroupsServiceImpl implements IGroupsService {
             newEntity.setRuler(ruler);
         });
 
-        Iterable<GroupsEntity> savedEntities = groupsRepository.save(sourceEntities);
+        Iterable<GroupsEntity> savedEntities = groupsRepository.saveAll(sourceEntities);
 
         return convertListEntityToDto(savedEntities);
     }
@@ -347,16 +347,16 @@ public class GroupsServiceImpl implements IGroupsService {
 
     @Override
     public Iterable<IGroupsDTO> findAll(Iterable<Long> ids) {
-        Iterable<GroupsEntity> entities = groupsRepository.findAll(ids);
+        Iterable<GroupsEntity> entities = groupsRepository.findAllById(ids);
 
         return convertListEntityToDto(entities);
     }
 
     @Override
     public IGroupsDTO findOne(Long id) {
-        GroupsEntity entity = groupsRepository.findOne(id);
+        Optional<GroupsEntity> entity = groupsRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     @Override
@@ -366,13 +366,13 @@ public class GroupsServiceImpl implements IGroupsService {
 
     @Override
     public boolean exists(Long id) {
-        return groupsRepository.exists(id);
+        return groupsRepository.existsById(id);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        groupsRepository.delete(id);
+        groupsRepository.deleteById(id);
     }
 
     @Override
@@ -388,7 +388,7 @@ public class GroupsServiceImpl implements IGroupsService {
     public void delete(Iterable<? extends IGroupsDTO> dtoList) {
         List<GroupsEntity> entities = convertListDtoToEntity((Iterable<IGroupsDTO>) dtoList);
 
-        groupsRepository.delete(entities);
+        groupsRepository.deleteAll(entities);
     }
 
     @Override

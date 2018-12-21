@@ -40,10 +40,7 @@ import service.api.IEventsService;
 import service.quartz.JobInitializer;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static core.commons.Utils.*;
@@ -377,7 +374,7 @@ public class EventsServiceImpl implements IEventsService {
     public Iterable<IEventsDTO> save(Iterable<IEventsDTO> sourceDtoList) {
         List<EventsEntity> sourceEntities = convertListDtoToEntity(sourceDtoList);
 
-        Iterable<EventsEntity> savedEntities = eventsRepository.save(sourceEntities);
+        Iterable<EventsEntity> savedEntities = eventsRepository.saveAll(sourceEntities);
 
         List<IEventsDTO> newEvents = convertListEntityToDto(savedEntities);
 
@@ -438,7 +435,7 @@ public class EventsServiceImpl implements IEventsService {
      */
     @Override
     public Iterable<IEventsDTO> findAll(Iterable<Long> idList) {
-        Iterable<EventsEntity> eventsEntities = eventsRepository.findAll(idList);
+        Iterable<EventsEntity> eventsEntities = eventsRepository.findAllById(idList);
 
         return convertListEntityToDto(eventsEntities);
     }
@@ -451,9 +448,9 @@ public class EventsServiceImpl implements IEventsService {
      */
     @Override
     public IEventsDTO findOne(Long id) {
-        EventsEntity entity = eventsRepository.findOne(id);
+        Optional<EventsEntity> entity = eventsRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     /**
@@ -474,7 +471,7 @@ public class EventsServiceImpl implements IEventsService {
      */
     @Override
     public boolean exists(Long id) {
-        return eventsRepository.exists(id);
+        return eventsRepository.existsById(id);
     }
 
     /**
@@ -487,7 +484,7 @@ public class EventsServiceImpl implements IEventsService {
     public void delete(Long id) {
         jobInitializer.synchronizeJobWithCalendarEvents(findOne(id), EventType.DELETE);
 
-        eventsRepository.delete(id);
+        eventsRepository.deleteById(id);
     }
 
     /**
@@ -524,7 +521,7 @@ public class EventsServiceImpl implements IEventsService {
 
         List<EventsEntity> entities = convertListDtoToEntity((Iterable<IEventsDTO>) dtoList);
 
-        eventsRepository.delete(entities);
+        eventsRepository.deleteAll(entities);
     }
 
     /**

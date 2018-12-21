@@ -262,7 +262,7 @@ public class StudentsServiceImpl implements IStudentsService {
     public Iterable<IStudentsDTO> save(Iterable<IStudentsDTO> dtoList) {
         List<StudentsEntity> entities = convertListDtoToEntity(dtoList);
 
-        Iterable<StudentsEntity> savedEntities = studentsRepository.save(entities);
+        Iterable<StudentsEntity> savedEntities = studentsRepository.saveAll(entities);
 
         return convertListEntityToDto(savedEntities);
     }
@@ -297,16 +297,16 @@ public class StudentsServiceImpl implements IStudentsService {
 
     @Override
     public Iterable<IStudentsDTO> findAll(Iterable<Long> idList) {
-        Iterable<StudentsEntity> entities = studentsRepository.findAll(idList);
+        Iterable<StudentsEntity> entities = studentsRepository.findAllById(idList);
 
         return convertListEntityToDto(entities);
     }
 
     @Override
     public IStudentsDTO findOne(Long id) {
-        StudentsEntity entity = studentsRepository.findOne(id);
+        Optional<StudentsEntity> entity = studentsRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     @Override
@@ -316,13 +316,13 @@ public class StudentsServiceImpl implements IStudentsService {
 
     @Override
     public boolean exists(Long id) {
-        return studentsRepository.exists(id);
+        return studentsRepository.existsById(id);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        studentsRepository.delete(id);
+        studentsRepository.deleteById(id);
     }
 
     @Override
@@ -338,7 +338,7 @@ public class StudentsServiceImpl implements IStudentsService {
     public void delete(Iterable<? extends IStudentsDTO> dtoList) {
         List<StudentsEntity> entities = convertListDtoToEntity((Iterable<IStudentsDTO>) dtoList);
 
-        studentsRepository.delete(entities);
+        studentsRepository.deleteAll(entities);
     }
 
     @Override

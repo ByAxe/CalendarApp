@@ -28,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.OrganisationsRepository;
 import service.api.IOrganisationsService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static core.commons.Utils.raiseMessageBox;
 import static core.enums.ResultEnum.SUCCESS;
@@ -251,7 +248,7 @@ public class OrganisationsServiceImpl implements IOrganisationsService {
     public Iterable<IOrganisationsDTO> save(Iterable<IOrganisationsDTO> dtoList) {
         List<OrganisationsEntity> entities = convertListDtoToEntity(dtoList);
 
-        Iterable<OrganisationsEntity> savedEntities = organisationsRepository.save(entities);
+        Iterable<OrganisationsEntity> savedEntities = organisationsRepository.saveAll(entities);
 
         return convertListEntityToDto(savedEntities);
     }
@@ -279,16 +276,16 @@ public class OrganisationsServiceImpl implements IOrganisationsService {
 
     @Override
     public Iterable<IOrganisationsDTO> findAll(Iterable<Long> idList) {
-        Iterable<OrganisationsEntity> entities = organisationsRepository.findAll(idList);
+        Iterable<OrganisationsEntity> entities = organisationsRepository.findAllById(idList);
 
         return convertListEntityToDto(entities);
     }
 
     @Override
     public IOrganisationsDTO findOne(Long id) {
-        OrganisationsEntity entity = organisationsRepository.findOne(id);
+        Optional<OrganisationsEntity> entity = organisationsRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     @Override
@@ -298,13 +295,13 @@ public class OrganisationsServiceImpl implements IOrganisationsService {
 
     @Override
     public boolean exists(Long id) {
-        return organisationsRepository.exists(id);
+        return organisationsRepository.existsById(id);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        organisationsRepository.delete(id);
+        organisationsRepository.deleteById(id);
     }
 
     @Override
@@ -316,7 +313,7 @@ public class OrganisationsServiceImpl implements IOrganisationsService {
     @Override
     @Transactional
     public void delete(Iterable<? extends IOrganisationsDTO> dtoList) {
-        organisationsRepository.delete(convertListDtoToEntity((Iterable<IOrganisationsDTO>) dtoList));
+        organisationsRepository.deleteAll(convertListDtoToEntity((Iterable<IOrganisationsDTO>) dtoList));
     }
 
     @Override

@@ -33,7 +33,7 @@
 		<c3p0-version>RELEASE</c3p0-version>
 		<jfoenix-version>RELEASE</jfoenix-version>
 		<testfx-version>RELEASE</testfx-version>
-		<jfxtras-version>8.0-r6-SNAPSHOT</jfxtras-version>
+		<jfxtras-version>9.0-r1</jfxtras-version>
 		<quartz-version>RELEASE</quartz-version>
 		<material-design-fx-version>RELEASE</material-design-fx-version>
 		<apache-poi-version>RELEASE</apache-poi-version>

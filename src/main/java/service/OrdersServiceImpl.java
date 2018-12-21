@@ -31,10 +31,7 @@ import repository.OrdersRepository;
 import service.api.IOrdersService;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static core.commons.Utils.convertLocalDateToLocalDateTime;
 import static core.commons.Utils.raiseMessageBox;
@@ -253,7 +250,7 @@ public class OrdersServiceImpl implements IOrdersService {
     public Iterable<IOrdersDTO> save(Iterable<IOrdersDTO> dtoList) {
         List<OrdersEntity> sourceEntities = convertListDtoToEntity(dtoList);
 
-        Iterable<OrdersEntity> savedEntities = ordersRepository.save(sourceEntities);
+        Iterable<OrdersEntity> savedEntities = ordersRepository.saveAll(sourceEntities);
 
         return convertListEntityToDto(savedEntities);
     }
@@ -281,16 +278,16 @@ public class OrdersServiceImpl implements IOrdersService {
 
     @Override
     public Iterable<IOrdersDTO> findAll(Iterable<Long> idList) {
-        Iterable<OrdersEntity> entities = ordersRepository.findAll(idList);
+        Iterable<OrdersEntity> entities = ordersRepository.findAllById(idList);
 
         return convertListEntityToDto(entities);
     }
 
     @Override
     public IOrdersDTO findOne(Long id) {
-        OrdersEntity entity = ordersRepository.findOne(id);
+        Optional<OrdersEntity> entity = ordersRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     @Override
@@ -300,13 +297,13 @@ public class OrdersServiceImpl implements IOrdersService {
 
     @Override
     public boolean exists(Long id) {
-        return ordersRepository.exists(id);
+        return ordersRepository.existsById(id);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        ordersRepository.delete(id);
+        ordersRepository.deleteById(id);
     }
 
     @Override
@@ -320,7 +317,7 @@ public class OrdersServiceImpl implements IOrdersService {
     public void delete(Iterable<? extends IOrdersDTO> dtoList) {
         List<OrdersEntity> entities = convertListDtoToEntity((Iterable<IOrdersDTO>) dtoList);
 
-        ordersRepository.delete(entities);
+        ordersRepository.deleteAll(entities);
     }
 
     @Override

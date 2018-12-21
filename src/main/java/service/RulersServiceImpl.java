@@ -247,7 +247,7 @@ public class RulersServiceImpl implements IRulersService {
 
         List<RulersEntity> sourceEntities = convertListDtoToEntity(dtoList);
 
-        Iterable<RulersEntity> savedEntities = rulersRepository.save(sourceEntities);
+        Iterable<RulersEntity> savedEntities = rulersRepository.saveAll(sourceEntities);
 
         return convertListEntityToDto(savedEntities);
     }
@@ -284,7 +284,7 @@ public class RulersServiceImpl implements IRulersService {
 
     @Override
     public Iterable<IRulersDTO> findAll(Iterable<Long> ids) {
-        Iterable<RulersEntity> entities = rulersRepository.findAll(ids);
+        Iterable<RulersEntity> entities = rulersRepository.findAllById(ids);
 
         return convertListEntityToDto(entities);
     }
@@ -296,7 +296,7 @@ public class RulersServiceImpl implements IRulersService {
 
     @Override
     public RulersEntity getActualEntity(Long id) {
-        return rulersRepository.findOne(id);
+        return rulersRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -306,13 +306,13 @@ public class RulersServiceImpl implements IRulersService {
 
     @Override
     public boolean exists(Long id) {
-        return rulersRepository.exists(id);
+        return rulersRepository.existsById(id);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        rulersRepository.delete(id);
+        rulersRepository.deleteById(id);
     }
 
     @Override
@@ -328,7 +328,7 @@ public class RulersServiceImpl implements IRulersService {
     public void delete(Iterable<? extends IRulersDTO> dtoList) {
         List<RulersEntity> entities = convertListDtoToEntity((Iterable<IRulersDTO>) dtoList);
 
-        rulersRepository.delete(entities);
+        rulersRepository.deleteAll(entities);
     }
 
     @Override

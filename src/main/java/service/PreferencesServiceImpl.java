@@ -80,7 +80,7 @@ public class PreferencesServiceImpl implements IPreferencesService {
     }
 
     private PreferencesEntity findOneEntity(Long id) {
-        return preferencesRepository.findOne(id);
+        return preferencesRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class PreferencesServiceImpl implements IPreferencesService {
 
     @Override
     public boolean exists(Long id) {
-        return preferencesRepository.exists(id);
+        return preferencesRepository.existsById(id);
     }
 
     @Override

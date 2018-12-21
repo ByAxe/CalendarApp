@@ -202,7 +202,7 @@ public class AllocationServiceImpl implements IAllocationService {
 
         List<AllocationEntity> entities = convertListDtoToEntity(dtoList);
 
-        Iterable<AllocationEntity> savedEntity = allocationRepository.save(entities);
+        Iterable<AllocationEntity> savedEntity = allocationRepository.saveAll(entities);
 
         List<IAllocationDTO> allocations = convertListEntityToDto(savedEntity);
 
@@ -278,16 +278,16 @@ public class AllocationServiceImpl implements IAllocationService {
 
     @Override
     public Iterable<IAllocationDTO> findAll(Iterable<Long> idList) {
-        Iterable<AllocationEntity> entities = allocationRepository.findAll(idList);
+        Iterable<AllocationEntity> entities = allocationRepository.findAllById(idList);
 
         return convertListEntityToDto(entities);
     }
 
     @Override
     public IAllocationDTO findOne(Long id) {
-        AllocationEntity entity = allocationRepository.findOne(id);
+        Optional<AllocationEntity> entity = allocationRepository.findById(id);
 
-        return convertEntityToDto(entity);
+        return entity.map(this::convertEntityToDto).orElse(null);
     }
 
     @Override
@@ -297,7 +297,7 @@ public class AllocationServiceImpl implements IAllocationService {
 
     @Override
     public boolean exists(Long id) {
-        return allocationRepository.exists(id);
+        return allocationRepository.existsById(id);
     }
 
     @Override
@@ -305,7 +305,7 @@ public class AllocationServiceImpl implements IAllocationService {
     public void delete(Long id) {
         jobInitializer.synchronizeJobWithAllocation(findOne(id), EventType.DELETE);
 
-        allocationRepository.delete(id);
+        allocationRepository.deleteById(id);
     }
 
     @Override
@@ -325,7 +325,7 @@ public class AllocationServiceImpl implements IAllocationService {
 
         List<AllocationEntity> entities = convertListDtoToEntity((Iterable<IAllocationDTO>) dtoList);
 
-        allocationRepository.delete(entities);
+        allocationRepository.deleteAll(entities);
     }
 
     @Override
