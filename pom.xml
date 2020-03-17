@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>RELEASE</hibernate.version>
 		<spring-version>RELEASE</spring-version>
-		<jackson-version>RELEASE</jackson-version>
+		<jackson-version>2.10.3</jackson-version>
 		<postgres-version>RELEASE</postgres-version>
 		<spring-data-jpa-version>RELEASE</spring-data-jpa-version>
 		<slf4j.version>RELEASE</slf4j.version>
