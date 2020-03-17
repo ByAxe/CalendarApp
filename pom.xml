@@ -29,7 +29,7 @@
 		<aspectj-weaver-version>RELEASE</aspectj-weaver-version>
 		<hibernate-jpa-version>RELEASE</hibernate-jpa-version>
 		<guava-version>RELEASE</guava-version>
-		<sprin-data-commons-version>RELEASE</sprin-data-commons-version>
+		<sprin-data-commons-version>1.13.13.RELEASE</sprin-data-commons-version>
 		<c3p0-version>RELEASE</c3p0-version>
 		<jfoenix-version>RELEASE</jfoenix-version>
 		<testfx-version>RELEASE</testfx-version>
