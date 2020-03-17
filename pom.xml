@@ -21,7 +21,7 @@
 		<spring-version>RELEASE</spring-version>
 		<jackson-version>RELEASE</jackson-version>
 		<postgres-version>RELEASE</postgres-version>
-		<spring-data-jpa-version>RELEASE</spring-data-jpa-version>
+		<spring-data-jpa-version>1.11.23.RELEASE</spring-data-jpa-version>
 		<slf4j.version>RELEASE</slf4j.version>
 		<log4j-version>RELEASE</log4j-version>
 		<testng-version>RELEASE</testng-version>
